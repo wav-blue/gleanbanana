@@ -1,14 +1,17 @@
 import Categories from "./Categories";
+import Charts from "./Charts";
+import Recommendations from "./Recommendations";
 
-const imagesArray = [];
+// 주류  견과류 음료 고기 생선 제과류(dessert) 간식류(snack) 과일 채소 유제품 기타
 
 const Home = () => {
   return (
-    <div className="home__div">
-      {imagesArray.map((img) => (
-        <Categories imgSrc={img} />
-      ))}
-      <div className="div">여러div들</div>
+    <div className="home__wrapper">
+      <div className="home">
+        <Charts />
+        <Categories />
+        <Recommendations />
+      </div>
     </div>
   );
 };

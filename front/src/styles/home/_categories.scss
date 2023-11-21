@@ -1,0 +1,20 @@
+.categories {
+  align-items: center;
+  justify-content: center;
+  background-color: $gray-lev1;
+  border-radius: 50%;
+  display: flex;
+  &__wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+  }
+  & > img {
+    width: 70%;
+    height: auto;
+    overflow: hidden;
+  }
+}

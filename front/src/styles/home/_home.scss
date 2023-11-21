@@ -1,6 +1,20 @@
 .home {
-  &__div {
-    flex: 2; //화면 크기만큼 늘어남 반응형
+  display: flex;
+  flex-direction: column;
+  flex: 2; //화면 크기만큼 늘어남 반응
+  gap: 30px;
+  &__wrapper {
+    width: 80%;
+    margin: 0 auto;
+  }
+  & ul {
+    display: flex;
+    gap: 30px;
+    width: 90vw;
+    margin: 0 auto;
+    & li {
+      flex: 1;
+    }
   }
 }
 

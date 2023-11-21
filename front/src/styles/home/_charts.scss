@@ -1,0 +1,11 @@
+.chart {
+  width: 90%;
+  height: 300px;
+  background-color: $gray-lev1;
+  margin: 20px auto;
+  &__wrapper {
+    width: 80%;
+    height: auto;
+    margin: 0 auto;
+  }
+}
