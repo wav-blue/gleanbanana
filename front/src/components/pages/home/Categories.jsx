@@ -10,19 +10,23 @@ import Category from "./Category";
 
 const imagesArray = [
   { photo: alchol, name: "alchol" },
-  { photo: fruits, name: "fruits1" },
-  { photo: dessert, name: "dessert1" },
+  { photo: fruits, name: "fruits" },
+  { photo: dessert, name: "dessert" },
   { photo: dairy, name: "dairy" },
   { photo: meat, name: "meat" },
   { photo: nuts, name: "nuts" },
   { photo: seafood, name: "seafood" },
-  { photo: snacks, name: "snacks1" },
+  { photo: snacks, name: "snacks" },
+  { photo: snacks, name: "snacks" },
+  { photo: snacks, name: "snacks" },
+  { photo: snacks, name: "snacks" },
+  { photo: snacks, name: "snacks" },
 ];
 
 const Categories = () => {
   return (
-    <>
-      <div>카테고리</div>
+    <div className="categories__wrapper">
+      <div className="categories--name">카테고리</div>
       <ul>
         {imagesArray.map((img) => (
           <li key={`imgs-${img.name}`}>
@@ -30,7 +34,7 @@ const Categories = () => {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 };
 export default Categories;
