@@ -13,7 +13,7 @@ body {
   height: 100%;
 }
 
-@include mobile {
+@include mobile-m {
   .container {
     width: 640px;
   }

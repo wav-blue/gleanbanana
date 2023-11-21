@@ -1,11 +1,26 @@
 .chart {
-  width: 90%;
-  height: 300px;
+  width: 1020px;
+  height: 372px;
   background-color: $gray-lev1;
   margin: 20px auto;
   &__wrapper {
     width: 80%;
     height: auto;
     margin: 0 auto;
+  }
+  &--img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+// 1020 *372 비율로
+//
+
+@include desktop {
+  .chart {
+    width: 614px;
+    height: 372px;
   }
 }

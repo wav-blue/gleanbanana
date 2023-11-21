@@ -1,0 +1,11 @@
+.recommendation {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin: 0 auto;
+  width: 90vw;
+  &__wrapper {
+    width: 80%;
+    margin: 0 auto;
+  }
+}

@@ -5,7 +5,8 @@
   border-radius: 50%;
   display: flex;
   &__wrapper {
-    width: 100%;
+    width: 76px;
+    height: 76px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,7 +14,7 @@
     flex-direction: column;
   }
   & > img {
-    width: 70%;
+    width: 50%;
     height: auto;
     overflow: hidden;
   }
