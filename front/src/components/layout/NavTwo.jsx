@@ -4,9 +4,11 @@ import Logo from "./Logo";
 const NavTwo = () => {
   return (
     <div className="navTwo__wrapper">
-      <Logo />
-      <div>
-        <InputCommon />
+      <div className="navTwo">
+        <Logo />
+        <div>
+          <InputCommon />
+        </div>
       </div>
     </div>
   );
