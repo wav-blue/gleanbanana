@@ -4,8 +4,10 @@ import NavTwo from "./NavTwo";
 const Layout = () => {
   return (
     <div className="layout__wrapper">
-      <NavOne />
-      <NavTwo />
+      <div className="layout">
+        <NavOne />
+        <NavTwo />
+      </div>
     </div>
   );
 };

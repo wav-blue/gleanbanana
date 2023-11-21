@@ -3,3 +3,9 @@
     flex: 2; //화면 크기만큼 늘어남 반응형
   }
 }
+
+.categories {
+  &__wrapper {
+    display: flex;
+  }
+}
