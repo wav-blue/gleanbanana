@@ -6,6 +6,7 @@ const Layout = () => {
     <div className="layout__wrapper">
       <div className="layout">
         <NavOne />
+        <hr />
         <NavTwo />
       </div>
     </div>

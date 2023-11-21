@@ -1,25 +1,70 @@
 .layout {
-  background-color: $gray-lev1;
   height: 100%;
   width: 100%;
-  background-color: $gray-lev1;
   display: flex;
   flex-direction: column;
   &__wrapper {
     width: 80%;
     margin: 0 auto;
   }
+  hr {
+    position: absolute;
+    left: 0px;
+    top: 45px;
+    justify-content: center;
+    height: 1.5px;
+    background-color: white;
+    width: 130%;
+    border: 0;
+    margin: 0px;
+  }
 }
 
 .navOne {
-  background-color: $gray-lev1;
+  box-sizing: border-box;
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  font-size: 15px;
+  gap: 20px;
+  margin: 16px 0px 12px 0px;
 }
 .navTwo {
+  display: flex;
+  position: relative;
+  width: 45%;
   &__wrapper {
-    background-color: $gray-lev1;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 23px 0px 15px 0px;
   }
+  div {
+    width: 100%;
+  }
+  span {
+    position: absolute;
+    right: -6px;
+    top: 9px;
+  }
+}
+
+.menuBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: small;
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+  }
+  span {
+    font-size: 30px;
+    margin-bottom: 7px;
+  }
+}
+
+.search {
+  width: 100%;
+  height: 40px;
 }
