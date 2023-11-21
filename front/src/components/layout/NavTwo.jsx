@@ -1,4 +1,4 @@
-import Input from "../UI/Input";
+import InputCommon from "../UI/InputCommon";
 import Logo from "./Logo";
 
 const NavTwo = () => {
@@ -6,7 +6,7 @@ const NavTwo = () => {
     <div className="navTwo__wrapper">
       <Logo />
       <div>
-        <Input />
+        <InputCommon />
       </div>
     </div>
   );
