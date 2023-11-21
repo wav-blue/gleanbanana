@@ -6,12 +6,10 @@ import Recommendations from "./Recommendations";
 
 const Home = () => {
   return (
-    <div className="home__wrapper">
-      <div className="home">
-        <Charts />
-        <Categories />
-        <Recommendations />
-      </div>
+    <div className="home">
+      <Charts />
+      <Categories />
+      <Recommendations />
     </div>
   );
 };

@@ -17,7 +17,7 @@ body {
   height: 100%;
 }
 
-@media (min-width: 335px) and (max-width: 1033px) {
+@media (min-width: 375px) and (max-width: 1033px) {
   .container {
     width: 640px;
   }
@@ -103,6 +103,41 @@ body {
 .navTwo__wrapper {
   background-color: #d9d9d9;
   display: flex;
+<<<<<<< Updated upstream
+=======
+  justify-content: space-between;
+  align-items: center;
+  margin: 23px 0px 15px 0px;
+}
+.navTwo div {
+  width: 100%;
+}
+.navTwo span {
+  position: absolute;
+  right: -6px;
+  top: 9px;
+}
+
+.menuBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: small;
+}
+.menuBtn__wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+}
+.menuBtn span {
+  font-size: 30px;
+  margin-bottom: 7px;
+}
+
+.search {
+  width: 100%;
+  height: 40px;
+>>>>>>> Stashed changes
 }
 
 .home {
@@ -115,7 +150,7 @@ body {
   width: 80%;
   margin: 0 auto;
 }
-.home ul {
+.home > ul {
   display: flex;
   gap: 30px;
   width: 90vw;
@@ -132,20 +167,62 @@ body {
   background-color: #d9d9d9;
   border-radius: 50%;
   display: flex;
+  flex-direction: column;
 }
 .categories__wrapper {
-  width: 76px;
-  height: 76px;
+  width: 1022px;
+  height: 144px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  display: flex;
+  justify-content: left;
   flex-direction: column;
+  margin: 0 auto;
+}
+.categories__wrapper > ul {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  flex-direction: row;
+  overflow: hidden;
+}
+.categories__wrapper > ul > li {
+  margin: 0 auto;
+  width: 76px;
+  height: 100%;
 }
 .categories > img {
   width: 50%;
   height: auto;
   overflow: hidden;
+}
+
+.category {
+  align-items: center;
+  justify-content: center;
+  background-color: #d9d9d9;
+  border-radius: 50%;
+  display: flex;
+  width: 76px;
+  height: 76px;
+}
+.category > a {
+  display: flex;
+  justify-content: center;
+}
+.category > a > img {
+  width: 50%;
+  height: auto;
+  overflow: hidden;
+}
+.category__wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .chart {
@@ -166,6 +243,12 @@ body {
      object-fit: contain;
 }
 
+@media (min-width: 1034px) and (max-width: 1033px) {
+  .chart {
+    width: 614px;
+    height: 372px;
+  }
+}
 .card {
   width: 300px;
   height: 300px;
@@ -180,6 +263,10 @@ body {
   width: 90vw;
 }
 .recommendation__wrapper {
-  width: 80%;
+  width: 1020px;
   margin: 0 auto;
+<<<<<<< Updated upstream
+=======
+  overflow: hidden;
+>>>>>>> Stashed changes
 }/*# sourceMappingURL=style.css.map */
