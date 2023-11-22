@@ -9,196 +9,173 @@ import peanut from "../../../assets/peanut.png";
 import oats from "../../../assets/oats.png";
 import banana from "../../../assets/banana.png";
 import Categories from "../home/Categories";
+import { Link, useNavigate } from "react-router-dom";
 
 //서버 통신 전 더미 products
 const products = [
   {
+    id: 1,
     img: tomato,
     recommendationName: "대추방울토마토",
     recommendationPrice: "20,020",
     bananaIdx: 2.59,
   },
   {
+    id: 2,
     img: salad,
     recommendationName: "팜에이트 무농약 유러피안 샐러드 꾸러미",
     recommendationPrice: "21,560",
     bananaIdx: 2.38,
   },
   {
+    id: 3,
     img: peanut,
     recommendationName: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
     recommendationPrice: "9,600",
     bananaIdx: 3.6,
   },
   {
+    id: 4,
     img: oats,
     recommendationName: "바른곡물 국산 유기농 귀리쌀",
     recommendationPrice: "37,900",
     bananaIdx: 1.78,
   },
   {
+    id: 5,
     img: tomato,
     recommendationName: "대추방울토마토",
     recommendationPrice: "20,020",
     bananaIdx: 2.59,
   },
   {
+    id: 6,
     img: salad,
     recommendationName: "팜에이트 무농약 유러피안 샐러드 꾸러미",
     recommendationPrice: "21,560",
     bananaIdx: 2.38,
   },
   {
+    id: 7,
     img: peanut,
     recommendationName: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
     recommendationPrice: "9,600",
     bananaIdx: 3.6,
   },
   {
+    id: 8,
     img: oats,
     recommendationName: "바른곡물 국산 유기농 귀리쌀",
     recommendationPrice: "37,900",
     bananaIdx: 1.78,
   },
   {
+    id: 9,
     img: tomato,
     recommendationName: "대추방울토마토",
     recommendationPrice: "20,020",
     bananaIdx: 2.59,
   },
   {
+    id: 10,
     img: salad,
     recommendationName: "팜에이트 무농약 유러피안 샐러드 꾸러미",
     recommendationPrice: "21,560",
     bananaIdx: 2.38,
   },
   {
+    id: 11,
     img: peanut,
     recommendationName: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
     recommendationPrice: "9,600",
     bananaIdx: 3.6,
   },
   {
+    id: 12,
     img: oats,
     recommendationName: "바른곡물 국산 유기농 귀리쌀",
     recommendationPrice: "37,900",
     bananaIdx: 1.78,
   },
   {
+    id: 13,
     img: tomato,
     recommendationName: "대추방울토마토",
     recommendationPrice: "20,020",
     bananaIdx: 2.59,
   },
   {
+    id: 14,
     img: salad,
     recommendationName: "팜에이트 무농약 유러피안 샐러드 꾸러미",
     recommendationPrice: "21,560",
     bananaIdx: 2.38,
   },
   {
+    id: 15,
     img: peanut,
     recommendationName: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
     recommendationPrice: "9,600",
     bananaIdx: 3.6,
   },
   {
+    id: 16,
     img: oats,
     recommendationName: "바른곡물 국산 유기농 귀리쌀",
     recommendationPrice: "37,900",
     bananaIdx: 1.78,
   },
   {
+    id: 17,
     img: tomato,
     recommendationName: "대추방울토마토",
     recommendationPrice: "20,020",
     bananaIdx: 2.59,
   },
   {
+    id: 18,
     img: salad,
     recommendationName: "팜에이트 무농약 유러피안 샐러드 꾸러미",
     recommendationPrice: "21,560",
     bananaIdx: 2.38,
   },
   {
+    id: 19,
     img: peanut,
     recommendationName: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
     recommendationPrice: "9,600",
     bananaIdx: 3.6,
   },
   {
+    id: 20,
     img: oats,
     recommendationName: "바른곡물 국산 유기농 귀리쌀",
     recommendationPrice: "37,900",
     bananaIdx: 1.78,
   },
   {
+    id: 21,
     img: tomato,
     recommendationName: "대추방울토마토",
     recommendationPrice: "20,020",
     bananaIdx: 2.59,
   },
   {
+    id: 22,
     img: salad,
     recommendationName: "팜에이트 무농약 유러피안 샐러드 꾸러미",
     recommendationPrice: "21,560",
     bananaIdx: 2.38,
   },
   {
+    id: 23,
     img: peanut,
     recommendationName: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
     recommendationPrice: "9,600",
     bananaIdx: 3.6,
   },
   {
-    img: oats,
-    recommendationName: "바른곡물 국산 유기농 귀리쌀",
-    recommendationPrice: "37,900",
-    bananaIdx: 1.78,
-  },
-  {
-    img: tomato,
-    recommendationName: "대추방울토마토",
-    recommendationPrice: "20,020",
-    bananaIdx: 2.59,
-  },
-  {
-    img: salad,
-    recommendationName: "팜에이트 무농약 유러피안 샐러드 꾸러미",
-    recommendationPrice: "21,560",
-    bananaIdx: 2.38,
-  },
-  {
-    img: peanut,
-    recommendationName: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
-    recommendationPrice: "9,600",
-    bananaIdx: 3.6,
-  },
-  {
-    img: oats,
-    recommendationName: "바른곡물 국산 유기농 귀리쌀",
-    recommendationPrice: "37,900",
-    bananaIdx: 1.78,
-  },
-  {
-    img: tomato,
-    recommendationName: "대추방울토마토",
-    recommendationPrice: "20,020",
-    bananaIdx: 2.59,
-  },
-  {
-    img: salad,
-    recommendationName: "팜에이트 무농약 유러피안 샐러드 꾸러미",
-    recommendationPrice: "21,560",
-    bananaIdx: 2.38,
-  },
-  {
-    img: peanut,
-    recommendationName: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
-    recommendationPrice: "9,600",
-    bananaIdx: 3.6,
-  },
-  {
+    id: 24,
     img: oats,
     recommendationName: "바른곡물 국산 유기농 귀리쌀",
     recommendationPrice: "37,900",
@@ -241,15 +218,17 @@ const Products = () => {
       <Categories showAllBtn="false" />
       <ul className="products">
         {products.map((product, idx) => (
-          <li key={`product-${idx}`}>
-            <ProductCard
-              src={product.img}
-              name={product.recommendationName}
-              price={product.recommendationPrice}
-              bananaImg={banana}
-              bananaIdx={product.bananaIdx}
-            />
-          </li>
+          <Link to={`/product/${product.id}`}>
+            <li key={`product-${idx}`}>
+              <ProductCard
+                src={product.img}
+                name={product.recommendationName}
+                price={product.recommendationPrice}
+                bananaImg={banana}
+                bananaIdx={product.bananaIdx}
+              />
+            </li>
+          </Link>
         ))}
       </ul>
     </div>

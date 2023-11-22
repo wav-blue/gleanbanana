@@ -8,6 +8,7 @@ import Cart from "./components/pages/cart/Cart";
 import MyPage from "./components/pages/mypage/MyPage";
 import "../src/styles/style.css";
 import Products from "./components/pages/products/Products";
+import Product from "./components/pages/products/Product";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/" exact element={<Navigate to="/home" />} />
             <Route path="/home" element={<Home />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/product/:id" element={<Product />} />
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
             <Route path=" /likeView" element={<Like />} />
