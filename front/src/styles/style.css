@@ -437,6 +437,9 @@ body {
   width: 63px;
   height: 69px;
 }
+.product__bananaIndex {
+  transform: translateY(70px) translateX(30px);
+}
 .product__section2 {
   display: flex;
   justify-content: space-between;

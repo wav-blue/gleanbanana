@@ -30,6 +30,10 @@
     }
   }
 
+  &__bananaIndex {
+    transform: translateY(70px) translateX(30px);
+  }
+
   &__section2 {
     display: flex;
     justify-content: space-between;

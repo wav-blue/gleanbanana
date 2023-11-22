@@ -44,8 +44,8 @@ const Product = () => {
       <article className="product__article1">
         <img src={product.img} alt={product.productName} />
         <section className="product__section">
-          <h1>상품명</h1>
-          <div>바나나인덱스</div>
+          <h1>{product.productName}</h1>
+          <div className="product__bananaIndex">x{product.bananaIdx}</div>
           <img src={banana} alt="bananaIndex" />
           <section className="product__section2">
             <div className="product__section2--input">
