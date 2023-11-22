@@ -1,0 +1,84 @@
+.mypage {
+  display: flex;
+  margin: 0 auto;
+  width: 1020px;
+
+  &__sidebar {
+    width: 180px;
+    margin: 30px 40px 0 0;
+  }
+  &__content {
+    width: 800px;
+    margin-top: 30px;
+  }
+}
+
+.like {
+  &__head {
+    font-size: 18px;
+    font-weight: lighter;
+  }
+  &__wrapper {
+    & > hr {
+      margin-top: 18px;
+      margin-bottom: 0px;
+    }
+  }
+  &__description {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+
+    &__wrapper {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      position: relative;
+      margin: 0 10px;
+    }
+    &-index {
+      position: absolute;
+      right: 10px;
+      width: 90px;
+      & > img {
+        width: 37px;
+        height: 41px;
+      }
+
+      & > div {
+        position: absolute;
+        top: 22px;
+        left: 30px;
+        font-size: $small-font-size;
+      }
+    }
+  }
+
+  &__name {
+    font-size: 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+  &__price {
+    font-size: 15px;
+  }
+  img {
+    margin: 15px 15px 15px 10px;
+  }
+  &__button__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 0 0 95px;
+    margin-right: 10px;
+    & > button {
+      border-radius: 4px;
+      padding: 7px 13px;
+      font-size: $small-font-size;
+    }
+  }
+}
