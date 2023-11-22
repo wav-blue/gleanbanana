@@ -1,8 +1,71 @@
+// INPUT
+
 .input {
   padding-left: 20px;
   border-radius: 20px;
   border-style: none;
+  &.gray-square {
+    background-color: $gray-lev1;
+    border-radius: 0;
+    width: 98px;
+    height: 58px;
+    position: relative;
+  }
 }
+
+// INPUT TYPE= NUMBER
+input[type="number"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.numberInput {
+  transform: translateY(25px);
+  cursor: pointer;
+  user-select: none;
+  font-size: $big-font-size;
+}
+.upper {
+  width: 30px;
+  transform: translateY(-50px) translateX(80px);
+  cursor: pointer;
+  user-select: none;
+}
+
+.down {
+  width: 30px;
+  transform: translateY(-50px) translateX(80px);
+  cursor: pointer;
+  user-select: none;
+}
+
+// BUTTON
+.button {
+  cursor: pointer;
+  border: none;
+  background-color: $gray-lev1;
+  box-sizing: border-box;
+  &--middle {
+    width: 98px;
+    height: 58px;
+  }
+  &--medium {
+    width: 247px;
+    height: 58px;
+  }
+  &--large {
+    width: 330px;
+    height: 58px;
+  }
+}
+
+// CARD
 
 .card {
   width: 240px;

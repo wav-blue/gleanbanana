@@ -218,8 +218,8 @@ const Products = () => {
       <Categories showAllBtn="false" />
       <ul className="products">
         {products.map((product, idx) => (
-          <Link to={`/product/${product.id}`}>
-            <li key={`product-${idx}`}>
+          <Link key={`product-${idx}`} to={`/product/${product.id}`}>
+            <li>
               <ProductCard
                 src={product.img}
                 name={product.recommendationName}
