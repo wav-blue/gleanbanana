@@ -1,12 +1,58 @@
 .recommendation {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 22px;
   margin: 0 auto;
-  width: 90vw;
   &__wrapper {
     width: 1020px;
+    height: 268px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    margin-bottom: 30px;
+  }
+
+  &__head {
+    display: flex;
+  }
+
+  &__description {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    justify-content: space-between;
+
+    &__wrapper {
+      margin: 0 19px;
+    }
+    &-index {
+      & > img {
+        width: 37px;
+        height: 41px;
+      }
+
+      & > div {
+        font-size: $small-font-size;
+      }
+    }
+
+    &-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+  }
+
+  &__name {
+    font-size: 15px;
+    text-overflow: ellipsis;
     overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+  &__price {
+    font-size: 15px;
   }
 }

@@ -4,12 +4,26 @@
   border-style: none;
 }
 
+.card {
+  width: 240px;
+  height: 240px;
+  background-color: #d9d9d9;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  cursor: pointer;
+}
+.card > img {
+  width: 240px;
+  height: 160px;
+}
+
 html {
   height: 100%;
 }
 
 body {
-  font-size: 25px;
+  font-size: 14px;
   font-weight: bold;
   color: #000;
   height: 100%;
@@ -64,7 +78,7 @@ body {
 
 .footer {
   height: 50px;
-  font-size: 20px;
+  font-size: 12px;
   display: flex;
   background-color: blueviolet;
   width: 100%;
@@ -79,7 +93,7 @@ body {
 }
 .footer__wrapper p {
   color: #999;
-  font-size: 15px;
+  font-size: 10px;
 }
 
 .layout {
@@ -263,21 +277,53 @@ body {
     height: 372px;
   }
 }
-.card {
-  width: 300px;
-  height: 300px;
-  background-color: #d9d9d9;
-}
-
 .recommendation {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 22px;
   margin: 0 auto;
-  width: 90vw;
 }
 .recommendation__wrapper {
   width: 1020px;
+  height: 268px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin-bottom: 30px;
+}
+.recommendation__head {
+  display: flex;
+}
+.recommendation__description {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  justify-content: space-between;
+}
+.recommendation__description__wrapper {
+  margin: 0 19px;
+}
+.recommendation__description-index > img {
+  width: 37px;
+  height: 41px;
+}
+.recommendation__description-index > div {
+  font-size: 12px;
+}
+.recommendation__description-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.recommendation__name {
+  font-size: 15px;
+  text-overflow: ellipsis;
   overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.recommendation__price {
+  font-size: 15px;
 }/*# sourceMappingURL=style.css.map */
