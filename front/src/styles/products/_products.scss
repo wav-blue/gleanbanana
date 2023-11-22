@@ -1,0 +1,14 @@
+.products {
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 20px;
+  grid-row-gap: 35px;
+
+  display: grid;
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 42px auto 20px;
+    width: 1022px;
+    gap: 62px;
+  }
+}

@@ -30,22 +30,25 @@ const imagesArray = [
   { photo: etc, name: "기타" },
 ];
 
-const Categories = () => {
+const Categories = (props) => {
+  console.log(props.showAllBtn);
   return (
     <div className="categories__wrapper">
       <div className="categories">
         <div className="categories--name">카테고리</div>
-        <div className="categories--more">
-          <Link to="/products">
-            모든 상품 보기
-            <span
-              class="material-symbols-outlined"
-              style={{ fontSize: "10px" }}
-            >
-              arrow_forward_ios
-            </span>
-          </Link>
-        </div>
+        {props.showAllBtn && (
+          <div className="categories--more">
+            <Link to="/products">
+              모든 상품 보기
+              <span
+                class="material-symbols-outlined"
+                style={{ fontSize: "10px" }}
+              >
+                arrow_forward_ios
+              </span>
+            </Link>
+          </div>
+        )}
       </div>
       <ul>
         {imagesArray.map((img, idx) => (

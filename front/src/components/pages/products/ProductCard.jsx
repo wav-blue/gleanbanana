@@ -1,6 +1,6 @@
 import Card from "../../UI/Card";
 
-const Recommendation = ({ src, name, price, bananaImg, bananaIdx }) => {
+const ProductCard = ({ src, name, price, bananaImg, bananaIdx }) => {
   return (
     <Card>
       <img src={src} alt={name} />
@@ -20,4 +20,4 @@ const Recommendation = ({ src, name, price, bananaImg, bananaIdx }) => {
   );
 };
 
-export default Recommendation;
+export default ProductCard;

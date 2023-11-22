@@ -328,4 +328,18 @@ body {
 }
 .recommendation__price {
   font-size: 15px;
+}
+
+.products {
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 20px;
+  grid-row-gap: 35px;
+  display: grid;
+}
+.products__wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 42px auto 20px;
+  width: 1022px;
+  gap: 62px;
 }/*# sourceMappingURL=style.css.map */

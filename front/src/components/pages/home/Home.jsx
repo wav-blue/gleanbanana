@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div className="home">
       <Charts />
-      <Categories />
+      <Categories showAllBtn="true" />
       <Recommendations />
     </div>
   );

@@ -3,7 +3,7 @@ import salad from "../../../assets/salad.png";
 import peanut from "../../../assets/peanut.png";
 import oats from "../../../assets/oats.png";
 import banana from "../../../assets/banana.png";
-import Recommendation from "./Recommendation";
+import ProductCard from "../products/ProductCard";
 
 const recommendations = [
   {
@@ -40,8 +40,9 @@ const Recommendations = () => {
       </div>
       <div className="recommendation__wrapper">
         <div className="recommendation">
-          {recommendations.map((recom) => (
-            <Recommendation
+          {recommendations.map((recom, idx) => (
+            <ProductCard
+              key={`productCard-${idx}`}
               src={recom.img}
               name={recom.recommendationName}
               price={recom.recommendationPrice}
