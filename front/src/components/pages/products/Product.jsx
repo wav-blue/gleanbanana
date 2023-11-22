@@ -52,7 +52,9 @@ const Product = () => {
               <InputCommon type="number" className="gray-square" />
               <div className="product__section2--total">총 상품 금액</div>
             </div>
-            <div className="product__section2--val">9900원</div>
+            <div className="product__section2--val">
+              {product.productPrice}원
+            </div>
           </section>
           <section className="product__section3--button">
             <ButtonCommon design="middle">
