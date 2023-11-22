@@ -11,6 +11,7 @@ import vegetable1 from "../../../assets/vegetable1.png";
 import meal from "../../../assets/meal.png";
 import more from "../../../assets/more.png";
 import Category from "./Category";
+import { Link } from "react-router-dom";
 
 const imagesArray = [
   { photo: alchol, name: "주류" },
@@ -30,7 +31,20 @@ const imagesArray = [
 const Categories = () => {
   return (
     <div className="categories__wrapper">
-      <div className="categories--name">카테고리</div>
+      <div className="categories">
+        <div className="categories--name">카테고리</div>
+        <div className="categories--more">
+          <Link to="/products">
+            모든 상품 보기
+            <span
+              class="material-symbols-outlined"
+              style={{ fontSize: "10px" }}
+            >
+              arrow_forward_ios
+            </span>
+          </Link>
+        </div>
+      </div>
       <ul>
         {imagesArray.map((img, idx) => (
           <li key={`imgs-${idx}`}>

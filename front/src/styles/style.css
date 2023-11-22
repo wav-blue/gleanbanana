@@ -192,10 +192,9 @@ body {
 .categories {
   align-items: center;
   justify-content: center;
-  background-color: #d9d9d9;
-  border-radius: 50%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .categories__wrapper {
   width: 1022px;
@@ -218,6 +217,9 @@ body {
   margin: 0 auto;
   width: 76px;
   height: 100%;
+}
+.categories--more {
+  cursor: pointer;
 }
 .categories > img {
   width: 50%;
