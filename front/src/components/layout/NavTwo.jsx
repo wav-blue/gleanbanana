@@ -7,8 +7,15 @@ const NavTwo = () => {
     <div className="navTwo__wrapper">
       <Logo />
       <div className="navTwo">
-        <InputCommon label="" id="" value="" className="search" onChange="" />
-        <span class="material-symbols-outlined">search</span>
+        <InputCommon
+          label=""
+          id=""
+          value=""
+          className="search"
+          onChange=""
+          placeholder="원하는 식재료를 입력하세요."
+        />
+        <span className="material-symbols-outlined">search</span>
       </div>
       <MenuBtn />
     </div>

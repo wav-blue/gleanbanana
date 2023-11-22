@@ -1,5 +1,32 @@
+import SideMenu from "./SideMenuLayout";
+import { useLocation } from "react-router-dom";
+
+const SideMenus = [
+  { menuName: "탄소 소비량", to: "/myPage" },
+  { menuName: "찜 목록", to: "/likeView" },
+  { menuName: "주문내역 / 배송조회", to: "/orderList" },
+  { menuName: "정보 수정", to: "/user" },
+  { menuName: "문의내역", to: "/inquiry" },
+];
+
 const Side = () => {
-  return <div>SideLayout 컴포넌트입니다</div>;
+  const { pathname } = useLocation();
+
+  return (
+    <div className="side__wrapper">
+      <div className="side__head">마이페이지</div>
+      <div className="side__menuList">
+        {SideMenus.map((sidemenu, idx) => (
+          <SideMenu
+            key={`side-${idx}`}
+            name={sidemenu.menuName}
+            to={sidemenu.to}
+            isNow={pathname === sidemenu.to}
+          />
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default Side;
