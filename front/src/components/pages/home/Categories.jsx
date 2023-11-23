@@ -63,7 +63,11 @@ const Categories = (props) => {
       <ul>
         {imagesArray.map((img, idx) => (
           <li key={`imgs-${idx}`}>
-            <Category imgSrc={img.photo} imgAlt={img.name} />
+            <Category
+              imgSrc={img.photo}
+              imgAlt={img.name}
+              category={img.category}
+            />
           </li>
         ))}
       </ul>
