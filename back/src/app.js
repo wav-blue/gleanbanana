@@ -5,6 +5,7 @@ import { errorMiddleware } from "./middlewares/errorMiddleware";
 
 // router import
 import { userRouter } from "./routers/userRouter";
+import { productRouter } from "./routers/productRouter";
 
 const app = express();
 
@@ -25,10 +26,12 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
   res.send("기본 페이지");
 });
-
+console.log("app.js - app.get");
 app.use(userRouter);
-
+console.log("app.js - app.use(userRouter)");
+app.use(productRouter);
+console.log("app.js - app.use(productRouter)");
 // 에러 핸들링
 app.use(errorMiddleware);
-
+console.log("app.js - app.use(errorMiddleware)");
 export { app };
