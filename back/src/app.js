@@ -7,6 +7,10 @@ import { errorMiddleware } from "./middlewares/errorMiddleware";
 import { userRouter } from "./routers/userRouter";
 import { productRouter } from "./routers/productRouter";
 
+// db/index.js를 통해 db 연결
+// import { dbconnect } from "./db";
+// dbconnect();
+
 const app = express();
 
 // CORS 에러 방지
