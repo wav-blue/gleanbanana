@@ -428,6 +428,10 @@ body {
   gap: 22px;
   margin: 0 auto;
 }
+.recommendation.card > a > img {
+  width: 240px;
+  height: 180px;
+}
 .recommendation__wrapper {
   width: 1020px;
   height: 268px;
@@ -453,8 +457,9 @@ body {
   width: 37px;
   height: 41px;
 }
-.recommendation__description-index > div {
+.recommendation__description-bananaIndex {
   font-size: 12px;
+  transform: translateX(50px);
 }
 .recommendation__description-detail {
   display: flex;
@@ -518,6 +523,7 @@ body {
 }
 .product__bananaIndex {
   transform: translateY(70px) translateX(30px);
+  font-size: 19px;
 }
 .product__section2 {
   display: flex;
