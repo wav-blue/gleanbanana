@@ -51,61 +51,6 @@ const useApi = ({
     }
   };
 
-  // const sendRequest = async (url, method, data, login = false, extras = "") => {
-  //   if (method === "post") {
-  //     try {
-  //       setLoading(true);
-  //       setReqIdentifier(method + "Data");
-  //       const res = await api.post(url, data);
-  //       setResult(res);
-  //     } catch (err) {
-  //       showBoundary(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-
-  //   if (method === "get") {
-  //     try {
-  //       setLoading(true);
-  //       setReqIdentifier(method + "Data");
-  //       const res = await api.get(url, data);
-  //       setResult(res);
-  //     } catch (err) {
-  //       showBoundary(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   if (method === "put") {
-  //     try {
-  //       setLoading(true);
-  //       setReqIdentifier(method + "Data");
-  //       const res = await api.put(url, data);
-  //       setResult(res);
-  //       setExtra(extras);
-  //     } catch (err) {
-  //       showBoundary(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   if (method === "delete") {
-  //     try {
-  //       setLoading(true);
-  //       setReqIdentifier(method + "Data");
-  //       const res = await api.delete(url);
-  //       console.log(res);
-  //       setExtra(extras);
-  //       setResult(res);
-  //     } catch (err) {
-  //       showBoundary(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  // };
-
   useEffect(() => {
     shouldInitFetch && console.log("초기 요청합니다!!", method, path);
     shouldInitFetch && trigger({ method, path, data });

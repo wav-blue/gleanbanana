@@ -23,7 +23,13 @@ const InputCommon = ({
 
   return (
     <>
-      {type !== "number" && (
+      {type === "checkbox" && (
+        <>
+          <input type={type} id="check_btn" className={`input ${className}`} />
+          <label htmlFor="check_btn"></label>
+        </>
+      )}
+      {type !== "number" && type !== "checkbox" && (
         <div>
           {label && <label htmlFor={id}>{label}</label>}
           <input
@@ -39,7 +45,7 @@ const InputCommon = ({
         <div className="numberInput">
           <input
             type={type}
-            id={id}
+            id="numberInput"
             value={inputNum}
             className={`input ${className}`}
             onChange={onChange}

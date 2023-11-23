@@ -1,0 +1,25 @@
+.cartsTotal {
+  &__wrapper {
+    width: 1020px;
+    height: 90px;
+    border: 2px solid $gray-lev1;
+    margin-bottom: 41px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 55px;
+  gap: 88px;
+
+  &__description {
+    display: flex;
+    flex-direction: row;
+    gap: 38px;
+    justify-content: center;
+    align-items: center;
+  }
+}

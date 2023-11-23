@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useApi from "../../../hooks/useApi";
 import banana from "../../../assets/banana.png";
@@ -19,6 +19,7 @@ const product = {
 const Product = () => {
   const { id } = useParams();
   console.log(id);
+  // const [product, setProduct] = useState({})
   //   const { trigger, result, reqIdentifier, loading, error } = useApi({
   //     method: "get",
   //     path: "/items",
@@ -39,6 +40,12 @@ const Product = () => {
   // });
   //   }, []);
 
+  // RESULT가 변하면 세팅
+  //   useEffect(() => {
+  // if(reqIdentifier !== 'getData') return;
+  //    setProduct(result.data?.project)
+  //   }, [result.data, reqIdentifier]);
+
   return (
     <div className="product__wrapper">
       <article className="product__article1">
@@ -57,7 +64,7 @@ const Product = () => {
             </div>
           </section>
           <section className="product__section3--button">
-            <ButtonCommon design="middle">
+            <ButtonCommon design="small">
               <span class="material-symbols-outlined">favorite</span>
             </ButtonCommon>
             <ButtonCommon design="medium">장바구니 담기</ButtonCommon>

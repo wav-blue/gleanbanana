@@ -9,6 +9,7 @@ import MyPage from "./components/pages/mypage/MyPage";
 import "../src/styles/style.css";
 import Products from "./components/pages/products/Products";
 import Product from "./components/pages/products/Product";
+import Carts from "./components/pages/cart/Carts";
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
             <Route path="/likeView" element={<Like />} />
-            <Route path="/cartView" element={<Cart />} />
+            <Route path="/cartView" element={<Carts />} />
             <Route path="/myPage" element={<MyPage />} />
           </Routes>
         </main>
