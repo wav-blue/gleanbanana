@@ -1,0 +1,30 @@
+.purchase {
+  &__wrapper {
+    width: 1020px;
+    margin: 34px auto;
+  }
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__button {
+    display: flex;
+    gap: 9px;
+    justify-content: center;
+    margin-bottom: 41px;
+    font-size: $big-font-size;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.require {
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 19px;
+  }
+}

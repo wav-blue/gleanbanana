@@ -4,6 +4,7 @@ const InputCommon = ({
   label = "",
   type = "text",
   id,
+  defaultValue,
   value,
   className = "",
   onChange,
@@ -38,6 +39,7 @@ const InputCommon = ({
             value={value}
             className={`input ${className}`}
             onChange={onChange}
+            defaultValue={defaultValue}
           />
         </div>
       )}

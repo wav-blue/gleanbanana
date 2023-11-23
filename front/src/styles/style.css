@@ -2,6 +2,7 @@
   padding-left: 20px;
   border-radius: 20px;
   border-style: none;
+  font-size: 19px;
 }
 .input.gray-square {
   background-color: #d9d9d9;
@@ -9,6 +10,12 @@
   width: 98px;
   height: 58px;
   position: relative;
+}
+.input.white-square {
+  width: 190px;
+  height: 31px;
+  border: black 1px solid;
+  border-radius: 0;
 }
 
 input#numberInput {
@@ -74,22 +81,33 @@ input#check_btn:checked + label::after {
 }
 
 .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   border: none;
   background-color: #d9d9d9;
   box-sizing: border-box;
 }
+.button--ssmall {
+  width: 52px;
+  height: 30px;
+  font-size: 12px;
+}
 .button--small {
   width: 98px;
   height: 58px;
+  font-size: 14px;
 }
 .button--medium {
   width: 247px;
   height: 58px;
+  font-size: 19px;
 }
 .button--large {
   width: 330px;
   height: 58px;
+  font-size: 19px;
 }
 
 .card {
@@ -121,6 +139,36 @@ input#check_btn:checked + label::after {
 
 button {
   border: 0;
+}
+
+.line {
+  width: 1080px;
+  height: 1px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+.line__hr-gray {
+  background-color: #d9d9d9;
+}
+
+.title {
+  font-size: 19px;
+}
+.title__element {
+  margin-bottom: 10px;
+}
+
+.flex {
+  display: flex;
+  gap: 96px;
+  margin: 18px 0;
+  align-items: center;
+}
+.flex__element-left > div:first-child {
+  width: 128px;
+}
+.flex__element-short {
+  gap: 19px;
 }
 
 html {
@@ -767,4 +815,30 @@ body {
   gap: 38px;
   justify-content: center;
   align-items: center;
+}
+
+.purchase__wrapper {
+  width: 1020px;
+  margin: 34px auto;
+}
+.purchase__info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.purchase__button {
+  display: flex;
+  gap: 9px;
+  justify-content: center;
+  margin-bottom: 41px;
+  font-size: 19px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.require__info {
+  display: flex;
+  align-items: center;
+  gap: 19px;
 }/*# sourceMappingURL=style.css.map */

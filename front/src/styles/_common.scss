@@ -4,12 +4,19 @@
   padding-left: 20px;
   border-radius: 20px;
   border-style: none;
+  font-size: $big-font-size;
   &.gray-square {
     background-color: $gray-lev1;
     border-radius: 0;
     width: 98px;
     height: 58px;
     position: relative;
+  }
+  &.white-square {
+    width: 190px;
+    height: 31px;
+    border: black 1px solid;
+    border-radius: 0;
   }
 }
 
@@ -71,21 +78,32 @@ input#check_btn:checked + label::after {
 
 // BUTTON
 .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   border: none;
   background-color: $gray-lev1;
   box-sizing: border-box;
+  &--ssmall {
+    width: 52px;
+    height: 30px;
+    font-size: $small-font-size;
+  }
   &--small {
     width: 98px;
     height: 58px;
+    font-size: $basic-font-size;
   }
   &--medium {
     width: 247px;
     height: 58px;
+    font-size: $big-font-size;
   }
   &--large {
     width: 330px;
     height: 58px;
+    font-size: $big-font-size;
   }
 }
 
@@ -120,4 +138,44 @@ input#check_btn:checked + label::after {
 
 button {
   border: 0;
+}
+
+// HR LINE
+.line {
+  width: 1080px;
+  height: 1px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  &__hr {
+    &-gray {
+      background-color: $gray-lev1;
+    }
+  }
+}
+
+//COMMON TITLE div
+.title {
+  font-size: $big-font-size;
+
+  &__element {
+    margin-bottom: 10px;
+  }
+}
+
+// COMMON FLEX ELEMENT
+.flex {
+  display: flex;
+  gap: 96px;
+  margin: 18px 0;
+  align-items: center;
+  &__element {
+    &-left {
+      > div:first-child {
+        width: 128px;
+      }
+    }
+    &-short {
+      gap: 19px;
+    }
+  }
 }
