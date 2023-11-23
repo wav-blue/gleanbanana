@@ -10,6 +10,7 @@ import "../src/styles/style.css";
 import Products from "./components/pages/products/Products";
 import Product from "./components/pages/products/Product";
 import Carts from "./components/pages/cart/Carts";
+import Purchase from "./components/pages/purchase/Purchase";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/likeView" element={<Like />} />
             <Route path="/cartView" element={<Carts />} />
             <Route path="/myPage" element={<MyPage />} />
+            <Route path="/purchase" element={<Purchase />} />
           </Routes>
         </main>
         <footer className="footer">footer입니다</footer>

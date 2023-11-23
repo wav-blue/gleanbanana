@@ -1,5 +1,5 @@
 import banana from "../../../assets/banana.png";
-const CartsTotal = ({ totalPrice, totalDeliveryFee }) => {
+const CartsTotal = ({ totalPrice, totalDeliveryFee, totalBananaIndex }) => {
   return (
     <div className="cartsTotal__wrapper">
       <div className="cartsTotal">
@@ -15,7 +15,9 @@ const CartsTotal = ({ totalPrice, totalDeliveryFee }) => {
         </div>
         <div className="cart__bananaIndex">
           <img src={banana} alt="bananaIndex" />
-          <div className="cart__bananaIndexNum">x 15</div>
+          <div className="cart__bananaIndexNum">
+            x {totalBananaIndex.toFixed(2)}
+          </div>
         </div>
       </div>
     </div>

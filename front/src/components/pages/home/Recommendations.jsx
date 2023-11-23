@@ -7,28 +7,40 @@ import ProductCard from "../products/ProductCard";
 
 const recommendations = [
   {
+    id: 1,
     img: tomato,
-    recommendationName: "대추방울토마토",
-    recommendationPrice: "20,020",
+    itemName: "대추방울토마토",
+    itemPrice: "20020",
     bananaIdx: 2.59,
+    deliveryDate: "2023-11-25",
+    deliveryFee: 0,
   },
   {
+    id: 2,
     img: salad,
-    recommendationName: "팜에이트 무농약 유러피안 샐러드 꾸러미",
-    recommendationPrice: "21,560",
+    itemName: "팜에이트 무농약 유러피안 샐러드 꾸러미",
+    itemPrice: "21560",
     bananaIdx: 2.38,
+    deliveryDate: "2023-11-25",
+    deliveryFee: 0,
   },
   {
+    id: 3,
     img: peanut,
-    recommendationName: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
-    recommendationPrice: "9,600",
+    itemName: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
+    itemPrice: "9600",
     bananaIdx: 3.6,
+    deliveryDate: "2023-11-25",
+    deliveryFee: 0,
   },
   {
+    id: 4,
     img: oats,
-    recommendationName: "바른곡물 국산 유기농 귀리쌀",
-    recommendationPrice: "37,900",
+    itemName: "바른곡물 국산 유기농 귀리쌀",
+    itemPrice: "37900",
     bananaIdx: 1.78,
+    deliveryDate: "2023-11-25",
+    deliveryFee: 0,
   },
 ];
 
@@ -44,10 +56,11 @@ const Recommendations = () => {
             <ProductCard
               key={`productCard-${idx}`}
               src={recom.img}
-              name={recom.recommendationName}
-              price={recom.recommendationPrice}
+              itemName={recom.itemName}
+              itemPrice={recom.itemPrice}
               bananaImg={banana}
               bananaIdx={recom.bananaIdx}
+              id={recom.id}
             />
           ))}
         </div>

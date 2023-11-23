@@ -3,6 +3,14 @@
   flex-direction: row;
   gap: 22px;
   margin: 0 auto;
+  &.card {
+    & > a {
+      & > img {
+        width: 240px;
+        height: 180px;
+      }
+    }
+  }
   &__wrapper {
     width: 1020px;
     height: 268px;
@@ -31,10 +39,11 @@
         width: 37px;
         height: 41px;
       }
+    }
 
-      & > div {
-        font-size: $small-font-size;
-      }
+    &-bananaIndex {
+      font-size: $small-font-size;
+      transform: translateX(50px);
     }
 
     &-detail {
