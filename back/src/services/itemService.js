@@ -94,5 +94,26 @@ class itemService {
       );
     });
   }
+
+  // 카테고리별 상품 조회
+  static async getItemsByCategory({ category }) {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT * FROM ${table_name} WHERE category = '${category}'`,
+        function (error, results, fields) {
+          if (error) {
+            reject(error);
+          } else {
+            if (results.length > 0) {
+              console.log("getItemsByCategory results 값 확인 == ", results);
+              resolve(results);
+            } else {
+              reject(new Error("해당 카테고리에 상품이 없습니다."));
+            }
+          }
+        }
+      );
+    });
+  }
 }
 export { itemService };

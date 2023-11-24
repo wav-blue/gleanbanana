@@ -3,15 +3,24 @@ import { Router } from "express";
 import { itemService } from "../services/itemService";
 const itemRouter = Router();
 
-// 조회
+// 조회 + 카테고리 조회
 itemRouter.get("/items", async function (req, res, next) {
+  const { category } = req.query;
   try {
-    const items = await itemService.getItems({});
-    res.status(200).json(items);
+    if (!category) {
+      // 카테고리가 제공되지 않은 경우 전체 상품 조회
+      const items = await itemService.getItems({});
+      res.status(200).json(items);
+    } else {
+      // 카테고리가 제공된 경우 카테고리별 조회
+      const items = await itemService.getItemsByCategory({ category });
+      res.status(200).json(items);
+    }
   } catch (error) {
     next(error);
   }
 });
+
 // 개별 조회
 itemRouter.get("/items/:itemId", async function (req, res, next) {
   const { itemId } = req.params;
