@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { itemService } from "../services/itemService";
+console.log("itemRouter.js start");
 const itemRouter = Router();
 
 // 조회
@@ -27,9 +28,39 @@ itemRouter.get("/items/:itemId", async function (req, res, next) {
 
 // 추가
 itemRouter.post("/items", async function (req, res, next) {
+  console.log("itemRouter.post 메서드 진입");
   try {
-    const items = await itemService.createItem({});
-    res.status(200).json(items);
+    const {
+      item_id,
+      item_name,
+      category,
+      price,
+      description,
+      banana_index,
+      image_url,
+    } = req.body;
+
+    console.log(
+      "itemRouter.post : 라우터에서 클라이언트로 전달 받은 데이터 확인"
+    );
+
+    // DB에 데이터 추가
+    const newItems = await itemService.createItem({
+      item_id,
+      item_name,
+      category,
+      price,
+      description,
+      banana_index,
+      image_url,
+    });
+
+    if (newItems.errorMessage) {
+      console.log("itemRouter.post : 데이터 입력 에러발생");
+      throw new Error(newItems.errorMessage);
+    }
+    console.log("itemRouter.post : 데이터 입력 성공");
+    res.status(200).json(newItems);
   } catch (error) {
     next(error);
   }

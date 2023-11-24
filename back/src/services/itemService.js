@@ -1,6 +1,6 @@
 var db = require("../db/db.js");
 const table_name = "item";
-
+console.log("itemService.js start");
 class itemService {
   // 전체 조회
   static async getItems() {
@@ -43,16 +43,34 @@ class itemService {
     });
   }
   // 추가
-  static async createItem() {
+  static async createItem({
+    item_id,
+    item_name,
+    category,
+    price,
+    description,
+    banana_index,
+    image_url,
+  }) {
+    console.log("itemService.createItem 메서드 진입");
+    var sql = `INSERT INTO item (item_id,item_name,category,price,description,banana_index,image_url) VALUES (${item_id}, '${item_name}','${category}',${price},'${description}',${banana_index},'${image_url}')`;
     return new Promise((resolve, reject) => {
       db.query(
         // 받아온 값을 VALUES에 넣는 작업 필요
         // (변수명 필요에 따라 자유롭게 변경해주셔도 됩니다)
-        `INSERT INTO item VALUES ${values};`,
+        //`INSERT INTO item VALUES ${values};`,
+        sql,
         function (error, results, fields) {
           if (error) {
+            console.log(
+              "itemService.createItem : 데이터 입력 에러발생 sql : " + sql
+            );
+            console.log("itemService.createItem : 데이터 입력 에러발생");
+
             reject(error);
           } else {
+            console.log("itemService.createItem : 1 record inserted");
+            console.log("insert query sql : " + sql);
             resolve(results);
           }
         }
