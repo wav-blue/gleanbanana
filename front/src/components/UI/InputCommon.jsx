@@ -7,6 +7,9 @@ const InputCommon = ({
   value,
   className = "",
   onChange,
+  placeholder = "",
+  required = false,
+  disabled = false,
 }) => {
   const [inputNum, setInputNum] = useState(0);
 
@@ -24,14 +27,22 @@ const InputCommon = ({
   return (
     <>
       {type !== "number" && (
-        <div>
-          {label && <label htmlFor={id}>{label}</label>}
+        <div className="input__wrapper">
+          {label && (
+            <label htmlFor={id}>
+              {label}
+              {required && <p>*</p>}
+            </label>
+          )}
           <input
             type={type}
             id={id}
             value={value}
             className={`input ${className}`}
             onChange={onChange}
+            placeholder={placeholder}
+            required={required}
+            disabled={disabled}
           />
         </div>
       )}
@@ -43,6 +54,7 @@ const InputCommon = ({
             value={inputNum}
             className={`input ${className}`}
             onChange={onChange}
+            placeholder={placeholder}
           />
           <div className="upper" onClick={onClickBtn.bind(null, "plus")}>
             <span className="material-symbols-outlined ">

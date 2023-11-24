@@ -1,18 +1,3 @@
-.mypage {
-  display: flex;
-  margin: 0 auto;
-  width: 1020px;
-
-  &__sidebar {
-    width: 180px;
-    margin: 30px 40px 0 0;
-  }
-  &__content {
-    width: 800px;
-    margin-top: 30px;
-  }
-}
-
 .like {
   &__head {
     font-size: 18px;
@@ -45,30 +30,13 @@
         width: 37px;
         height: 41px;
       }
-
-      & > div {
-        position: absolute;
-        top: 22px;
-        left: 30px;
-        font-size: $small-font-size;
-      }
     }
   }
 
-  &__name {
-    font-size: 20px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-  }
-  &__price {
-    font-size: 15px;
-  }
   img {
     margin: 15px 15px 15px 10px;
   }
+
   &__button__wrapper {
     display: flex;
     flex-direction: column;

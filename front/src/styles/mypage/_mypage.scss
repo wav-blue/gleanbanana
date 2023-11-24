@@ -1,0 +1,14 @@
+.mypage {
+  display: flex;
+  margin: 0 auto;
+  width: 1020px;
+
+  &__sidebar {
+    width: 180px;
+    margin: 30px 40px 0 0;
+  }
+  &__content {
+    width: 800px;
+    margin-top: 30px;
+  }
+}

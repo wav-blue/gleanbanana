@@ -1,3 +1,4 @@
+import ButtonCommon from "../../UI/ButtonCommon";
 import List from "../../UI/List";
 
 const LikeProduct = ({ src, name, price, bananaImg, bananaIdx }) => {
@@ -17,8 +18,8 @@ const LikeProduct = ({ src, name, price, bananaImg, bananaIdx }) => {
         </div>
       </div>
       <div className="like__button__wrapper">
-        <button className="like__add">장바구니 담기</button>
-        <button className="like__delete">삭제</button>
+        <ButtonCommon design="small">장바구니 담기</ButtonCommon>
+        <ButtonCommon design="small">삭제</ButtonCommon>
       </div>
     </List>
   );

@@ -6,6 +6,7 @@ import Join from "./components/pages/join/Join";
 import Like from "./components/pages/like/Like";
 import Cart from "./components/pages/cart/Cart";
 import MyPage from "./components/pages/mypage/MyPage";
+import Order from "./components/pages/order/Order";
 import "../src/styles/style.css";
 import Products from "./components/pages/products/Products";
 import Product from "./components/pages/products/Product";
@@ -25,9 +26,10 @@ function App() {
             <Route path="/product/:id" element={<Product />} />
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
-            <Route path="/likeView" element={<Like />} />
-            <Route path="/cartView" element={<Cart />} />
+            <Route path="/like" element={<Like />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="/myPage" element={<MyPage />} />
+            <Route path="/order" element={<Order />} />
           </Routes>
         </main>
         <footer className="footer">footer입니다</footer>

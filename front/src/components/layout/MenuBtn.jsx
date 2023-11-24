@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
 const MenuArray = [
-  { icon: "favorite", link: "/likeView", name: "찜하기" },
-  { icon: "shopping_cart", link: "/cartView", name: "장바구니" },
+  { icon: "favorite", link: "/like", name: "찜하기" },
+  { icon: "shopping_cart", link: "/cart", name: "장바구니" },
   { icon: "account_circle", link: "/myPage", name: "마이페이지" },
   // { icon: "account_circle", link: "/myPage", name: "마이페이지", isLogin: false },
 ];
