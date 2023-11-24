@@ -115,5 +115,25 @@ class itemService {
       );
     });
   }
+
+  static async searchItems({ search }) {
+    return new Promise((resolve, reject) => {
+      // 검색어를 이용한 SQL 쿼리 작성
+      const query = `SELECT * FROM ${table_name} WHERE item_name LIKE '%${search}%'`;
+
+      db.query(query, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          if (results.length > 0) {
+            console.log("searchItems 결과:", results);
+            resolve(results);
+          } else {
+            reject(new Error("검색 결과가 없습니다."));
+          }
+        }
+      });
+    });
+  }
 }
 export { itemService };
