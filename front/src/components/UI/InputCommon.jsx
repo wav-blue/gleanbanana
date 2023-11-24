@@ -5,22 +5,11 @@ const InputCommon = ({
   type = "text",
   id,
   defaultValue,
-  value,
+  value = undefined,
   className = "",
-  onChange,
+  onValueChange,
 }) => {
-  const [inputNum, setInputNum] = useState(0);
-
-  const onClickBtn = (type) => {
-    if (type === "plus") {
-      setInputNum((prev) => prev + 1);
-    } else if (type === "minus") {
-      setInputNum((prev) => {
-        if (prev === 0) return prev;
-        return prev - 1;
-      });
-    }
-  };
+  const [inputNum, setInputNum] = useState(1);
 
   return (
     <>
@@ -38,7 +27,7 @@ const InputCommon = ({
             id={id}
             value={value}
             className={`input ${className}`}
-            onChange={onChange}
+            onChange={(e) => setInputNum(e)}
             defaultValue={defaultValue}
           />
         </div>
@@ -50,14 +39,33 @@ const InputCommon = ({
             id="numberInput"
             value={inputNum}
             className={`input ${className}`}
-            onChange={onChange}
+            onChange={(e) => setInputNum(e.target.value)}
           />
-          <div className="upper" onClick={onClickBtn.bind(null, "plus")}>
+
+          <div
+            className="upper"
+            onClick={() => {
+              setInputNum((prev) => {
+                return +prev + 1;
+              });
+              onValueChange(inputNum + 1);
+            }}
+          >
             <span className="material-symbols-outlined ">
               keyboard_control_key
             </span>
           </div>
-          <div className="down" onClick={onClickBtn.bind(null, "minus")}>
+          <div
+            className="down"
+            onClick={() => {
+              setInputNum((prev) => {
+                if (prev === 1) return prev;
+                return +prev - 1;
+              });
+              if (inputNum === 1) return inputNum;
+              onValueChange(inputNum - 1);
+            }}
+          >
             <span className="material-symbols-outlined">stat_minus_1</span>
           </div>
         </div>

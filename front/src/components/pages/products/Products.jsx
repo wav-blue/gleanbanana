@@ -222,23 +222,23 @@ const Products = () => {
   //가져온 products마다 product 카드 보여줌
   //product는 상세페이지
 
+  //경로가 ?category=dairy일떄 요청?
+
   return (
     <div className="products__wrapper">
       <Categories showAllBtn="false" />
       <ul className="products">
         {products.map((product, idx) => (
-          <Link key={`product-${idx}`} to={`/product/${product.id}`}>
-            <li>
-              <ProductCard
-                id={product.id}
-                src={product.img}
-                itemName={product.itemName}
-                itemPrice={product.itemPrice}
-                bananaImg={banana}
-                bananaIdx={product.bananaIdx}
-              />
-            </li>
-          </Link>
+          <li key={`product-${idx}`}>
+            <ProductCard
+              id={product.id}
+              src={product.img}
+              itemName={product.itemName}
+              itemPrice={product.itemPrice}
+              bananaImg={banana}
+              bananaIdx={product.bananaIdx}
+            />
+          </li>
         ))}
       </ul>
     </div>

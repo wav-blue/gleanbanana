@@ -507,7 +507,7 @@ body {
 }
 .recommendation__description-bananaIndex {
   font-size: 12px;
-  transform: translateX(50px);
+  transform: translateX(15px) translateY(-35px);
 }
 .recommendation__description-detail {
   display: flex;

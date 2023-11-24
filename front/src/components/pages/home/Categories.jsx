@@ -51,7 +51,7 @@ const Categories = (props) => {
             <Link to="/products">
               모든 상품 보기
               <span
-                class="material-symbols-outlined"
+                className="material-symbols-outlined"
                 style={{ fontSize: "10px" }}
               >
                 arrow_forward_ios
