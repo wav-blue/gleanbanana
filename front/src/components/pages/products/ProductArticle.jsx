@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 const ProductArticle = ({ product }) => {
   const { img, itemName, bananaIdx, itemPrice } = product;
   const [price, setPrice] = useState(itemPrice);
+  const [bananaIndexes, setBananaIndexes] = useState(bananaIdx);
   const [num, setNum] = useState(1);
   const onChangeNumHandler = (newValue) => {
     setNum(newValue);
@@ -13,15 +14,15 @@ const ProductArticle = ({ product }) => {
 
   useEffect(() => {
     setPrice(itemPrice * num);
-  }, [itemPrice, num]);
-  console.log(num);
+    setBananaIndexes(bananaIdx * num);
+  }, [itemPrice, bananaIdx, num]);
 
   return (
     <article className="product__article1">
       <img src={img} alt={itemName} />
       <section className="product__section">
         <h1>{itemName}</h1>
-        <div className="product__bananaIndex">x{bananaIdx}</div>
+        <div className="product__bananaIndex">x{bananaIndexes.toFixed(2)}</div>
         <img src={banana} alt="bananaIndex" />
         <section className="product__section2">
           <div className="product__section2--input">

@@ -4,7 +4,6 @@ import Home from "./components/pages/home/Home";
 import Login from "./components/pages/login/Login";
 import Join from "./components/pages/join/Join";
 import Like from "./components/pages/like/Like";
-import Cart from "./components/pages/cart/Cart";
 import MyPage from "./components/pages/mypage/MyPage";
 import "../src/styles/style.css";
 import Products from "./components/pages/products/Products";

@@ -6,7 +6,7 @@ const CartsTotal = ({ totalPrice, totalDeliveryFee, totalBananaIndex }) => {
         <div className="cartsTotal__description">
           <div>총 상품가격</div>
           <div>{totalPrice.toLocaleString()}원</div>
-          <span class="material-symbols-outlined">add_circle</span>
+          <span className="material-symbols-outlined">add_circle</span>
           <div>배송비</div>
           <div>{totalDeliveryFee.toLocaleString()}원</div>
           <div>=</div>

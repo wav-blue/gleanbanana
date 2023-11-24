@@ -39,7 +39,11 @@ const InputCommon = ({
             id="numberInput"
             value={inputNum}
             className={`input ${className}`}
-            onChange={(e) => setInputNum(e.target.value)}
+            onChange={(e) => {
+              if (e.target.value < 1) return;
+              setInputNum(e.target.value);
+              onValueChange(e.target.value);
+            }}
           />
 
           <div
