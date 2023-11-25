@@ -1,0 +1,45 @@
+.carts {
+  &__wrapper {
+    margin: 0 auto;
+  }
+  &__header {
+    &__wrapper {
+      width: 1020px;
+      margin: 34px auto;
+      margin-bottom: 21px;
+    }
+  }
+
+  &__category {
+    &__wrapper {
+      margin: 18px 30px 18px 10px;
+      justify-content: center;
+      align-items: center;
+    }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+
+    &__info {
+      width: 600px;
+    }
+    &__val {
+      width: 100px;
+    }
+  }
+
+  &__check {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__button {
+    display: flex;
+    gap: 9px;
+    justify-content: center;
+    margin-bottom: 41px;
+  }
+}

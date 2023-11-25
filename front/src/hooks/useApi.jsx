@@ -14,6 +14,9 @@ const useApi = ({
   const [error, setError] = useState(false);
   const [extra, setExtra] = useState("");
   const { showBoundary } = useErrorBoundary();
+  const timeout = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
 
   const trigger = async ({
     method: triggerMethod = method,
@@ -22,12 +25,20 @@ const useApi = ({
     applyResult = false,
     isShowBoundary = true,
     shouldSetError = true,
+    isDelay = false,
+    delayTime = 0,
   }) => {
     setLoading(true);
 
     console.log("trigger 호출");
     setReqIdentifier(triggerMethod + "Data");
     try {
+      //isDelay를 true로 설정할 경우
+      //promise를 반환하는 timeout함수를걸어
+      //요청을 delay시켜 비용절감 유도
+      if (isDelay) {
+        await timeout(delayTime);
+      }
       const triggerResult = await API_FETCHER[triggerMethod](
         triggerPath,
         triggerData
@@ -50,61 +61,6 @@ const useApi = ({
       setLoading(false);
     }
   };
-
-  // const sendRequest = async (url, method, data, login = false, extras = "") => {
-  //   if (method === "post") {
-  //     try {
-  //       setLoading(true);
-  //       setReqIdentifier(method + "Data");
-  //       const res = await api.post(url, data);
-  //       setResult(res);
-  //     } catch (err) {
-  //       showBoundary(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-
-  //   if (method === "get") {
-  //     try {
-  //       setLoading(true);
-  //       setReqIdentifier(method + "Data");
-  //       const res = await api.get(url, data);
-  //       setResult(res);
-  //     } catch (err) {
-  //       showBoundary(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   if (method === "put") {
-  //     try {
-  //       setLoading(true);
-  //       setReqIdentifier(method + "Data");
-  //       const res = await api.put(url, data);
-  //       setResult(res);
-  //       setExtra(extras);
-  //     } catch (err) {
-  //       showBoundary(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   if (method === "delete") {
-  //     try {
-  //       setLoading(true);
-  //       setReqIdentifier(method + "Data");
-  //       const res = await api.delete(url);
-  //       console.log(res);
-  //       setExtra(extras);
-  //       setResult(res);
-  //     } catch (err) {
-  //       showBoundary(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     shouldInitFetch && console.log("초기 요청합니다!!", method, path);

@@ -17,18 +17,18 @@ import { useEffect, useState } from "react";
 // Alcohol , Nuts , Drink , Meat, Fish, Bread , Snack, Fruit, Vegetables, Dairy, Meal, Etc
 
 const imagesArray = [
-  { photo: alchol, name: "주류" },
-  { photo: nuts, name: "견과류" },
-  { photo: drink, name: "음료" },
-  { photo: meat, name: "고기" },
-  { photo: fish, name: "해산물" },
-  { photo: bread, name: "제과류" },
-  { photo: snack, name: "간식류" },
-  { photo: fruit, name: "과일" },
-  { photo: vegetable, name: "채소" },
-  { photo: dairy, name: "유제품" },
-  { photo: meal, name: "곡류" },
-  { photo: etc, name: "기타" },
+  { photo: alchol, name: "주류", category: "alchol" },
+  { photo: nuts, name: "견과류", category: "nuts" },
+  { photo: drink, name: "음료", category: "drink" },
+  { photo: meat, name: "육류", category: "meat" },
+  { photo: fish, name: "해산물", category: "fish" },
+  { photo: bread, name: "제과류", category: "bread" },
+  { photo: snack, name: "간식류", category: "snack" },
+  { photo: fruit, name: "과일", category: "fruit" },
+  { photo: vegetable, name: "채소", category: "vegetable" },
+  { photo: dairy, name: "유제품", category: "dairy" },
+  { photo: meal, name: "곡류", category: "meal" },
+  { photo: etc, name: "기타", category: "etc" },
 ];
 
 //props.showAllBtn에서 props를 false로 변경을 했는데도
@@ -51,7 +51,7 @@ const Categories = (props) => {
             <Link to="/products">
               모든 상품 보기
               <span
-                class="material-symbols-outlined"
+                className="material-symbols-outlined"
                 style={{ fontSize: "10px" }}
               >
                 arrow_forward_ios
@@ -63,7 +63,11 @@ const Categories = (props) => {
       <ul>
         {imagesArray.map((img, idx) => (
           <li key={`imgs-${idx}`}>
-            <Category imgSrc={img.photo} imgAlt={img.name} />
+            <Category
+              imgSrc={img.photo}
+              imgAlt={img.name}
+              category={img.category}
+            />
           </li>
         ))}
       </ul>
