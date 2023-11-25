@@ -46,75 +46,7 @@ const JoinApproval = [
 ];
 
 const Join = () => {
-  return (
-    <div className="join__wrapper">
-      <div className="join">
-        <div className="join__head">회원가입</div>
-        <hr />
-        <form className="join__input">
-          <div className="join__input--check">
-            <InputCommon
-              label="이메일"
-              placeholder="ex. banana@email.com"
-              type="email"
-              className="join"
-              required={true}
-            />
-            <ButtonCommon design="check">
-              <span className="material-symbols-outlined">check</span>중복 확인
-            </ButtonCommon>
-          </div>
-          {JoinInputNoCheck.map((input, idx) => (
-            <InputCommon
-              label={input.label}
-              placeholder={input.placeholder}
-              type={input.type}
-              className={input.className}
-              required={true}
-              key={`joinInput-${idx}`}
-            />
-          ))}
-          <div className="join__input--check">
-            <InputCommon
-              label="주소"
-              placeholder="주소를 검색해주세요"
-              className="join"
-              required={true}
-              disabled={true}
-            />
-            <ButtonCommon design="check">
-              <span className="material-symbols-outlined">search</span>주소 검색
-            </ButtonCommon>
-          </div>
-          <hr />
-          <div className="join__approval">
-            <div className="join__approval__label">
-              이용약관 동의
-              <p>*</p>
-            </div>
-            <div className="join__approval__content">
-              {JoinApproval.map((approval, idx) => (
-                <label
-                  key={`joinApproval-${idx}`}
-                  className="join__approval--check"
-                >
-                  <InputCommon
-                    type="checkbox"
-                    required={approval.required}
-                    className="checkbox"
-                  />
-                  {approval.content}
-                </label>
-              ))}
-            </div>
-          </div>
-          <ButtonCommon design="form" type="submit">
-            가입하기
-          </ButtonCommon>
-        </form>
-      </div>
-    </div>
-  );
+  return <div className="join__wrapper"></div>;
 };
 
 export default Join;

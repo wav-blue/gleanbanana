@@ -4,20 +4,6 @@
   border-radius: 20px;
   border-style: none;
   outline: none;
-  &__wrapper {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    & > label {
-      display: flex;
-      gap: 5px;
-      width: 125px;
-      font-size: $mid-font-size;
-      & > p {
-        color: $required-color;
-      }
-    }
-  }
   &.gray-square {
     background-color: $gray-lev1;
     border-radius: 0;
@@ -26,26 +12,6 @@
     position: relative;
   }
   // INPUT JOIN/LOGIN
-  &.login {
-    box-sizing: border-box;
-    width: 360px;
-    height: 63px;
-    border: 1px solid $gray-lev1;
-    border-radius: 5px;
-    font-size: medium;
-  }
-  &.join {
-    box-sizing: border-box;
-    width: 360px;
-    height: 50px;
-    border: 1px solid $gray-lev1;
-    border-radius: 5px;
-    font-size: medium;
-  }
-  &.checkbox {
-    accent-color: $yellow-color;
-    margin-right: 10px;
-  }
 }
 
 // INPUT TYPE= NUMBER
@@ -98,34 +64,6 @@ input[type="number"]::-webkit-outer-spin-button {
     width: 330px;
     height: 58px;
   }
-  &--form {
-    width: 360px;
-    height: 58px;
-    font-size: large;
-    border-radius: 5px;
-    &.weak {
-      background-color: white;
-      border: 1px solid $gray-lev1;
-    }
-  }
-  &--check {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 115px;
-    height: 50px;
-    border-radius: 5px;
-    background-color: white;
-    border: 1px solid black;
-    font-size: $basic-font-size;
-    gap: 5px;
-    & > span {
-      font-size: medium;
-    }
-  }
-  &--none {
-    background-color: white;
-  }
 }
 
 // CARD
@@ -155,8 +93,4 @@ input[type="number"]::-webkit-outer-spin-button {
     height: 90px;
   }
   border-bottom: 1px solid $gray-lev1;
-}
-
-button {
-  border: 0;
 }
