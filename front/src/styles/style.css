@@ -3,7 +3,12 @@
   border-radius: 20px;
   border-style: none;
   outline: none;
-  font-size: 18px;
+  font-size: 16px;
+}
+.input__wrapper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 .input.gray-square {
   background-color: #d9d9d9;
@@ -11,6 +16,9 @@
   width: 98px;
   height: 58px;
   position: relative;
+}
+.input.search {
+  position: absolute;
 }
 .input.white-square {
   width: 190px;
@@ -297,13 +305,10 @@ body {
   align-items: center;
   margin: 28px 0px 15px 0px;
 }
-.navTwo form {
-  display: flex;
-}
 .navTwo span {
   position: absolute;
-  right: -8px;
-  top: -11px;
+  right: -9px;
+  top: -13px;
 }
 
 .menuBtn {

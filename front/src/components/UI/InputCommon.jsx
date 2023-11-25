@@ -24,7 +24,7 @@ const InputCommon = ({
         </>
       )}
       {type !== "number" && type !== "checkbox" && (
-        <div>
+        <div className="input__wrapper">
           {label && <label htmlFor={id}>{label}</label>}
           <input
             type={type}
@@ -33,6 +33,9 @@ const InputCommon = ({
             className={`input ${className}`}
             onChange={(e) => setInputNum(e)}
             defaultValue={defaultValue}
+            placeholder={placeholder}
+            required={required}
+            disabled={disabled}
           />
         </div>
       )}

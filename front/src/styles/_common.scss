@@ -4,13 +4,21 @@
   border-radius: 20px;
   border-style: none;
   outline: none;
-  font-size: $big-font-size;
+  font-size: $mid-font-size;
+  &__wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
   &.gray-square {
     background-color: $gray-lev1;
     border-radius: 0;
     width: 98px;
     height: 58px;
     position: relative;
+  }
+  &.search {
+    position: absolute;
   }
   // INPUT JOIN/LOGIN
   &.white-square {
