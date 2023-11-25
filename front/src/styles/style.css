@@ -10,6 +10,15 @@
   gap: 12px;
   align-items: center;
 }
+.input__wrapper > label {
+  display: flex;
+  gap: 5px;
+  width: 127px;
+  font-size: 16px;
+}
+.input__wrapper > label > p {
+  color: #ff4004;
+}
 .input.gray-square {
   background-color: #d9d9d9;
   border-radius: 0;
@@ -151,6 +160,21 @@ input#check_btn:checked + label::after {
 .button--form.weak {
   background-color: white;
   border: 1px solid #d9d9d9;
+}
+.button--check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 115px;
+  height: 50px;
+  border-radius: 5px;
+  background-color: white;
+  border: 1px solid black;
+  font-size: 14px;
+  gap: 5px;
+}
+.button--check > span {
+  font-size: medium;
 }
 
 .card {

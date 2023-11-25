@@ -25,7 +25,12 @@ const InputCommon = ({
       )}
       {type !== "number" && type !== "checkbox" && (
         <div className="input__wrapper">
-          {label && <label htmlFor={id}>{label}</label>}
+          {label && (
+            <label htmlFor={id}>
+              {label}
+              {required && <p>*</p>}
+            </label>
+          )}
           <input
             type={type}
             id={id}

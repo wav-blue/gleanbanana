@@ -9,6 +9,15 @@
     display: flex;
     gap: 12px;
     align-items: center;
+    & > label {
+      display: flex;
+      gap: 5px;
+      width: 127px;
+      font-size: $mid-font-size;
+      & > p {
+        color: $required-color;
+      }
+    }
   }
   &.gray-square {
     background-color: $gray-lev1;
@@ -144,6 +153,21 @@ input#check_btn:checked + label::after {
     &.weak {
       background-color: white;
       border: 1px solid $gray-lev1;
+    }
+  }
+  &--check {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 115px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid black;
+    font-size: $basic-font-size;
+    gap: 5px;
+    & > span {
+      font-size: medium;
     }
   }
 }
