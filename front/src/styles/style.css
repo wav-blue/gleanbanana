@@ -2,25 +2,8 @@
   padding-left: 20px;
   border-radius: 20px;
   border-style: none;
-<<<<<<< HEAD
   outline: none;
-}
-.input__wrapper {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-.input__wrapper > label {
-  display: flex;
-  gap: 5px;
-  width: 125px;
-  font-size: 16px;
-}
-.input__wrapper > label > p {
-  color: #ff4004;
-=======
-  font-size: 19px;
->>>>>>> feature/front
+  font-size: 18px;
 }
 .input.gray-square {
   background-color: #d9d9d9;
@@ -29,33 +12,11 @@
   height: 58px;
   position: relative;
 }
-<<<<<<< HEAD
-.input.login {
-  box-sizing: border-box;
-  width: 360px;
-  height: 63px;
-  border: 1px solid #d9d9d9;
-  border-radius: 5px;
-  font-size: medium;
-}
-.input.join {
-  box-sizing: border-box;
-  width: 360px;
-  height: 50px;
-  border: 1px solid #d9d9d9;
-  border-radius: 5px;
-  font-size: medium;
-}
-.input.checkbox {
-  accent-color: #f6e173;
-  margin-right: 10px;
-=======
 .input.white-square {
   width: 190px;
   height: 31px;
   border: black 1px solid;
   border-radius: 0;
->>>>>>> feature/front
 }
 
 input#numberInput {
@@ -74,8 +35,9 @@ input#numberInput::-webkit-outer-spin-button {
   cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
+      -ms-user-select: none;
           user-select: none;
-  font-size: 19px;
+  font-size: 18px;
 }
 
 .upper {
@@ -84,6 +46,7 @@ input#numberInput::-webkit-outer-spin-button {
   cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
+      -ms-user-select: none;
           user-select: none;
 }
 
@@ -93,6 +56,7 @@ input#numberInput::-webkit-outer-spin-button {
   cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
+      -ms-user-select: none;
           user-select: none;
 }
 
@@ -134,6 +98,11 @@ input#check_btn:checked + label::after {
   height: 30px;
   font-size: 12px;
 }
+.button--midsmall {
+  width: 100px;
+  height: 30px;
+  font-size: 12px;
+}
 .button--small {
   width: 98px;
   height: 58px;
@@ -142,40 +111,12 @@ input#check_btn:checked + label::after {
 .button--medium {
   width: 247px;
   height: 58px;
-  font-size: 19px;
+  font-size: 18px;
 }
 .button--large {
   width: 330px;
   height: 58px;
-  font-size: 19px;
-}
-.button--form {
-  width: 360px;
-  height: 58px;
-  font-size: large;
-  border-radius: 5px;
-}
-.button--form.weak {
-  background-color: white;
-  border: 1px solid #d9d9d9;
-}
-.button--check {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 115px;
-  height: 50px;
-  border-radius: 5px;
-  background-color: white;
-  border: 1px solid black;
-  font-size: 14px;
-  gap: 5px;
-}
-.button--check > span {
-  font-size: medium;
-}
-.button--none {
-  background-color: white;
+  font-size: 18px;
 }
 
 .card {
@@ -205,10 +146,6 @@ input#check_btn:checked + label::after {
   height: 90px;
 }
 
-button {
-  border: 0;
-}
-
 .line {
   width: 1080px;
   height: 1px;
@@ -220,7 +157,7 @@ button {
 }
 
 .title {
-  font-size: 19px;
+  font-size: 18px;
 }
 .title__element {
   margin-bottom: 10px;
@@ -640,7 +577,7 @@ body {
 }
 .product__bananaIndex {
   transform: translateY(70px) translateX(30px);
-  font-size: 19px;
+  font-size: 18px;
 }
 .product__section2 {
   display: flex;
@@ -656,7 +593,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 19px;
+  font-size: 18px;
 }
 .product__section2--val {
   font-size: 30px;
@@ -702,7 +639,7 @@ body {
 .like__description {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
 }
 .like__description__wrapper {
@@ -712,6 +649,14 @@ body {
   position: relative;
   margin: 0 10px;
 }
+.like__description__name {
+  font-size: 18px;
+  font-weight: 700;
+}
+.like__description__price {
+  font-size: 14px;
+  font-weight: 500;
+}
 .like__description-index {
   position: absolute;
   right: 10px;
@@ -720,6 +665,12 @@ body {
 .like__description-index > img {
   width: 37px;
   height: 41px;
+}
+.like__description-index > div {
+  position: absolute;
+  top: 20px;
+  left: 32px;
+  font-size: 12px;
 }
 .like img {
   margin: 15px 15px 15px 10px;
@@ -737,7 +688,6 @@ body {
   font-size: 12px;
 }
 
-<<<<<<< HEAD
 .login {
   display: flex;
   flex-direction: column;
@@ -861,7 +811,8 @@ body {
 .mypage__content {
   width: 800px;
   margin-top: 30px;
-=======
+}
+
 .cart {
   display: flex;
   justify-content: center;
@@ -888,7 +839,7 @@ body {
   display: flex;
   flex-direction: column;
   width: 500px;
-  font-size: 19px;
+  font-size: 18px;
   gap: 27px;
 }
 .cart__description__wrapper {
@@ -994,7 +945,7 @@ body {
   gap: 9px;
   justify-content: center;
   margin-bottom: 41px;
-  font-size: 19px;
+  font-size: 18px;
   text-align: center;
   justify-content: center;
   align-items: center;
@@ -1004,5 +955,4 @@ body {
   display: flex;
   align-items: center;
   gap: 19px;
->>>>>>> feature/front
 }/*# sourceMappingURL=style.css.map */

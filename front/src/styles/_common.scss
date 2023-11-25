@@ -91,6 +91,11 @@ input#check_btn:checked + label::after {
     height: 30px;
     font-size: $small-font-size;
   }
+  &--midsmall {
+    width: 100px;
+    height: 30px;
+    font-size: $small-font-size;
+  }
   &--small {
     width: 98px;
     height: 58px;
@@ -135,10 +140,6 @@ input#check_btn:checked + label::after {
     height: 90px;
   }
   border-bottom: 1px solid $gray-lev1;
-}
-
-button {
-  border: 0;
 }
 
 // HR LINE
