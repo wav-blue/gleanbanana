@@ -20,6 +20,22 @@
 .input.search {
   position: absolute;
 }
+.input.login {
+  box-sizing: border-box;
+  width: 360px;
+  height: 63px;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+  font-size: medium;
+}
+.input.join {
+  box-sizing: border-box;
+  width: 360px;
+  height: 50px;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+  font-size: medium;
+}
 .input.white-square {
   width: 190px;
   height: 31px;
@@ -125,6 +141,16 @@ input#check_btn:checked + label::after {
   width: 330px;
   height: 58px;
   font-size: 18px;
+}
+.button--form {
+  width: 360px;
+  height: 58px;
+  border-radius: 5px;
+  font-size: 18px;
+}
+.button--form.weak {
+  background-color: white;
+  border: 1px solid #d9d9d9;
 }
 
 .card {
@@ -697,6 +723,10 @@ body {
   display: flex;
   flex-direction: column;
 }
+.login__head {
+  font-size: 18px;
+  font-weight: lighter;
+}
 .login > hr {
   margin-top: 18px;
   margin-bottom: 18px;
@@ -708,10 +738,6 @@ body {
   margin: 0 auto;
   margin-top: 40px;
   width: 360px;
-}
-.login__head {
-  font-size: 18px;
-  font-weight: lighter;
 }
 .login__input {
   display: flex;

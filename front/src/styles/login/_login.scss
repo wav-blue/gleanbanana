@@ -2,6 +2,11 @@
   display: flex;
   flex-direction: column;
 
+  &__head {
+    font-size: 18px;
+    font-weight: lighter;
+  }
+
   & > hr {
     margin-top: 18px;
     margin-bottom: 18px;
@@ -16,11 +21,6 @@
     width: 360px;
   }
 
-  &__head {
-    font-size: 18px;
-    font-weight: lighter;
-  }
-
   &__input {
     display: flex;
     flex-direction: column;
@@ -29,7 +29,6 @@
   &__find {
     display: flex;
     justify-content: flex-end;
-
     text-decoration: underline;
   }
   &__button {

@@ -21,6 +21,23 @@
     position: absolute;
   }
   // INPUT JOIN/LOGIN
+  &.login {
+    box-sizing: border-box;
+    width: 360px;
+    height: 63px;
+    border: 1px solid $gray-lev1;
+    border-radius: 5px;
+    font-size: medium;
+  }
+  &.join {
+    box-sizing: border-box;
+    width: 360px;
+    height: 50px;
+    border: 1px solid $gray-lev1;
+    border-radius: 5px;
+    font-size: medium;
+  }
+
   &.white-square {
     width: 190px;
     height: 31px;
@@ -118,6 +135,16 @@ input#check_btn:checked + label::after {
     width: 330px;
     height: 58px;
     font-size: $big-font-size;
+  }
+  &--form {
+    width: 360px;
+    height: 58px;
+    border-radius: 5px;
+    font-size: $big-font-size;
+    &.weak {
+      background-color: white;
+      border: 1px solid $gray-lev1;
+    }
   }
 }
 
