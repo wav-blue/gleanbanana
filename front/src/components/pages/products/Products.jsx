@@ -9,7 +9,6 @@ import peanut from "../../../assets/peanut.png";
 import oats from "../../../assets/oats.png";
 import banana from "../../../assets/banana.png";
 import Categories from "../home/Categories";
-import { Link, useNavigate } from "react-router-dom";
 
 //서버 통신 전 더미 products
 const products = [

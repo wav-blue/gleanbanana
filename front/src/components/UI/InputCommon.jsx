@@ -7,20 +7,31 @@ const InputCommon = ({
   defaultValue,
   value = undefined,
   className = "",
-  onChange,
   placeholder = "",
   required = false,
   disabled = false,
   onValueChange,
+  checkAll = false,
 }) => {
   const [inputNum, setInputNum] = useState(1);
+  const [checked, setChecked] = useState(false);
 
   return (
     <>
       {type === "checkbox" && (
         <>
-          <input type={type} id="check_btn" className={`input ${className}`} />
-          <label htmlFor="check_btn"></label>
+          <input
+            type={type}
+            id={`check_btn${id}`}
+            className={`input ${className}`}
+            checked={checked}
+            onChange={() => {
+              // checkAll && setChecked(true);
+              setChecked((prev) => !prev);
+              onValueChange(checked);
+            }}
+          />
+          <label htmlFor={`check_btn${id}`}></label>
         </>
       )}
       {type !== "number" && type !== "checkbox" && (

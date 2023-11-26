@@ -88,11 +88,11 @@ input#numberInput::-webkit-outer-spin-button {
 }
 
 // INPUT TYPE= CHECKBOX
-input#check_btn {
+input[id^="check_btn"] {
   display: none;
 }
 
-input#check_btn + label {
+input[id^="check_btn"] + label {
   display: inline-block;
   width: 18px;
   height: 18px;
@@ -100,7 +100,7 @@ input#check_btn + label {
   background-color: $gray-lev1;
   position: relative;
 }
-input#check_btn:checked + label::after {
+input[id^="check_btn"]:checked + label::after {
   content: url("../assets/done_FILL0_wght400_GRAD0_opsz24.png");
   font-size: 16px;
   width: 18px;

@@ -1,5 +1,11 @@
+import { useSelector } from "react-redux";
 import banana from "../../../assets/banana.png";
-const CartsTotal = ({ totalPrice, totalDeliveryFee, totalBananaIndex }) => {
+const CartsTotal = () => {
+  //이건 선택된 cartCheckedList에서 계산된 결괏값
+  const { totalPrice, totalDeliveryFee, totalBananaIndex } = useSelector(
+    (state) => state.cart
+  );
+
   return (
     <div className="cartsTotal__wrapper">
       <div className="cartsTotal">

@@ -2,20 +2,42 @@ import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
 import banana from "../../../assets/banana.png";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { cartActions } from "../../../store/cart";
 
 const ProductArticle = ({ product }) => {
   const { img, itemName, bananaIdx, itemPrice } = product;
   const [price, setPrice] = useState(itemPrice);
   const [bananaIndexes, setBananaIndexes] = useState(bananaIdx);
-  const [num, setNum] = useState(1);
+  const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch();
   const onChangeNumHandler = (newValue) => {
-    setNum(newValue);
+    setQuantity(newValue);
+  };
+
+  //장바구니store에 수량과 함께 추가
+  const addToCartHandler = () => {
+    //api요청... 추가성공시 dispatch?
+    //비동기로 리덕스는 할 수 없음
+    //그러므로 thunk를 활용 해야 함(?)
+    dispatch(
+      cartActions.addToCart({
+        ...product,
+        quantity: quantity,
+      })
+    );
+
+    // const data = {
+    //   ...product,
+    //   quantity: quantity,
+    // };
+    // addToCart(data);
   };
 
   useEffect(() => {
-    setPrice(itemPrice * num);
-    setBananaIndexes(bananaIdx * num);
-  }, [itemPrice, bananaIdx, num]);
+    setPrice(itemPrice * quantity);
+    setBananaIndexes(bananaIdx * quantity);
+  }, [itemPrice, bananaIdx, quantity]);
 
   return (
     <article className="product__article1">
@@ -41,7 +63,9 @@ const ProductArticle = ({ product }) => {
           <ButtonCommon design="small">
             <span className="material-symbols-outlined">favorite</span>
           </ButtonCommon>
-          <ButtonCommon design="medium">장바구니 담기</ButtonCommon>
+          <ButtonCommon design="medium" onClick={addToCartHandler}>
+            장바구니 담기
+          </ButtonCommon>
           <ButtonCommon design="medium">바로 구매하기</ButtonCommon>
         </section>
       </section>
