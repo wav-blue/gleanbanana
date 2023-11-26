@@ -4,7 +4,7 @@ import List from "../../UI/List";
 
 const LikeProduct = ({ src, name, price, bananaImg, bananaIdx }) => {
   return (
-    <List>
+    <List type="row">
       <img src={src} alt={name} />
       <Link className="like__description__wrapper">
         <div className="like__description">

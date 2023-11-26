@@ -1,4 +1,6 @@
 import Side from "../../layout/SideLayout";
+import MyChart from "./MyChart";
+import MonthlyChart from "./MonthlyChart";
 
 const MyPage = () => {
   return (
@@ -7,7 +9,8 @@ const MyPage = () => {
         <Side />
       </div>
       <div className="mypage__content">
-        <div>나의 탄소 소비량</div>
+        <MyChart />
+        <MonthlyChart />
       </div>
     </div>
   );

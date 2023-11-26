@@ -1,5 +1,5 @@
-const List = ({ children }) => {
-  return <div className="list">{children}</div>;
+const List = ({ type, children }) => {
+  return <div className={`list ${type}`}>{children}</div>;
 };
 
 export default List;

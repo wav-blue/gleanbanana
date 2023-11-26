@@ -1,0 +1,10 @@
+.mychart {
+  &__head {
+    font-size: 18px;
+    font-weight: lighter;
+  }
+  &__description {
+    font-size: $mid-font-size;
+    font-weight: lighter;
+  }
+}

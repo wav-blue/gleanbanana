@@ -1,4 +1,5 @@
 import Side from "../../layout/SideLayout";
+import OrderProducts from "./OrderProducts";
 
 const Order = () => {
   return (
@@ -7,7 +8,7 @@ const Order = () => {
         <Side />
       </div>
       <div className="mypage__content">
-        <div>주문내역</div>
+        <OrderProducts />
       </div>
     </div>
   );
