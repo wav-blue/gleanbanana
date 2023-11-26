@@ -36,17 +36,11 @@ const imagesArray = [
 //props를 가지고 state를 변경을 하고 state값에 따라 렌더링 한다고 해도
 //변경되지 않음.
 const Categories = (props) => {
-  const [show, setShow] = useState(false);
-  console.log(props.showAllBtn);
-  useEffect(() => {
-    setShow(props.showAllBtn);
-  }, [props.showAllBtn]);
-
   return (
     <div className="categories__wrapper">
       <div className="categories">
         <div className="categories--name">카테고리</div>
-        {show && (
+        {props.showAllBtn && (
           <div className="categories--more">
             <Link to="/products">
               모든 상품 보기

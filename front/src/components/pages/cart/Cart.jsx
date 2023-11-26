@@ -5,7 +5,7 @@ const Cart = ({ cart }) => {
     <article className="cart__wrapper">
       <div className="cart">
         <div className="cart__check">
-          <InputCommon type="checkbox" onChange={() => {}} />
+          <InputCommon type="checkbox" />
           <img src={cart.img} alt={cart.itemName} />
         </div>
         <div className="cart__description__wrapper">

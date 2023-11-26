@@ -226,7 +226,7 @@ const Products = () => {
 
   return (
     <div className="products__wrapper">
-      <Categories showAllBtn="false" />
+      <Categories showAllBtn={false} />
       <ul className="products">
         {products.map((product, idx) => (
           <li key={`product-${idx}`}>

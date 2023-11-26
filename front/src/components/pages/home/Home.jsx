@@ -7,7 +7,7 @@ import Recommendations from "./Recommendations";
 const Home = () => {
   return (
     <div className="home">
-      <div claassName="home__wrapper">
+      <div className="home__wrapper">
         <Charts />
         <Categories showAllBtn="true" />
         <Recommendations />
