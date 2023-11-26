@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { API_FETCHER } from "../utils/axiosConfig";
 import { useErrorBoundary } from "react-error-boundary";
 
+const timeout = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 const useApi = ({
   method = "get",
   path = "",
@@ -14,9 +18,6 @@ const useApi = ({
   const [error, setError] = useState(false);
   const [extra, setExtra] = useState("");
   const { showBoundary } = useErrorBoundary();
-  const timeout = (ms) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
 
   const trigger = async ({
     method: triggerMethod = method,
