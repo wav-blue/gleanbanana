@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 
 const InputCommon = ({
   label = "",
@@ -15,6 +15,7 @@ const InputCommon = ({
 }) => {
   const [inputNum, setInputNum] = useState(1);
   const [checked, setChecked] = useState(false);
+  const uniqueId = useId();
 
   return (
     <>
@@ -22,7 +23,7 @@ const InputCommon = ({
         <>
           <input
             type={type}
-            id={`check_btn${id}`}
+            id={`check_btn${uniqueId}`}
             className={`input ${className}`}
             checked={checked}
             onChange={() => {
@@ -31,7 +32,7 @@ const InputCommon = ({
               onValueChange(checked);
             }}
           />
-          <label htmlFor={`check_btn${id}`}></label>
+          <label htmlFor={`check_btn${uniqueId}`}></label>
         </>
       )}
       {type !== "number" && type !== "checkbox" && (
