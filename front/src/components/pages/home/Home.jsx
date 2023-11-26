@@ -7,9 +7,11 @@ import Recommendations from "./Recommendations";
 const Home = () => {
   return (
     <div className="home">
-      <Charts />
-      <Categories showAllBtn="true" />
-      <Recommendations />
+      <div claassName="home__wrapper">
+        <Charts />
+        <Categories showAllBtn="true" />
+        <Recommendations />
+      </div>
     </div>
   );
 };

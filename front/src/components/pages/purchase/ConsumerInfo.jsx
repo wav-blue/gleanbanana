@@ -1,18 +1,21 @@
+const consumerInfo = [
+  { name: "이름", value: "김유저" },
+  { name: "이메일", value: "user@banana.com" },
+  { name: "연락처", value: "010-1111-2222" },
+];
+
+//올 데이터.... 이렇게 될지?
+// const tableName = ["이름", "이메일", "연락처"];
+
 const ConsumerInfo = () => {
   return (
     <div className="title title__element">
-      <div className="flex flex__element-left">
-        <div>이름</div>
-        <div>김유저</div>
-      </div>
-      <div className="flex flex__element-left">
-        <div>이메일</div>
-        <div>user@banana.com</div>
-      </div>
-      <div className="flex flex__element-left">
-        <div>연락처</div>
-        <div>010-1111-2222</div>
-      </div>
+      {consumerInfo.map((cons) => (
+        <div className="flex flex__element-left">
+          <div>{cons.name}</div>
+          <div>{cons.value}</div>
+        </div>
+      ))}
     </div>
   );
 };

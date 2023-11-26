@@ -226,9 +226,9 @@ input#check_btn:checked + label::after {
 // COMMON FLEX ELEMENT
 .flex {
   display: flex;
+  align-items: center;
   gap: 96px;
   margin: 18px 0;
-  align-items: center;
   &__element {
     &-left {
       > div:first-child {
@@ -239,4 +239,10 @@ input#check_btn:checked + label::after {
       gap: 19px;
     }
   }
+}
+
+// WRAPPER
+.wrapper {
+  margin: 0 auto;
+  width: $common-width;
 }
