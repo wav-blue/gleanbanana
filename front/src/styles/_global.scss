@@ -1,13 +1,15 @@
-@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+@font-face {
+  font-family: "Noto Sans KR";
+  src: url("../assets/fonts/NotoSansKR-Regular.ttf");
+}
 
 html {
   height: 100%;
 }
 
 body {
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "Noto Sans KR";
   font-size: $basic-font-size;
-  font-weight: 600;
   color: $black-color;
   height: 100%;
 }
