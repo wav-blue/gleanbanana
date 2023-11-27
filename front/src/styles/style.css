@@ -1,3 +1,4 @@
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 .input {
   padding-left: 20px;
   border-radius: 20px;
@@ -250,8 +251,9 @@ html {
 }
 
 body {
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 600;
   color: #000;
   height: 100%;
 }
@@ -345,7 +347,7 @@ body {
   margin: 0px;
 }
 
-.navOne {
+.navBar {
   box-sizing: border-box;
   display: flex;
   justify-content: flex-end;
@@ -355,18 +357,18 @@ body {
   margin: 16px 0px 12px 0px;
 }
 
-.navTwo {
+.navSearch {
   display: flex;
   position: relative;
   width: 42%;
 }
-.navTwo__wrapper {
+.navSearch__wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 28px 0px 15px 0px;
 }
-.navTwo span {
+.navSearch span {
   position: absolute;
   right: -9px;
   top: -13px;
@@ -910,7 +912,7 @@ body {
   flex-direction: column;
   width: 500px;
   font-size: 18px;
-  gap: 27px;
+  gap: 12px;
 }
 .cart__description__wrapper {
   width: 500px;
@@ -929,6 +931,7 @@ body {
 }
 .cart__description-delivery {
   font-size: 14px;
+  font-weight: 500;
 }
 .cart__bananaIndex > img {
   width: 37px;
