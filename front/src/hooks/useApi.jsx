@@ -47,7 +47,7 @@ const useApi = ({
 
       if (applyResult) {
         setResult(triggerResult);
-        return;
+        return result;
       }
       return triggerResult;
     } catch (err) {
