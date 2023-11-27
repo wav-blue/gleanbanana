@@ -1,6 +1,9 @@
 .home {
   display: flex;
   flex-direction: column;
+  // flex: 2 대신에
+  width: 1020px;
+  margin: 0 auto;
   // flex: 2; //화면 크기만큼 늘어남 반응
   gap: 30px;
   &__wrapper {

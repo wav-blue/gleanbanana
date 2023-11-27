@@ -1,10 +1,15 @@
+@font-face {
+  font-family: "Noto Sans KR";
+  src: url("../assets/fonts/NotoSansKR-Regular.ttf");
+}
+
 html {
   height: 100%;
 }
 
 body {
+  font-family: "Noto Sans KR";
   font-size: $basic-font-size;
-  font-weight: bold;
   color: $black-color;
   height: 100%;
 }

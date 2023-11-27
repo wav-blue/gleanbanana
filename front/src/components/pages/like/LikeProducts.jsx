@@ -8,26 +8,26 @@ import banana from "../../../assets/banana.png";
 const LikeProductList = [
   {
     img: tomato,
-    recommendationName: "대추방울토마토",
-    recommendationPrice: "20020",
+    likeName: "대추방울토마토",
+    likePrice: "20020",
     bananaIdx: 2.59,
   },
   {
     img: salad,
-    recommendationName: "팜에이트 무농약 유러피안 샐러드 꾸러미",
-    recommendationPrice: "21560",
+    likeName: "팜에이트 무농약 유러피안 샐러드 꾸러미",
+    likePrice: "21560",
     bananaIdx: 2.38,
   },
   {
     img: peanut,
-    recommendationName: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
-    recommendationPrice: "9600",
+    likeName: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
+    likePrice: "9600",
     bananaIdx: 3.6,
   },
   {
     img: oats,
-    recommendationName: "바른곡물 국산 유기농 귀리쌀",
-    recommendationPrice: "37900",
+    likeName: "바른곡물 국산 유기농 귀리쌀",
+    likePrice: "37900",
     bananaIdx: 1.78,
   },
 ];
@@ -45,8 +45,8 @@ const LikeProducts = () => {
             <LikeProduct
               key={`like-${idx}`}
               src={like.img}
-              name={like.recommendationName}
-              price={like.recommendationPrice}
+              name={like.likeName}
+              price={like.likePrice}
               bananaImg={banana}
               bananaIdx={like.bananaIdx}
             />

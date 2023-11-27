@@ -130,6 +130,11 @@ input[id^="check_btn"]:checked + label::after {
     height: 30px;
     font-size: $small-font-size;
   }
+  &--bigsmall {
+    width: 125px;
+    height: 35px;
+    font-size: $basic-font-size;
+  }
   &--small {
     width: 98px;
     height: 58px;
@@ -198,7 +203,13 @@ input[id^="check_btn"]:checked + label::after {
     width: 90px;
     height: 90px;
   }
-  border-bottom: 1px solid $gray-lev1;
+  &.row {
+    border-bottom: 1px solid $gray-lev1;
+  }
+  &.rowcard {
+    border: 1.5px solid $gray-lev1;
+    background-color: white;
+  }
 }
 
 // HR LINE
