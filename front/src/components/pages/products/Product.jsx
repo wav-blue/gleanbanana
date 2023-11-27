@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useApi from "../../../hooks/useApi";
 import salad from "../../../assets/salad.png";
-import InputCommon from "../../UI/InputCommon";
-import ButtonCommon from "../../UI/ButtonCommon";
-import ProductArticle from "./ProductArticle";
 import ProductNav from "./ProductNav";
+import ProductDetail from "./ProductDetail";
 
 //서버와 통신 전 더미 product
 
@@ -54,7 +52,7 @@ const Product = () => {
 
   return (
     <div className="product__wrapper">
-      <ProductArticle product={product} />
+      <ProductDetail product={product} />
       <ProductNav />
     </div>
   );
