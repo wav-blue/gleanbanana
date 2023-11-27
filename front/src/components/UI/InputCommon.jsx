@@ -11,6 +11,8 @@ const InputCommon = ({
   required = false,
   disabled = false,
   onValueChange,
+  onChange,
+  onBlur,
   checkAll = false,
 }) => {
   const [inputNum, setInputNum] = useState(1);
@@ -26,6 +28,7 @@ const InputCommon = ({
             id={`check_btn${uniqueId}`}
             className={`input ${className}`}
             checked={checked}
+            required={required}
             onChange={() => {
               // checkAll && setChecked(true);
               setChecked((prev) => !prev);
@@ -48,7 +51,8 @@ const InputCommon = ({
             id={id}
             value={value}
             className={`input ${className}`}
-            onChange={(e) => setInputNum(e)}
+            onBlur={onBlur}
+            onChange={onChange}
             defaultValue={defaultValue}
             placeholder={placeholder}
             required={required}

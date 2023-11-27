@@ -1,3 +1,8 @@
+@import "./categories";
+@import "./category";
+@import "./charts";
+@import "./recommendation";
+
 .home {
   display: flex;
   flex-direction: column;

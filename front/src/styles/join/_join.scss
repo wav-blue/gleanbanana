@@ -25,18 +25,41 @@
     display: flex;
     flex-direction: column;
     gap: 18px;
-    &--check {
+    &--button {
       display: flex;
       gap: 12px;
+    }
+    &--check {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      & > p {
+        margin-left: 147px;
+        margin-bottom: 5px;
+        color: $required-color;
+        font-size: $small-font-size;
+      }
+    }
+    &--password {
+      display: flex;
+      flex-direction: column;
+      gap: 17px;
+      & > p {
+        margin: -5px 0 5px 147px;
+        color: $required-color;
+        font-size: $small-font-size;
+      }
     }
     & > hr {
       margin-top: 10px;
       margin-bottom: 7px;
       width: 100%;
     }
-    button {
-      align-self: center;
-    }
+  }
+
+  &__button {
+    display: flex;
+    justify-content: center;
   }
 
   &__approval {
