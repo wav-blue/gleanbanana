@@ -4,6 +4,7 @@ import banana from "../../../assets/banana.png";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../../store/cart";
+import { likeActions } from "../../../store/like";
 
 //장바구니에 추가하면 바로 장바구니 페이지로 가게 함
 const ProductDetail = ({ product }) => {
@@ -14,6 +15,12 @@ const ProductDetail = ({ product }) => {
   const dispatch = useDispatch();
   const onChangeNumHandler = (newValue) => {
     setQuantity(newValue);
+  };
+
+  //찜목록에 추가
+  //찜목록에 이미 있다면 해당 버튼을 채워지게 표현
+  const addToLikeHandler = () => {
+    dispatch(likeActions.addToLike(product));
   };
 
   //장바구니store에 수량과 함께 추가
@@ -66,7 +73,7 @@ const ProductDetail = ({ product }) => {
           </div>
         </section>
         <section className="product__section3--button">
-          <ButtonCommon design="small">
+          <ButtonCommon design="small" onClick={addToLikeHandler}>
             <span className="material-symbols-outlined">favorite</span>
           </ButtonCommon>
           <ButtonCommon design="medium" onClick={addToCartHandler}>
