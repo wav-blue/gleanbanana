@@ -1,50 +1,45 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import banana from "../../../assets/banana.png";
 import InputCommon from "../../UI/InputCommon";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { cartActions } from "../../../store/cart";
+import InputCheckbox from "../../UI/InputCheckbox";
 const Cart = ({ cart }) => {
   //선택된 제품만 total값과 bananaIndex값 변경되어야 함.
-  const [checked, setChecked] = useState(false);
+  const [ischecked, setIsChecked] = useState(false);
+
   const dispatch = useDispatch();
 
-  //가져왔을 때는 이미 quantity가 있는 상태이므로
-  //redux에서 수량을 가져와서 보여줘야 함
+  //api요청으로 가져온 cart와 그 수량을 보여줌 ... select쓸 필요 없음???
 
-  //지금 상품의 수량만 보여주는 로직 : createSelector로
-  const cartQuantity = useSelector((state) =>
-    state.cart.cartItems.filter((item) => item.id === cart.id)
-  );
-
-  const [quantity, setQuantity] = useState(cartQuantity);
+  const [quantity, setQuantity] = useState(cart.quantity);
   const onChangeNumHandler = (newValue) => {
     setQuantity(newValue);
   };
-  const onValueChange = (val) => {
-    setChecked(val);
+
+  //checked되면
+  if (ischecked) {
+    //total에 더함
+    dispatch(cartActions.addToCheckedList(cart));
+  } else {
+    //total에서 뺌
+    dispatch(cartActions.removeFromCheckedList(cart));
+  }
+
+  const onChangeCheckhandler = (e) => {
+    setIsChecked((prev) => !prev);
+    console.log(e.target.checked);
   };
 
-  //checked가 변하면
-  //장바구니 주문 요청 목록에서 빼거나 더함
-  useEffect(() => {
-    if (checked) {
-      //total에 더함
-      dispatch(cartActions.addToCheckedList(cart));
-    } else {
-      //total에서 뺌
-      dispatch(cartActions.removeFromCheckedList(cart));
-    }
-  }, [cart, checked]);
-  console.log(`cart ${cart.id}  ` + checked);
   return (
     <article className="cart__wrapper">
       <div className="cart">
         <div className="cart__check">
-          <InputCommon
+          <InputCheckbox
             type="checkbox"
             id={cart.id}
-            checked={checked}
-            onValueChange={onValueChange}
+            checked={ischecked}
+            onChangeCheckhandler={(e) => onChangeCheckhandler(e)}
           />
           <img src={cart.img} alt={cart.itemName} />
         </div>
@@ -58,6 +53,7 @@ const Cart = ({ cart }) => {
           <InputCommon
             type="number"
             className="gray-square"
+            value={cart.quantity}
             onValueChange={onChangeNumHandler}
           />
           <div className="cart__description__val">

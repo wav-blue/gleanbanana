@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../../store/cart";
 
+//장바구니에 추가하면 바로 장바구니 페이지로 가게 함
 const ProductDetail = ({ product }) => {
   const { img, itemName, bananaIdx, itemPrice } = product;
   const [price, setPrice] = useState(itemPrice | 0);
@@ -16,22 +17,27 @@ const ProductDetail = ({ product }) => {
   };
 
   //장바구니store에 수량과 함께 추가
-  const addToCartHandler = () => {
-    //api요청... 추가성공시 dispatch?
-    //비동기로 리덕스는 할 수 없음
-    //그러므로 thunk를 활용 해야 함(?)
+  const addToCartHandler = async () => {
+    // const { trigger } = useApi({
+    //   method: "post",
+    //   path: "/cart",
+    //   data: {},
+    //   shouldInitFetch: false,
+    // });
+    // const result = await trigger({
+    //   method: "post",
+    //   path: "/cart",
+    //   data: data,
+    //   applyResult: true,
+    //   isShowBoundary: false,
+    //   shouldSetError: false,
+    // });
     dispatch(
       cartActions.addToCart({
         ...product,
         quantity: quantity,
       })
     );
-
-    // const data = {
-    //   ...product,
-    //   quantity: quantity,
-    // };
-    // addToCart(data);
   };
 
   useEffect(() => {

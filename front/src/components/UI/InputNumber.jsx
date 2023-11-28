@@ -1,13 +1,10 @@
 import { useId, useState } from "react";
 
 const InputNumber = ({
-  label = "",
   type = "text",
   id,
-  defaultValue,
   value = undefined,
   className = "",
-  placeholder = "",
   required = false,
   disabled = false,
   onValueChange,
