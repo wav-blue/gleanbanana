@@ -1161,4 +1161,41 @@ body {
   border-radius: 4px;
   padding: 7px 13px;
   font-size: 12px;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.error__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: -50px;
+  gap: 30px;
+}
+.error__wrapper img {
+  width: 120px;
+  height: 120px;
+}
+.error__head {
+  font-size: 30px;
+  text-align: center;
+}
+.error__content {
+  font-size: 18px;
+  line-height: 25px;
+  text-align: center;
+}
+.error__button {
+  width: 250px;
+  height: 58px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 18px;
+  background-color: #d9d9d9;
 }/*# sourceMappingURL=style.css.map */

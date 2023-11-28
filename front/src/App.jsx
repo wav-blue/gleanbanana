@@ -11,6 +11,8 @@ import Products from "./components/pages/products/Products";
 import Product from "./components/pages/products/Product";
 import Carts from "./components/pages/cart/Carts";
 import Purchase from "./components/pages/purchase/Purchase";
+import Error from "./components/pages/error/Error";
+import Error404 from "./components/pages/error/Error404";
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
             <Route path="/myPage" element={<MyPage />} />
             <Route path="/order" element={<Order />} />
             <Route path="/purchase" element={<Purchase />} />
+            <Route path="/Error" element={<Error />} />
+            <Route path="/Error404" element={<Error404 />} />
           </Routes>
         </main>
         <footer className="footer">footer입니다</footer>
