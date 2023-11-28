@@ -4,7 +4,9 @@ import banana from "../../../assets/banana.png";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../../store/cart";
+import { likeActions } from "../../../store/like";
 
+//장바구니에 추가하면 바로 장바구니 페이지로 가게 함
 const ProductDetail = ({ product }) => {
   const { img, itemName, bananaIdx, itemPrice } = product;
   const [price, setPrice] = useState(itemPrice | 0);
@@ -15,23 +17,34 @@ const ProductDetail = ({ product }) => {
     setQuantity(newValue);
   };
 
+  //찜목록에 추가
+  //찜목록에 이미 있다면 해당 버튼을 채워지게 표현
+  const addToLikeHandler = () => {
+    dispatch(likeActions.addToLike(product));
+  };
+
   //장바구니store에 수량과 함께 추가
-  const addToCartHandler = () => {
-    //api요청... 추가성공시 dispatch?
-    //비동기로 리덕스는 할 수 없음
-    //그러므로 thunk를 활용 해야 함(?)
+  const addToCartHandler = async () => {
+    // const { trigger } = useApi({
+    //   method: "post",
+    //   path: "/cart",
+    //   data: {},
+    //   shouldInitFetch: false,
+    // });
+    // const result = await trigger({
+    //   method: "post",
+    //   path: "/cart",
+    //   data: data,
+    //   applyResult: true,
+    //   isShowBoundary: false,
+    //   shouldSetError: false,
+    // });
     dispatch(
       cartActions.addToCart({
         ...product,
         quantity: quantity,
       })
     );
-
-    // const data = {
-    //   ...product,
-    //   quantity: quantity,
-    // };
-    // addToCart(data);
   };
 
   useEffect(() => {
@@ -60,7 +73,7 @@ const ProductDetail = ({ product }) => {
           </div>
         </section>
         <section className="product__section3--button">
-          <ButtonCommon design="small">
+          <ButtonCommon design="small" onClick={addToLikeHandler}>
             <span className="material-symbols-outlined">favorite</span>
           </ButtonCommon>
           <ButtonCommon design="medium" onClick={addToCartHandler}>

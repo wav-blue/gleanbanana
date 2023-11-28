@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 const InputCommon = ({
   label = "",
@@ -13,10 +13,11 @@ const InputCommon = ({
   onValueChange,
   onChange,
   onBlur,
+  onChangeCheckhandler,
   checkAll = false,
+  checked = false,
 }) => {
-  const [inputNum, setInputNum] = useState(1);
-  const [checked, setChecked] = useState(false);
+  const [inputNum, setInputNum] = useState(value | 1);
   const uniqueId = useId();
 
   return (
@@ -29,13 +30,9 @@ const InputCommon = ({
             className={`input ${className}`}
             checked={checked}
             required={required}
-            onChange={() => {
-              // checkAll && setChecked(true);
-              setChecked((prev) => !prev);
-              onValueChange(checked);
-            }}
+            onChange={onChangeCheckhandler}
           />
-          <label htmlFor={`check_btn${uniqueId}`}></label>
+          <label htmlFor={`check_btn${uniqueId}`}>{checked}</label>
         </>
       )}
       {type !== "number" && type !== "checkbox" && (
@@ -68,7 +65,7 @@ const InputCommon = ({
             value={inputNum}
             className={`input ${className}`}
             onChange={(e) => {
-              if (e.target.value < 1) return;
+              if (e.target.value < 1) return 1;
               setInputNum(e.target.value);
               onValueChange(e.target.value);
             }}

@@ -6,7 +6,6 @@ const initialState = {
   totalPrice: 0,
   totalDeliveryFee: 0,
   totalBananaIndex: 0,
-  testArr: [],
 };
 
 const cartSlice = createSlice({
@@ -16,7 +15,6 @@ const cartSlice = createSlice({
     //장바구니에서 수량을 변경했을 시 사용되는 로직(?)
     //수량 변경하면 가격, 바나나 인덱스도 변경되어야 함.
     addToCart(state, action) {
-      console.log("addToCart는 성공적!");
       console.log(action.payload);
       const newItem = action.payload;
       const existedItem = state.cartItems.find(

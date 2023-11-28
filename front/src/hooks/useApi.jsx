@@ -2,10 +2,6 @@ import { useEffect, useState } from "react";
 import { API_FETCHER } from "../utils/axiosConfig";
 import { useErrorBoundary } from "react-error-boundary";
 
-const timeout = (ms) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
 const useApi = ({
   method = "get",
   path = "",
@@ -17,7 +13,7 @@ const useApi = ({
   const [reqIdentifier, setReqIdentifier] = useState("");
   const [error, setError] = useState(false);
   const [extra, setExtra] = useState("");
-  const { showBoundary } = useErrorBoundary();
+  // const { showBoundary } = useErrorBoundary();
 
   const trigger = async ({
     method: triggerMethod = method,
@@ -26,20 +22,12 @@ const useApi = ({
     applyResult = false,
     isShowBoundary = true,
     shouldSetError = true,
-    isDelay = false,
-    delayTime = 0,
   }) => {
     setLoading(true);
 
     console.log("trigger 호출");
     setReqIdentifier(triggerMethod + "Data");
     try {
-      //isDelay를 true로 설정할 경우
-      //promise를 반환하는 timeout함수를걸어
-      //요청을 delay시켜 비용절감 유도
-      if (isDelay) {
-        await timeout(delayTime);
-      }
       const triggerResult = await API_FETCHER[triggerMethod](
         triggerPath,
         triggerData
@@ -53,7 +41,7 @@ const useApi = ({
     } catch (err) {
       if (isShowBoundary) {
         //에러 바운더리를 보여줘야 할때만 보여줌
-        showBoundary(err);
+        // showBoundary(err);
         return;
       }
       shouldSetError && setError(err);
