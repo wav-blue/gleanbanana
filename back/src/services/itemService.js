@@ -1,5 +1,5 @@
 import db from "../db";
-const table_name = "item_test";
+const table_name = "item";
 
 class itemService {
   // 전체 조회
