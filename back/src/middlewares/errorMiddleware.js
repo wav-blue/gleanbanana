@@ -4,7 +4,7 @@ function errorMiddleware(error, req, res, next) {
     res.status(error.status).send(error.message);
   } else {
     // 정의되지 않은 에러 사항
-    res.status(400).send(error.message);
+    res.status(500).send(error.message);
   }
 }
 
