@@ -1,4 +1,4 @@
-import db from "../db/db.js";
+import db from "../db";
 
 class cartService {
   // 장바구니 전체 조회
