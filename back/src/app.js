@@ -6,6 +6,7 @@ import { errorMiddleware } from "./middlewares/errorMiddleware";
 // router import
 import { userRouter } from "./routers/userRouter";
 import { itemRouter } from "./routers/itemRouter";
+import { cartRouter } from "./routers/cartRouter";
 
 // db/index.js를 통해 db 연결
 // import { dbconnect } from "./db";
@@ -35,6 +36,8 @@ app.use(userRouter);
 console.log("app.js - app.use(userRouter)");
 app.use(itemRouter);
 console.log("app.js - app.use(itemRouter)");
+app.use(cartRouter);
+console.log("app.js - app.use(cartRouter)");
 // 에러 핸들링
 app.use(errorMiddleware);
 console.log("app.js - app.use(errorMiddleware)");
