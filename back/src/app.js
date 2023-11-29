@@ -5,6 +5,7 @@ import { errorMiddleware } from "./middlewares/errorMiddleware";
 
 // router import
 import { itemRouter } from "./routers/itemRouter";
+import { cartRouter } from "./routers/cartRouter";
 
 const app = express();
 
@@ -27,7 +28,6 @@ app.get("/", (req, res) => {
 });
 
 app.use(itemRouter);
-
 // 에러 핸들링
 app.use(errorMiddleware);
 export { app };
