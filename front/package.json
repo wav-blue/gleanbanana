@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.2",
     "classnames": "^2.3.2",
+    "http-proxy-middleware": "^2.0.6",
     "node-sass": "^7.0.3",
     "open-color": "^1.9.1",
     "react": "^18.2.0",
@@ -29,6 +30,7 @@
     "eject": "react-scripts eject",
     "sass": "sass --watch src/styles/scss:src/styles/css"
   },
+  "proxy": "http://localhost:5001",
   "eslintConfig": {
     "extends": [
       "react-app",

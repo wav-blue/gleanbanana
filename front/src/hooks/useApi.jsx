@@ -39,6 +39,7 @@ const useApi = ({
       }
       return triggerResult;
     } catch (err) {
+      console.log(err);
       if (isShowBoundary) {
         //에러 바운더리를 보여줘야 할때만 보여줌
         // showBoundary(err);
