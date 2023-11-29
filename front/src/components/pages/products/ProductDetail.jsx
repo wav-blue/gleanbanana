@@ -2,9 +2,11 @@ import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
 import banana from "../../../assets/banana.png";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../../store/cart";
-import { likeActions } from "../../../store/like";
+import { likeActions, likeStateSelector } from "../../../store/like";
+import Likes from "../../../utils/Likes";
+import { useNavigate } from "react-router-dom";
 
 //장바구니에 추가하면 바로 장바구니 페이지로 가게 함
 const ProductDetail = ({ product }) => {
@@ -13,9 +15,14 @@ const ProductDetail = ({ product }) => {
   const [bananaIndexes, setBananaIndexes] = useState(bananaIdx | 0);
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
+
+  //likeState createSelector로 메모이즈?
+  const likeState = useSelector(likeStateSelector);
+  const isLike = likeState.find((like) => like.id);
   const onChangeNumHandler = (newValue) => {
     setQuantity(newValue);
   };
+  const navigate = useNavigate();
 
   //찜목록에 추가
   //찜목록에 이미 있다면 해당 버튼을 채워지게 표현
@@ -45,6 +52,7 @@ const ProductDetail = ({ product }) => {
         quantity: quantity,
       })
     );
+    navigate("/cart");
   };
 
   useEffect(() => {
@@ -74,7 +82,10 @@ const ProductDetail = ({ product }) => {
         </section>
         <section className="product__section3--button">
           <ButtonCommon design="small" onClick={addToLikeHandler}>
-            <span className="material-symbols-outlined">favorite</span>
+            {!isLike && (
+              <span className="material-symbols-outlined">favorite</span>
+            )}
+            {isLike && <Likes />}
           </ButtonCommon>
           <ButtonCommon design="medium" onClick={addToCartHandler}>
             장바구니 담기

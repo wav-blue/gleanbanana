@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   likeLists: [],
@@ -32,3 +32,10 @@ const likeSlice = createSlice({
 export const likeActions = likeSlice.actions;
 
 export default likeSlice.reducer;
+
+const selectLike = (state) => state.like.likeLists;
+
+export const likeStateSelector = createSelector(
+  selectLike,
+  (selectLike) => selectLike
+);

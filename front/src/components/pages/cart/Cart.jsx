@@ -1,36 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import banana from "../../../assets/banana.png";
 import InputCommon from "../../UI/InputCommon";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../../store/cart";
 import InputCheckbox from "../../UI/InputCheckbox";
 const Cart = ({ cart }) => {
   //선택된 제품만 total값과 bananaIndex값 변경되어야 함.
-  const [ischecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(null);
+  const [isFirst, setIsFirst] = useState(true);
+  const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
 
   const dispatch = useDispatch();
 
-  //api요청으로 가져온 cart와 그 수량을 보여줌 ... select쓸 필요 없음???
+  //api요청으로 가져온 cart와 그 수량을
+  //dispatch해줌...
+  //그것을 가져옴!!! thunk가 필요 ㅠ_ㅠ
 
   const [quantity, setQuantity] = useState(cart.quantity);
   const onChangeNumHandler = (newValue) => {
-    setQuantity(newValue);
+    setQuantity(parseInt(newValue));
   };
 
-  //checked되면
-  if (ischecked) {
-    //total에 더함
-    dispatch(cartActions.addToCheckedList(cart));
-  } else {
-    //total에서 뺌
-    dispatch(cartActions.removeFromCheckedList(cart));
-  }
+  //number변경시
+  useEffect(() => {
+    dispatch(cartActions.changeQuantity({ id: cart.id, quantity }));
+    dispatch(cartActions.updateTotal());
+  }, [quantity, dispatch, cart.id]);
 
+  useEffect(() => {
+    console.log(cartCheckedList);
+  }, [cartCheckedList]);
+
+  //onChangeCheckHandler를 useCallback의 callback함수에 넣으려면...   //useRef?
+  //checkbox 변경시
   const onChangeCheckhandler = (e) => {
+    setIsFirst(false);
+    console.log(isFirst);
+    //checked되었을 때
+    if (e.target.checked) {
+      console.log("e target checked!");
+      dispatch(cartActions.addToCheckedList({ id: cart.id, quantity }));
+    } else {
+      console.log("e target unchecked!");
+      !isFirst && dispatch(cartActions.removeFromCheckedList(cart));
+    }
+    dispatch(cartActions.updateTotal());
     setIsChecked((prev) => !prev);
-    console.log(e.target.checked);
   };
-
   return (
     <article className="cart__wrapper">
       <div className="cart">
@@ -38,7 +54,7 @@ const Cart = ({ cart }) => {
           <InputCheckbox
             type="checkbox"
             id={cart.id}
-            checked={ischecked}
+            checked={isChecked}
             onChangeCheckhandler={(e) => onChangeCheckhandler(e)}
           />
           <img src={cart.img} alt={cart.itemName} />

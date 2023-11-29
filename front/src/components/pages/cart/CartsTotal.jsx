@@ -1,11 +1,16 @@
 import { useSelector } from "react-redux";
 import banana from "../../../assets/banana.png";
+import { useEffect } from "react";
 const CartsTotal = () => {
   //이건 선택된 cartCheckedList에서 계산된 결괏값
   const { totalPrice, totalDeliveryFee, totalBananaIndex } = useSelector(
     (state) => state.cart
   );
-
+  const totalPurchase = totalDeliveryFee + totalPrice;
+  useEffect(() => {
+    console.log("totalPrice ... etc");
+    console.log(`${totalPrice}, ${totalDeliveryFee}, ${totalBananaIndex}`);
+  }, [totalPrice, totalDeliveryFee, totalBananaIndex]);
   return (
     <div className="cartsTotal__wrapper">
       <div className="cartsTotal">
@@ -17,7 +22,7 @@ const CartsTotal = () => {
           <div>{totalDeliveryFee.toLocaleString()}원</div>
           <div>=</div>
           <div>주문금액 </div>
-          <div>{(totalPrice + totalDeliveryFee).toLocaleString()}원</div>
+          <div>{totalPurchase.toLocaleString()}원</div>
         </div>
         <div className="cart__bananaIndex">
           <img src={banana} alt="bananaIndex" />

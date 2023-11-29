@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 const Carts = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  console.log("cartItems", cartItems);
   // const [carts, setCarts] = useState([]);
   //   const { trigger, result, reqIdentifier, loading, error } = useApi({
   //     method: "get",
