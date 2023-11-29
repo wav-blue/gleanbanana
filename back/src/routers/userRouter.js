@@ -3,6 +3,9 @@ import {} from "../../libraries/custom-error";
 
 const userRouter = Router();
 
+// 아직 작성하지 않은 라우터
+// 프론트팀과 일정을 맞춰서 나중에 작성하려 합니다
+
 // 회원가입
 userRouter.post("/user/register", async function (req, res, next) {
   res.status(201).send("회원가입 API");

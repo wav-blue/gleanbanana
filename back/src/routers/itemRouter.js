@@ -1,10 +1,9 @@
 import { Router } from "express";
 
 import { itemService } from "../services/itemService";
-console.log("itemRouter.js start");
 const itemRouter = Router();
 
-// 조회 + 카테고리 + 검색 조회
+// 전체조회 + 카테고리 + 검색 조회
 itemRouter.get("/items", async function (req, res, next) {
   const { category, search } = req.query;
   try {
@@ -41,7 +40,6 @@ itemRouter.get("/items/:itemId", async function (req, res, next) {
 
 // 추가
 itemRouter.post("/items", async function (req, res, next) {
-  console.log("itemRouter.post 메서드 진입");
   try {
     const {
       item_id,
@@ -52,10 +50,6 @@ itemRouter.post("/items", async function (req, res, next) {
       banana_index,
       image_url,
     } = req.body;
-
-    console.log(
-      "itemRouter.post : 라우터에서 클라이언트로 전달 받은 데이터 확인"
-    );
 
     // DB에 데이터 추가
     const newItems = await itemService.createItem({
@@ -69,34 +63,46 @@ itemRouter.post("/items", async function (req, res, next) {
     });
 
     if (newItems.errorMessage) {
-      console.log("itemRouter.post : 데이터 입력 에러발생");
       throw new Error(newItems.errorMessage);
     }
-    console.log("itemRouter.post : 데이터 입력 성공");
-    res.status(200).json(newItems);
+    res.status(201).json(newItems);
   } catch (error) {
     next(error);
   }
 });
 
 // 삭제
-itemRouter.delete("/items/:item_id", async function (req, res, next) {
+itemRouter.delete("/items/:itemId", async function (req, res, next) {
   try {
-    const items = await itemService.deleteItem({});
-    res.status(200).json(items);
+    const { itemId } = req.params;
+    const items = await itemService.deleteItem({ item_id: itemId });
+    res.status(204).json(items);
   } catch (error) {
     next(error);
   }
 });
 
 // 수정
-itemRouter.post("/items/:item_id", async function (req, res, next) {
+itemRouter.post("/items/:itemId", async function (req, res, next) {
   try {
-    const { item_id } = req.params;
-    const { update_vaule } = req.body;
-    console.log(update_vaule);
-    const item = await itemService.updateItem({ update_vaule, item_id });
-    res.status(200).json(item);
+    const { itemId } = req.params;
+    const { item_name, category, price, description, banana_index, image_url } =
+      req.body;
+
+    // DB에 데이터 수정
+    const updatedItem = await itemService.updateItem(itemId, {
+      item_name,
+      category,
+      price,
+      description,
+      banana_index,
+      image_url,
+    });
+
+    if (updatedItem.errorMessage) {
+      throw new Error(updatedItem.errorMessage);
+    }
+    res.status(200).json(updatedItem);
   } catch (err) {
     next(err);
   }
