@@ -4,6 +4,7 @@ import InputCommon from "../../UI/InputCommon";
 import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../../store/cart";
 import InputCheckbox from "../../UI/InputCheckbox";
+import useDebouncing from "../../../hooks/useDebouncing";
 const Cart = ({ cart }) => {
   //선택된 제품만 total값과 bananaIndex값 변경되어야 함.
   const [isChecked, setIsChecked] = useState(null);
@@ -14,18 +15,27 @@ const Cart = ({ cart }) => {
 
   //api요청으로 가져온 cart와 그 수량을
   //dispatch해줌...
-  //그것을 가져옴!!! thunk가 필요 ㅠ_ㅠ
+  //그것을 가져옴!!! thunk가 필요 ㅠ_ㅠ????
 
-  const [quantity, setQuantity] = useState(cart.quantity);
+  const [quantity, setQuantity] = useState(0);
+  const { debouncedQuantity } = useDebouncing({
+    value: quantity,
+    delay: 2000,
+  });
   const onChangeNumHandler = (newValue) => {
-    setQuantity(parseInt(newValue));
+    setQuantity(newValue);
   };
 
   //number변경시
   useEffect(() => {
-    dispatch(cartActions.changeQuantity({ id: cart.id, quantity }));
+    //quantity가 계속 변경이 되는데 특정 시간까지 (2초) 기다렸다가
+    //quantity를 넣어 dispatch를 실행해야함.
+
+    //커스텀훅은 상태값을 변경해줌
+
+    dispatch(cartActions.changeQuantity({ id: cart.id, debouncedQuantity }));
     dispatch(cartActions.updateTotal());
-  }, [quantity, dispatch, cart.id]);
+  }, [debouncedQuantity, dispatch, cart.id]);
 
   useEffect(() => {
     console.log(cartCheckedList);

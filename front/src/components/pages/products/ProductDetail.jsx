@@ -6,23 +6,42 @@ import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../../store/cart";
 import { likeActions, likeStateSelector } from "../../../store/like";
 import Likes from "../../../utils/Likes";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 //장바구니에 추가하면 바로 장바구니 페이지로 가게 함
-const ProductDetail = ({ product }) => {
-  const { img, itemName, bananaIdx, itemPrice } = product;
-  const [price, setPrice] = useState(itemPrice | 0);
+const ProductDetail = () => {
+  const [product, setProduct] = useState({});
+  console.log(product);
+  const {
+    image_url: img,
+    item_name: itemName,
+    banana_index: bananaIdx,
+    itemPrice: price,
+  } = product;
+  console.log({ img, itemName, bananaIdx, price });
+  const [itemPrice, setItemPrice] = useState(price | 0);
   const [bananaIndexes, setBananaIndexes] = useState(bananaIdx | 0);
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
+  const param = useParams();
+  console.log(param.id);
 
   //likeState createSelector로 메모이즈?
   const likeState = useSelector(likeStateSelector);
   const isLike = likeState.find((like) => like.id);
   const onChangeNumHandler = (newValue) => {
     setQuantity(newValue);
+    setItemPrice(quantity * itemPrice);
   };
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get(`/api/items/${param.id}`).then((data) => {
+      console.log(data);
+      return setProduct(data.data[0]);
+    });
+  }, [param.id]);
 
   //찜목록에 추가
   //찜목록에 이미 있다면 해당 버튼을 채워지게 표현
@@ -56,9 +75,9 @@ const ProductDetail = ({ product }) => {
   };
 
   useEffect(() => {
-    setPrice(itemPrice * quantity);
+    // setPrice(itemPrice * quantity);
     setBananaIndexes(bananaIdx * quantity);
-  }, [itemPrice, bananaIdx, quantity]);
+  }, [price, bananaIdx, quantity]);
 
   return (
     <article className="product__article1">
@@ -77,7 +96,7 @@ const ProductDetail = ({ product }) => {
             <div className="product__section2--total">총 상품 금액</div>
           </div>
           <div className="product__section2--val">
-            {Number(price).toLocaleString()}원
+            {Number(itemPrice).toLocaleString()}원
           </div>
         </section>
         <section className="product__section3--button">
