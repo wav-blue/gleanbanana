@@ -10,13 +10,7 @@ const Cart = ({ cart }) => {
   const [isChecked, setIsChecked] = useState(null);
   const [isFirst, setIsFirst] = useState(true);
   const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
-
   const dispatch = useDispatch();
-
-  //api요청으로 가져온 cart와 그 수량을
-  //dispatch해줌...
-  //그것을 가져옴!!! thunk가 필요 ㅠ_ㅠ????
-
   const [quantity, setQuantity] = useState(1);
   const { debouncedQuantity } = useDebouncing({
     value: quantity,
@@ -26,20 +20,12 @@ const Cart = ({ cart }) => {
     setQuantity(newValue);
   };
 
-  //number변경시
   useEffect(() => {
-    //quantity가 계속 변경이 되는데 특정 시간까지 (2초) 기다렸다가
-    //quantity를 넣어 dispatch를 실행해야함.
-
-    //커스텀훅은 상태값을 변경해줌
-
-    dispatch(cartActions.changeQuantity({ id: cart.id, debouncedQuantity }));
+    dispatch(
+      cartActions.changeQuantity({ id: cart.id, quantity: debouncedQuantity })
+    );
     dispatch(cartActions.updateTotal());
   }, [debouncedQuantity, dispatch, cart.id]);
-
-  useEffect(() => {
-    console.log(cartCheckedList);
-  }, [cartCheckedList]);
 
   //onChangeCheckHandler를 useCallback의 callback함수에 넣으려면...   //useRef?
   //checkbox 변경시
@@ -48,10 +34,11 @@ const Cart = ({ cart }) => {
     console.log(isFirst);
     //checked되었을 때
     if (e.target.checked) {
-      console.log("e target checked!");
-      dispatch(cartActions.addToCheckedList({ id: cart.id, quantity }));
+      dispatch(
+        cartActions.addToCheckedList({ ...cart, quantity: debouncedQuantity })
+      );
     } else {
-      console.log("e target unchecked!");
+      console.log("e target unChecked!");
       !isFirst && dispatch(cartActions.removeFromCheckedList(cart));
     }
     dispatch(cartActions.updateTotal());
@@ -65,7 +52,7 @@ const Cart = ({ cart }) => {
             type="checkbox"
             id={cart.id}
             checked={isChecked}
-            onChangeCheckhandler={(e) => onChangeCheckhandler(e)}
+            onChangeCheckhandler={onChangeCheckhandler}
           />
           <img src={cart.image_url} alt={cart.item_name} />
         </div>
@@ -99,7 +86,7 @@ const Cart = ({ cart }) => {
         <div className="cart__bananaIndex">
           <img src={banana} alt="bananaIndex" />
           <div className="cart__bananaIndexNum">
-            x{(cart.banana_index * quantity).toFixed(2)}
+            x{((cart.banana_index / 100) * quantity).toFixed(2)}
           </div>
         </div>
       </div>

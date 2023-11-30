@@ -13,7 +13,7 @@ const useApi = ({
   const [reqIdentifier, setReqIdentifier] = useState("");
   const [error, setError] = useState(false);
   const [extra, setExtra] = useState("");
-  // const { showBoundary } = useErrorBoundary();
+  const { showBoundary } = useErrorBoundary();
 
   const trigger = async ({
     method: triggerMethod = method,
@@ -42,7 +42,7 @@ const useApi = ({
       console.log(err);
       if (isShowBoundary) {
         //에러 바운더리를 보여줘야 할때만 보여줌
-        // showBoundary(err);
+        showBoundary(err);
         return;
       }
       shouldSetError && setError(err);

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+//value에 함수도 가능할듯
+//자동완성 api콜 하는 함수 자체를 value로
 const useDebouncing = ({ value, delay }) => {
   const [quantity, setQuantity] = useState(0);
 

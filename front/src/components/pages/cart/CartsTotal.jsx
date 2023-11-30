@@ -4,7 +4,7 @@ import { useEffect } from "react";
 const CartsTotal = () => {
   //이건 선택된 cartCheckedList에서 계산된 결괏값
   const { totalPrice, totalDeliveryFee, totalBananaIndex } = useSelector(
-    (state) => state.cart
+    (state) => state.cart.cartTotal
   );
   const totalPurchase = totalDeliveryFee + totalPrice;
   useEffect(() => {
@@ -27,7 +27,7 @@ const CartsTotal = () => {
         <div className="cart__bananaIndex">
           <img src={banana} alt="bananaIndex" />
           <div className="cart__bananaIndexNum">
-            x {totalBananaIndex.toFixed(2)}
+            x {(totalBananaIndex / 100).toFixed(2)}
           </div>
         </div>
       </div>

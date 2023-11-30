@@ -39,7 +39,7 @@ const Carts = () => {
 
   // carts가 변경되면 서버와 통신하여 해당 데이터들을 가져옴
   useEffect(() => {
-    memoizedGetCarts();
+    // memoizedGetCarts();
   }, [cartItems, memoizedGetCarts]);
 
   // RESULT가 변하면 세팅 useApi사용할때

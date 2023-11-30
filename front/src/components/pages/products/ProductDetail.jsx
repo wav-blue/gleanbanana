@@ -1,7 +1,7 @@
 import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
 import banana from "../../../assets/banana.png";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../../store/cart";
 import { likeActions, likeStateSelector } from "../../../store/like";
@@ -35,7 +35,8 @@ const ProductDetail = () => {
 
   useEffect(() => {
     setItemPrice(price);
-  }, [price]);
+    console.log(product);
+  }, [price, product]);
 
   useEffect(() => {
     axios.get(`/api/items/${param.id}`).then((data) => {
@@ -50,7 +51,10 @@ const ProductDetail = () => {
   };
 
   //장바구니store에 수량과 함께 추가
-  const addToCartHandler = async () => {
+  //useCallback을.....
+  //depsㅠㅠ를 잘...넣자
+  //event 를 넣을필요없다
+  const addToCartHandler = useCallback(async () => {
     // const { trigger } = useApi({
     //   method: "post",
     //   path: "/cart",
@@ -72,7 +76,8 @@ const ProductDetail = () => {
       })
     );
     navigate("/cart");
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product, quantity]);
 
   useEffect(() => {
     // setPrice(itemPrice * quantity);
@@ -85,7 +90,7 @@ const ProductDetail = () => {
       <section className="product__section">
         <h1>{itemName}</h1>
         <div className="product__bananaIndex">
-          x{(bananaIndexes / 10).toFixed(2)}
+          x{(bananaIndexes / 100).toFixed(2)}
         </div>
         <img src={banana} alt="bananaIndex" />
         <section className="product__section2">

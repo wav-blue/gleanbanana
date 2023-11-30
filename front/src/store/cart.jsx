@@ -3,9 +3,7 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 const initialState = {
   cartItems: [],
   cartCheckedList: [],
-  totalPrice: 0,
-  totalDeliveryFee: 0,
-  totalBananaIndex: 0,
+  cartTotal: { totalPrice: 0, totalDeliveryFee: 0, totalBananaIndex: 0 },
 };
 
 const cartSlice = createSlice({
@@ -29,6 +27,7 @@ const cartSlice = createSlice({
     //장바구니에서 체크박스 선택했을 때
     //총량표시(계산?)
     addToCheckedList(state, action) {
+      console.log(action.payload);
       const checkedItem = state.cartItems.find(
         (cart) => cart.id === action.payload.id
       );
@@ -64,18 +63,20 @@ const cartSlice = createSlice({
 
     updateTotal(state) {
       //cartCheckedList에 들어있는 모든 아이템의 bananaIndex
+      //하나로 ㅠㅠ
       console.log("update Total");
       state.totalBananaIndex = state.cartCheckedList.reduce(
-        (acc, cur) => acc + cur.banana_index * cur.quantity,
-        0
-      );
-      state.totalDeliveryFee = state.cartCheckedList.reduce(
-        (acc, cur) => acc + cur.deliveryFee * cur.quantity,
-        0
-      );
-      state.totalPrice = state.cartCheckedList.reduce(
-        (acc, cur) => acc + cur.price * cur.quantity,
-        0
+        (acc, cur) => {
+          return {
+            totalBananaIndex: (state.cartTotal.totalBananaIndex =
+              acc.banana_index + cur.banana_index * cur.quantity),
+            totalDeliveryFee: (state.cartTotal.totalDeliveryFee =
+              acc.totalDeliveryFee + cur.deliveryFee),
+            totalPrice: (state.cartTotal.totalPrice =
+              acc.totalPrice + cur.totalPrice),
+          };
+        },
+        { totalPrice: 0, totalDeliveryFee: 0, totalBananaIndex: 0 }
       );
     },
   },

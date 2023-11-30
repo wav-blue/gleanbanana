@@ -27,10 +27,10 @@ const Products = () => {
   useEffect(() => {
     // trigger({
     //   method: "get",
-    //   path: "/items",
+    //   path: "/api/items",
     //   data: null,
     //   applyResult: true,
-    //   isShowBoundary: true,
+    //   isShowBoundary: false,
     //   shouldSetError: false,
     // });
     axios.get("/api/items").then((data) => {
