@@ -20,9 +20,9 @@ cartRouter.post("/:userId/carts", async function (req, res, next) {
   const { itemId, quantity } = req.body;
 
   try {
-    await cartService.addItemToCart({ userId, itemId, quantity });
+    await cartService.createCart({ userId, itemId, quantity });
 
-    res.status(200).json({ message: "아이템이 장바구니에 추가되었습니다." });
+    res.status(200).send("아이템이 장바구니에 추가되었습니다.");
   } catch (error) {
     next(error);
   }
