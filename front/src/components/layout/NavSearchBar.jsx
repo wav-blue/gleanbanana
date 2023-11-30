@@ -4,6 +4,11 @@ import Logo from "./Logo";
 import MenuBtn from "./MenuBtn";
 
 const NavSearchBar = () => {
+  // const barWidth = window.innerWidth;
+  // const isBig = useEffect((barWidth) => barWidth > 768, [barWidth]);
+  const isBig = window.innerWidth > 768;
+  console.log(window.innerWidth);
+  //크기에 따라서 placeholder 달리 하고 싶음
   return (
     <div className="navSearch__wrapper">
       <Logo />
@@ -15,7 +20,7 @@ const NavSearchBar = () => {
             value=""
             className="search"
             onChange=""
-            placeholder="원하는 식재료를 입력하세요."
+            placeholder={isBig ? "원하는 식재료를 입력하세요." : ""}
           />
           <ButtonCommon design="none" type="submit">
             <span className="material-symbols-outlined">search</span>
