@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import banana from "../../../assets/banana.png";
 
-const Error404 = () => {
+const NotFound = () => {
   return (
     <div className="error__wrapper">
       <img src={banana} alt="banana" />
@@ -22,4 +22,4 @@ const Error404 = () => {
   );
 };
 
-export default Error404;
+export default NotFound;

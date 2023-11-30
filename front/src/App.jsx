@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "../src/styles/style.css";
+import NotFound from "./components/pages/error/NotFound";
 const Layout = lazy(() => import("./components/layout/Layout"));
 const Home = lazy(() => import("./components/pages/home/Home"));
 const Login = lazy(() => import("./components/pages/login/Login"));
@@ -34,6 +35,7 @@ function App() {
               <Route path="/myPage" element={<MyPage />} />
               <Route path="/order" element={<Order />} />
               <Route path="/purchase" element={<Purchase />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           <footer className="footer">footer입니다</footer>
