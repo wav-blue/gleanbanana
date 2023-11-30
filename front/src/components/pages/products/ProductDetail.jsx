@@ -5,40 +5,40 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../../store/cart";
 import { likeActions, likeStateSelector } from "../../../store/like";
-import Likes from "../../../utils/Likes";
+import Likes from "../../icons/Likes";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 //장바구니에 추가하면 바로 장바구니 페이지로 가게 함
 const ProductDetail = () => {
   const [product, setProduct] = useState({});
-  console.log(product);
   const {
     image_url: img,
     item_name: itemName,
     banana_index: bananaIdx,
-    itemPrice: price,
+    price,
   } = product;
-  console.log({ img, itemName, bananaIdx, price });
-  const [itemPrice, setItemPrice] = useState(price | 0);
+  const [itemPrice, setItemPrice] = useState(price);
   const [bananaIndexes, setBananaIndexes] = useState(bananaIdx | 0);
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
   const param = useParams();
-  console.log(param.id);
 
   //likeState createSelector로 메모이즈?
   const likeState = useSelector(likeStateSelector);
   const isLike = likeState.find((like) => like.id);
   const onChangeNumHandler = (newValue) => {
     setQuantity(newValue);
-    setItemPrice(quantity * itemPrice);
+    setItemPrice(quantity * price);
   };
   const navigate = useNavigate();
 
   useEffect(() => {
+    setItemPrice(price);
+  }, [price]);
+
+  useEffect(() => {
     axios.get(`/api/items/${param.id}`).then((data) => {
-      console.log(data);
       return setProduct(data.data[0]);
     });
   }, [param.id]);
@@ -84,7 +84,9 @@ const ProductDetail = () => {
       <img src={img} alt={itemName} />
       <section className="product__section">
         <h1>{itemName}</h1>
-        <div className="product__bananaIndex">x{bananaIndexes.toFixed(2)}</div>
+        <div className="product__bananaIndex">
+          x{(bananaIndexes / 10).toFixed(2)}
+        </div>
         <img src={banana} alt="bananaIndex" />
         <section className="product__section2">
           <div className="product__section2--input">
