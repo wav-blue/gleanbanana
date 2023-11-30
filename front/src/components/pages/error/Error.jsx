@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import banana from "../../../assets/banana.png";
+import { useErrorBoundary } from "react-error-boundary";
+import ButtonCommon from "../../UI/ButtonCommon";
 
 const Error = () => {
+  const { resetBoundary } = useErrorBoundary();
   return (
     <div className="error__wrapper">
       <img src={banana} alt="banana" />
@@ -13,9 +16,9 @@ const Error = () => {
           보내신 요청을 다시 확인해주세요.
         </div>
       </div>
-      <Link to="/home" className="error__button">
-        홈으로 돌아가기
-      </Link>
+      <ButtonCommon onClick={resetBoundary} className="error__button">
+        다시시도
+      </ButtonCommon>
     </div>
   );
 };
