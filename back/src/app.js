@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-// import cors from "cors";
-=======
->>>>>>> feature/back
 import express from "express";
 import path from "path";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
