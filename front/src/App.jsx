@@ -34,8 +34,6 @@ function App() {
             <Route path="/myPage" element={<MyPage />} />
             <Route path="/order" element={<Order />} />
             <Route path="/purchase" element={<Purchase />} />
-            <Route path="/Error" element={<Error />} />
-            <Route path="/Error404" element={<Error404 />} />
           </Routes>
         </main>
         <footer className="footer">footer입니다</footer>
