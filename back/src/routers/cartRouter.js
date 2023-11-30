@@ -4,8 +4,8 @@ import { cartService } from "../services/cartService";
 const cartRouter = Router();
 
 // 장바구니 전체 조회
-cartRouter.get("/user/:id/carts", async function (req, res, next) {
-  const { id: userId } = req.params;
+cartRouter.get("/:userId/carts", async function (req, res, next) {
+  const { userId : userId } = req.params;
   try {
     const carts = await cartService.getCarts({ userId });
     res.status(200).json(carts);
@@ -15,8 +15,8 @@ cartRouter.get("/user/:id/carts", async function (req, res, next) {
 });
 
 // 장바구니 아이템 추가
-cartRouter.post("/user/:id/carts", async function (req, res, next) {
-  const { id: userId } = req.params;
+cartRouter.post("/:userId/carts", async function (req, res, next) {
+  const { userId : userId } = req.params;
   const { itemId, quantity } = req.body;
 
   try {
@@ -29,8 +29,8 @@ cartRouter.post("/user/:id/carts", async function (req, res, next) {
 });
 
 // 장바구니에서 물품 삭제
-cartRouter.delete("/user/:id/cart/:cartId", async function (req, res, next) {
-  const { id: userId, cartId } = req.params;
+cartRouter.delete("/:userId/cart/:cartId", async function (req, res, next) {
+  const { userId : userId, cartId } = req.params;
 
   try {
     await cartService.deleteCart({ userId, cartId });
