@@ -17,7 +17,7 @@ const Cart = ({ cart }) => {
   //dispatch해줌...
   //그것을 가져옴!!! thunk가 필요 ㅠ_ㅠ????
 
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const { debouncedQuantity } = useDebouncing({
     value: quantity,
     delay: 2000,
@@ -67,29 +67,39 @@ const Cart = ({ cart }) => {
             checked={isChecked}
             onChangeCheckhandler={(e) => onChangeCheckhandler(e)}
           />
-          <img src={cart.img} alt={cart.itemName} />
+          <img src={cart.image_url} alt={cart.item_name} />
         </div>
         <div className="cart__description__wrapper">
           <div className="cart__description">
-            <div className="cart__description-name">{cart.itemName}</div>
+            <div className="cart__description-name">{cart.item_name}</div>
             <div className="cart__description-delivery">
-              {cart.deliveryDate}에 도착예정
+              {cart.expected_delivery}에 도착예정
             </div>
           </div>
-          <InputCommon
-            type="number"
-            className="gray-square"
-            value={cart.quantity}
-            onValueChange={onChangeNumHandler}
-          />
+          {isFirst && (
+            <InputCommon
+              type="number"
+              className="gray-square"
+              value={cart.quantity}
+              onValueChange={onChangeNumHandler}
+            />
+          )}
+          {!isFirst && (
+            <InputCommon
+              type="number"
+              className="gray-square"
+              value={cart.debouncedQuantity}
+              onValueChange={onChangeNumHandler}
+            />
+          )}
           <div className="cart__description__val">
-            {Number((cart.itemPrice * quantity).toFixed(2)).toLocaleString()}원
+            {Number((cart.price * quantity).toFixed(2)).toLocaleString()}원
           </div>
         </div>
         <div className="cart__bananaIndex">
           <img src={banana} alt="bananaIndex" />
           <div className="cart__bananaIndexNum">
-            x{(cart.bananaIdx * quantity).toFixed(2)}
+            x{(cart.banana_index * quantity).toFixed(2)}
           </div>
         </div>
       </div>

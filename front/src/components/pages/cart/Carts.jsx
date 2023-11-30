@@ -5,6 +5,7 @@ import CartsTotal from "./CartsTotal";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useApi from "../../../hooks/useApi";
+import axios from "axios";
 
 const Carts = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -21,13 +22,17 @@ const Carts = () => {
 
   // carts가 변경되면 서버와 통신하여 해당 데이터들을 가져옴
   useEffect(() => {
-    trigger({
-      method: "get",
-      path: `/carts`,
-      data: {},
-      applyResult: true,
-      isShowBoundary: true,
-      shouldSetError: true,
+    // trigger({
+    //   method: "get",
+    //   path: `/carts`,
+    //   data: {},
+    //   applyResult: true,
+    //   isShowBoundary: true,
+    //   shouldSetError: true,
+    // });
+    axios.get("/api/cart/").then((data) => {
+      console.log(data);
+      return setCarts(data.data);
     });
   }, [carts]);
 

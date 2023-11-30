@@ -66,7 +66,7 @@ const cartSlice = createSlice({
       //cartCheckedList에 들어있는 모든 아이템의 bananaIndex
       console.log("update Total");
       state.totalBananaIndex = state.cartCheckedList.reduce(
-        (acc, cur) => acc + cur.bananaIdx * cur.quantity,
+        (acc, cur) => acc + cur.banana_index * cur.quantity,
         0
       );
       state.totalDeliveryFee = state.cartCheckedList.reduce(
@@ -74,7 +74,7 @@ const cartSlice = createSlice({
         0
       );
       state.totalPrice = state.cartCheckedList.reduce(
-        (acc, cur) => acc + cur.itemPrice * cur.quantity,
+        (acc, cur) => acc + cur.price * cur.quantity,
         0
       );
     },
