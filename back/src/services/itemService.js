@@ -48,7 +48,7 @@ class itemService {
     banana_index,
     image_url,
   }) {
-    var query = `INSERT INTO item (item_id,item_name,category,price,description,banana_index,image_url) VALUES (${item_id}, '${item_name}','${category}',${price},'${description}',${banana_index},'${image_url}')`;
+    var query = `INSERT INTO ${table_name} (item_id,item_name,category,price,description,banana_index,image_url) VALUES (${item_id}, '${item_name}','${category}',${price},'${description}',${banana_index},'${image_url}')`;
     return new Promise((resolve, reject) => {
       db.query(query, function (error, results, fields) {
         if (error) {
@@ -65,8 +65,16 @@ class itemService {
     { item_name, category, price, description, banana_index, image_url }
   ) {
     return new Promise((resolve, reject) => {
-      const query = `UPDATE ${table_name} SET item_name='${item_name}',category='${category}',price='${price}',description='${description}',banana_index='${banana_index}',image_url='${image_url}' WHERE item_id = ${item_id};`;
-      db.query(query, function (error, results, fields) {
+      const itemObj = {
+        item_name,
+        category,
+        price,
+        description,
+        banana_index,
+        image_url,
+      };
+      const query = `UPDATE ${table_name} SET ? WHERE item_id = ?;`;
+      db.query(query, [itemObj, item_id], function (error, results, fields) {
         if (error) {
           reject(error);
         } else {
@@ -78,8 +86,8 @@ class itemService {
   // 삭제
   static async deleteItem({ item_id }) {
     return new Promise((resolve, reject) => {
-      const query = `DELETE FROM ${table_name} WHERE item_id = ${item_id}`;
-      db.query(query, function (error, results, fields) {
+      const query = `DELETE FROM ${table_name} WHERE item_id = ?`;
+      db.query(query, [item_id], function (error, results, fields) {
         if (error) {
           reject(error);
         } else {
