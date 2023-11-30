@@ -1,4 +1,3 @@
-import InputCommon from "../../UI/InputCommon";
 import Categories from "./Categories";
 import Charts from "./Charts";
 import Recommendations from "./Recommendations";

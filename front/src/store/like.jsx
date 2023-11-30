@@ -22,7 +22,6 @@ const likeSlice = createSlice({
         console.log(newLike);
       }
     },
-
     removeFromLike(state, action) {
       state.likeLists.filter((like) => like.id !== action.payload.id);
     },

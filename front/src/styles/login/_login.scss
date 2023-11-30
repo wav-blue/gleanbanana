@@ -25,6 +25,16 @@
     display: flex;
     flex-direction: column;
     gap: 18px;
+    &-check {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      & > p {
+        font-size: $small-font-size;
+        margin-left: 8px;
+        color: $required-color;
+      }
+    }
   }
   &__find {
     display: flex;

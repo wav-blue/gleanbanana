@@ -1,3 +1,5 @@
+@import "./product";
+
 .products {
   grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
   gap: 20px;

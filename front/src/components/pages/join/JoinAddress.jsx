@@ -39,7 +39,7 @@ const JoinAddress = () => {
   };
 
   return (
-    <div className="join__input--check">
+    <div className="join__input--button">
       <InputCommon
         label="주소"
         placeholder="주소를 검색해주세요"

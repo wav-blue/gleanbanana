@@ -1,3 +1,4 @@
+import { useState } from "react";
 import InputCommon from "../../UI/InputCommon";
 
 const JoinApprovalList = [
@@ -12,13 +13,26 @@ const JoinApprovalList = [
         </p>
       </div>
     ),
+    checkAll: true,
   },
-  { required: true, content: "이용약관 동의 (필수)" },
-  { required: true, content: "개인정보 수집 이용 동의 (필수)" },
-  { required: false, content: "개인정보 수집 이용 동의 (선택)" },
+  { required: true, content: "이용약관 동의 (필수)", checkAll: false },
+  {
+    required: true,
+    content: "개인정보 수집 이용 동의 (필수)",
+    checkAll: false,
+  },
+  {
+    required: false,
+    content: "개인정보 수집 이용 동의 (선택)",
+    checkAll: false,
+  },
 ];
 
 const JoinApproval = () => {
+  const [checked, setChecked] = useState(false);
+  const onValueChange = (val) => {
+    setChecked(val);
+  };
   return (
     <div className="join__approval">
       <div className="join__approval__label">
@@ -32,6 +46,8 @@ const JoinApproval = () => {
               type="checkbox"
               required={approval.required}
               className="checkbox"
+              onValueChange={onValueChange}
+              checkAll={approval.checkAll}
             />
             {approval.content}
           </label>

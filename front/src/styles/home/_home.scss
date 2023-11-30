@@ -1,30 +1,38 @@
+@import "./categories";
+@import "./category";
+@import "./charts";
+@import "./recommendation";
+
 .home {
   display: flex;
   flex-direction: column;
-  // flex: 2 대신에
-  width: 1020px;
   margin: 0 auto;
-  // flex: 2; //화면 크기만큼 늘어남 반응
   gap: 30px;
   &__wrapper {
-    width: 1020px;
-    margin: 0 auto;
-  }
-  & > ul {
     display: flex;
-    // flex-wrap: wrap;
-    gap: 30px;
-    width: 90vw;
-    margin: 0 auto;
-    overflow: hidden;
-    & > li {
-      // flex: 1;
+    flex-direction: column;
+    gap: 25px;
+    width: 1020px;
+  }
+
+  @include tablet {
+    &__wrapper {
+      width: $breakpoint-tablet;
     }
   }
-}
-
-.categories {
-  &__wrapper {
-    display: flex;
+  @include mobile-l {
+    &__wrapper {
+      width: $breakpoint-mobile-l;
+    }
+  }
+  @include mobile-m {
+    &__wrapper {
+      width: $breakpoint-mobile-m;
+    }
+  }
+  @include mobile-s {
+    &__wrapper {
+      width: $breakpoint-mobile-s;
+    }
   }
 }

@@ -88,11 +88,11 @@ input#numberInput::-webkit-outer-spin-button {
 }
 
 // INPUT TYPE= CHECKBOX
-input[id^="check_btn"] {
+input#check_btn {
   display: none;
 }
 
-input[id^="check_btn"] + label {
+input#check_btn + label {
   display: inline-block;
   width: 18px;
   height: 18px;
@@ -100,7 +100,7 @@ input[id^="check_btn"] + label {
   background-color: $gray-lev1;
   position: relative;
 }
-input[id^="check_btn"]:checked + label::after {
+input#check_btn:checked + label::after {
   content: url("../assets/done_FILL0_wght400_GRAD0_opsz24.png");
   font-size: 16px;
   width: 18px;
@@ -118,6 +118,7 @@ input[id^="check_btn"]:checked + label::after {
   justify-content: center;
   cursor: pointer;
   border: none;
+  border-radius: 4px;
   background-color: $gray-lev1;
   box-sizing: border-box;
   &--ssmall {
@@ -131,9 +132,9 @@ input[id^="check_btn"]:checked + label::after {
     font-size: $small-font-size;
   }
   &--bigsmall {
-    width: 125px;
-    height: 35px;
-    font-size: $basic-font-size;
+    width: 120px;
+    height: 30px;
+    font-size: $small-font-size;
   }
   &--small {
     width: 98px;
@@ -181,15 +182,21 @@ input[id^="check_btn"]:checked + label::after {
 
 .card {
   width: 240px;
-  height: 240px;
-  background-color: $gray-lev1;
+  height: 300px;
   display: flex;
   flex-direction: column;
-  gap: 13px;
+  gap: 15px;
   cursor: pointer;
   & > img {
-    width: 240px;
-    height: 160px;
+    width: 100%;
+  }
+
+  @include mobile-l {
+    width: 200px;
+    height: 260px;
+    & > img {
+      width: 100%;
+    }
   }
 }
 
@@ -199,6 +206,7 @@ input[id^="check_btn"]:checked + label::after {
   display: flex;
   align-items: center;
   gap: 0px;
+  border-bottom: 1px solid $gray-lev1;
   & > img {
     width: 90px;
     height: 90px;
@@ -237,9 +245,9 @@ input[id^="check_btn"]:checked + label::after {
 // COMMON FLEX ELEMENT
 .flex {
   display: flex;
-  align-items: center;
   gap: 96px;
   margin: 18px 0;
+  align-items: center;
   &__element {
     &-left {
       > div:first-child {
@@ -250,10 +258,4 @@ input[id^="check_btn"]:checked + label::after {
       gap: 19px;
     }
   }
-}
-
-// WRAPPER
-.wrapper {
-  margin: 0 auto;
-  width: $common-width;
 }

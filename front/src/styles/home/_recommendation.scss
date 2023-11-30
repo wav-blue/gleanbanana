@@ -1,38 +1,28 @@
 .recommendation {
   display: flex;
   flex-direction: row;
-  gap: 22px;
-  margin: 0 auto;
-  &.card {
-    & > a {
-      & > img {
-        width: 240px;
-        height: 180px;
-      }
-    }
-  }
+  gap: 20px;
+  flex-wrap: wrap;
   &__wrapper {
-    width: 1020px;
-    height: 268px;
-    margin: 0 auto;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 13px;
+    gap: 15px;
     margin-bottom: 30px;
   }
 
   &__head {
-    display: flex;
+    font-size: 18px;
   }
 
   &__description {
     display: flex;
-    flex-direction: row;
     gap: 6px;
     justify-content: space-between;
 
     &__wrapper {
-      margin: 0 19px;
+      padding: 0 25px 0 5px;
     }
     &-index {
       & > img {
@@ -43,25 +33,25 @@
 
     &-bananaIndex {
       font-size: $small-font-size;
-      transform: translateX(15px) translateY(-35px);
+      transform: translateX(18px) translateY(-35px);
     }
 
     &-detail {
       display: flex;
+      width: 75%;
       flex-direction: column;
-      gap: 6px;
+      gap: 11px;
     }
   }
 
   &__name {
-    font-size: 15px;
-    text-overflow: ellipsis;
+    font-size: 16px;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
   }
   &__price {
-    font-size: 15px;
+    font-size: 13px;
   }
 }

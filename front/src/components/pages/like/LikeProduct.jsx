@@ -1,8 +1,25 @@
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import ButtonCommon from "../../UI/ButtonCommon";
 import List from "../../UI/List";
+import { likeActions } from "../../../store/like";
+import { cartActions } from "../../../store/cart";
 
-const LikeProduct = ({ src, name, price, bananaImg, bananaIdx }) => {
+const LikeProduct = ({ like }) => {
+  const { src, name, price, bananaImg, bananaIdx } = like;
+  const dispatch = useDispatch();
+  const removeHandler = async () => {
+    dispatch(likeActions.removeFromLike(like));
+  };
+  const addToCartHandler = async () => {
+    dispatch(
+      cartActions.addToCart({
+        ...like,
+        quantity: 1,
+      })
+    );
+  };
+
   return (
     <List type="row">
       <img src={src} alt={name} />
@@ -19,8 +36,12 @@ const LikeProduct = ({ src, name, price, bananaImg, bananaIdx }) => {
         </div>
       </Link>
       <div className="like__button__wrapper">
-        <ButtonCommon design="midsmall">장바구니 담기</ButtonCommon>
-        <ButtonCommon design="midsmall">삭제</ButtonCommon>
+        <ButtonCommon design="midsmall" onClick={addToCartHandler}>
+          장바구니 담기
+        </ButtonCommon>
+        <ButtonCommon design="midsmall" onClick={removeHandler}>
+          삭제
+        </ButtonCommon>
       </div>
     </List>
   );

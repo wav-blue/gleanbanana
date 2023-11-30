@@ -11,6 +11,8 @@ const InputCommon = ({
   required = false,
   disabled = false,
   onValueChange,
+  onChange,
+  onBlur,
   onChangeCheckhandler,
   checkAll = false,
   checked = false,
@@ -27,6 +29,7 @@ const InputCommon = ({
             id={`check_btn${uniqueId}`}
             className={`input ${className}`}
             checked={checked}
+            required={required}
             onChange={onChangeCheckhandler}
           />
           <label htmlFor={`check_btn${uniqueId}`}>{checked}</label>
@@ -45,7 +48,8 @@ const InputCommon = ({
             id={id}
             value={value}
             className={`input ${className}`}
-            onChange={(e) => setInputNum(e)}
+            onBlur={onBlur}
+            onChange={onChange}
             defaultValue={defaultValue}
             placeholder={placeholder}
             required={required}
