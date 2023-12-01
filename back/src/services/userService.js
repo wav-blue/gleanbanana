@@ -2,16 +2,17 @@
 //import hashPassword from "../utils/hash-password";
 //import comparePassword from "../utils/compare-password";
 import { ulid } from "ulidx";
-import db from "../db";
+import db from "../db/index_multi";
 import { BadRequestError } from "../../libraries/custom-error";
 import jwt from "jsonwebtoken";
+import mysql from "mysql2";
 
 class userService {
   static async addUser({ email, password, username, address, phone_number }) {
     // 비밀번호 해쉬화
     // const hashedPassword = await hashPassword(password, 10);
 
-    const user_id = ulid(); // 01F7DKCVCVDZN1Z5Q4FWANHHCC
+    const user_id = ulid();
     const today = new Date();
     const newUser = {
       user_id,
@@ -25,10 +26,18 @@ class userService {
       updatedAt: today,
       deletedAt: null,
     };
+    const cart_id = ulid();
+    const newCart = { cart_id, user_id };
 
-    var query = `INSERT INTO user SET ?  `;
+    console.log(newUser, newCart);
+
+    const query1 = `INSERT INTO user SET ?; `;
+    const query1s = mysql.format(query1, newUser);
+    const query2 = `INSERT INTO cart SET ?; `;
+    const query2s = mysql.format(query2, newCart);
+
     return new Promise((resolve, reject) => {
-      db.query(query, newUser, function (error, results, fields) {
+      db.query(query1s + query2s, function (error, results) {
         if (error) {
           console.log("error : ", error);
           reject(error);
