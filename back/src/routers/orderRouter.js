@@ -22,7 +22,6 @@ orderRouter.post("/:userId/orders", async function (req, res, next) {
   try {
     const { userId } = req.params;
 
-    // item 여러 개가 온다는 느낌이 생기게 복수형으로 변경했습니다!
     const { pay_method, items } = req.body;
 
     const newOrders = await orderService.createOrder({
@@ -63,16 +62,15 @@ orderRouter.delete(
   //   check_permission,
 
   async (req, res, next) => {
-    console.log("dddddddddddddddddddddddd");
     try {
       const userId = req.params.userId;
       console.log("userId: ", userId);
 
       const order_id = req.params.id;
       console.log("order_id: ", order_id);
-      const deletedOrder = await orderService.deleteOrder(order_id);
+      await orderService.deleteOrder(order_id);
       //const deletedOrder = await orderService.deleteOrder({ _id: id });
-      res.status(204).json(deletedOrder);
+      res.status(204).json();
     } catch (err) {
       next(err);
     }

@@ -6,6 +6,7 @@ const db = mysql.createConnection({
   password: process.env.RDS_PASSWORD,
   port: process.env.RDS_PORT,
   database: "banana",
+  // 다중 쿼리를 사용하기 위한 설정
   multipleStatements: true,
 });
 

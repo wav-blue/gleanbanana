@@ -5,7 +5,7 @@ const cartRouter = Router();
 
 // 장바구니 전체 조회
 cartRouter.get("/:userId/carts", async function (req, res, next) {
-  const { userId : userId } = req.params;
+  const { userId: userId } = req.params;
   try {
     const carts = await cartService.getCarts({ userId });
     res.status(200).json(carts);
@@ -21,8 +21,8 @@ cartRouter.post("/:userId/carts", async function (req, res, next) {
 
   try {
     // 사용자의 cart_id 가져오기
-    let cartId = await cartService.getCartIdForUser( userId );
-    
+    let cartId = await cartService.getCartIdForUser(userId);
+
     if (!cartId) {
       cartId = await cartService.createCartForUser({ userId });
     }
@@ -32,7 +32,11 @@ cartRouter.post("/:userId/carts", async function (req, res, next) {
 
     if (existingItem) {
       // 이미 장바구니에 있는 경우 수량 증가
-      await cartService.updateCartItem({ cartId, itemId, quantity: existingItem.quantity + quantity });
+      await cartService.updateCartItem({
+        cartId,
+        itemId,
+        quantity: existingItem.quantity + quantity,
+      });
     } else {
       // 장바구니에 없는 경우 새로운 데이터 추가
       await cartService.insertCartItem({ cartId, itemId, quantity });
@@ -46,7 +50,7 @@ cartRouter.post("/:userId/carts", async function (req, res, next) {
 
 // 장바구니에서 물품 삭제
 cartRouter.delete("/:userId/cart/:itemId", async function (req, res, next) {
-  const { userId : userId, itemId } = req.params;
+  const { userId: userId, itemId } = req.params;
 
   try {
     await cartService.deleteCart({ userId, itemId });
