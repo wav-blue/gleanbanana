@@ -21,7 +21,6 @@ const useApi = ({
     data: triggerData = data,
     applyResult = false,
     isShowBoundary = true,
-    shouldSetError = true,
   }) => {
     setLoading(true);
 
@@ -45,7 +44,7 @@ const useApi = ({
         showBoundary(err);
         return;
       }
-      shouldSetError && setError(err);
+      setError(err);
       return;
     } finally {
       setLoading(false);

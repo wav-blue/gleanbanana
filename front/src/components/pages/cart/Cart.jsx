@@ -5,11 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../../store/cart";
 import InputCheckbox from "../../UI/InputCheckbox";
 import useDebouncing from "../../../hooks/useDebouncing";
+//선택된 제품만 total값과 bananaIndex값 변경되어야 함.
 const Cart = ({ cart }) => {
-  //선택된 제품만 total값과 bananaIndex값 변경되어야 함.
   const [isChecked, setIsChecked] = useState(null);
   const [isFirst, setIsFirst] = useState(true);
-  const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   const { debouncedQuantity } = useDebouncing({

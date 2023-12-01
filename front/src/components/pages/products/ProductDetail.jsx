@@ -3,15 +3,19 @@ import InputCommon from "../../UI/InputCommon";
 import banana from "../../../assets/banana.png";
 import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { cartActions } from "../../../store/cart";
-import { likeActions, likeStateSelector } from "../../../store/like";
+import { likeActions } from "../../../store/like";
 import Likes from "../../icons/Likes";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import useApi from "../../../hooks/useApi";
 
 //장바구니에 추가하면 바로 장바구니 페이지로 가게 함
 const ProductDetail = () => {
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState({
+    image_url: "",
+    item_name: "",
+    banana_index: 0,
+    price: 0,
+  });
   const {
     image_url: img,
     item_name: itemName,
@@ -23,66 +27,76 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
   const param = useParams();
-
-  //likeState createSelector로 메모이즈?
-  const likeState = useSelector(likeStateSelector);
-  const isLike = likeState.find((like) => like.id);
-  const onChangeNumHandler = (newValue) => {
-    setQuantity(newValue);
-    setItemPrice(quantity * price);
-  };
+  const { trigger, result, reqIdentifier, loading } = useApi({
+    method: "post",
+    path: "/cart",
+    data: {},
+    shouldInitFetch: false,
+  });
+  const likeState = useSelector((state) => state.likeLists);
+  const isLike =
+    likeState && likeState.find((like) => like.item_id === product.item_id);
   const navigate = useNavigate();
 
+  //ProductDetail GET
   useEffect(() => {
-    setItemPrice(price);
-    console.log(product);
-  }, [price, product]);
-
-  useEffect(() => {
-    axios.get(`/api/items/${param.id}`).then((data) => {
-      return setProduct(data.data[0]);
-    });
+    //detail정보 가져오기
+    const getProductDetail = async () => {
+      await trigger({
+        method: "get",
+        path: `/items/${param.id}`,
+        data: undefined,
+        applyResult: true,
+        isShowBoundary: false,
+      });
+    };
+    getProductDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param.id]);
 
-  //찜목록에 추가
-  //찜목록에 이미 있다면 해당 버튼을 채워지게 표현
-  const addToLikeHandler = () => {
-    dispatch(likeActions.addToLike(product));
-  };
-
-  //장바구니store에 수량과 함께 추가
-  //useCallback을.....
-  //depsㅠㅠ를 잘...넣자
-  //event 를 넣을필요없다
+  //Cart POST
   const addToCartHandler = useCallback(async () => {
-    // const { trigger } = useApi({
-    //   method: "post",
-    //   path: "/cart",
-    //   data: {},
-    //   shouldInitFetch: false,
-    // });
-    // const result = await trigger({
-    //   method: "post",
-    //   path: "/cart",
-    //   data: data,
-    //   applyResult: true,
-    //   isShowBoundary: false,
-    //   shouldSetError: false,
-    // });
-    dispatch(
-      cartActions.addToCart({
-        ...product,
-        quantity: quantity,
-      })
-    );
+    const addCartData = {
+      ...product,
+      quantity: quantity,
+    };
+    await trigger({
+      method: "post",
+      path: "/cart",
+      data: addCartData,
+      applyResult: true,
+      isShowBoundary: false,
+    });
     navigate("/cart");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product, quantity]);
 
+  //POST like
+  const addToLikeHandler = useCallback(() => {
+    dispatch(likeActions.addToLike(product));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product]);
+
+  //quantity변경
+  const onChangeNumHandler = (newValue) => {
+    setQuantity(newValue);
+  };
+
+  //quantity 변경 -> itemPrice변경
   useEffect(() => {
-    // setPrice(itemPrice * quantity);
+    setItemPrice(quantity * price);
     setBananaIndexes(bananaIdx * quantity);
-  }, [price, bananaIdx, quantity]);
+  }, [price, quantity, bananaIdx]);
+
+  //trigger의 결과로 result가 변경이 되면
+  //setProduct (dispatch는 cart로 바로 옮겨지고 get요청 할거기때문에 안해!)
+  //근데 옮겨지고 나서 product를 변경하면 어떻게해?!
+  //신나는 메모리릭하하하
+  useEffect(() => {
+    console.log(result?.data?.data);
+    setProduct(result?.data?.data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result.data]);
 
   return (
     <article className="product__article1">
