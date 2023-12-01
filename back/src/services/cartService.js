@@ -102,20 +102,6 @@ class cartService {
     });
   }
 
-  // item_id에 대한 cart_id 가져오기
-  static async getCartIdForItem(itemId) {
-    return new Promise((resolve, reject) => {
-      db.query(`SELECT cart_id FROM cart_item WHERE item_id = ? LIMIT 1`, [itemId], (error, results, fields) => {
-        if (error) {
-          reject(error);
-        } else {
-          const cartId = results[0] ? results[0].cart_id : null;
-          resolve(cartId);
-        }
-      });
-    });
-  }
-
   // 장바구니 상품 삭제
   static async deleteCart({ userId, itemId }) {
     return new Promise(async (resolve, reject) => {
