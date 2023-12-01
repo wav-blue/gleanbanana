@@ -1,19 +1,24 @@
 @mixin mobile-s {
-  @media (min-width: $breakpoint-mobile-s) and (max-width: ($breakpoint-mobile-m - 1)) {
+  @media (max-width: ($breakpoint-mobile-m - 1)) {
     @content;
   }
 }
+
+// Iphone SE ~
 @mixin mobile-m {
   @media (min-width: $breakpoint-mobile-m) and (max-width: ($breakpoint-mobile-l - 1)) {
     @content;
   }
 }
 
+// Iphone Pro Max ~
 @mixin mobile-l {
   @media (min-width: $breakpoint-mobile-l) and (max-width: ($breakpoint-tablet - 1)) {
     @content;
   }
 }
+
+// Ipad Air ~
 @mixin tablet {
   @media (min-width: $breakpoint-tablet) and (max-width: ($breakpoint-desktop - 1)) {
     @content;

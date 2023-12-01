@@ -42,27 +42,27 @@ const LikeProducts = () => {
   const param = useParams();
   // id 가져오기
 
-  const { trigger, result, reqIdentifier, loading, error } = useApi({
-    method: "get",
-    path: `/${param.userId}/wishlist`,
-    data: {},
-    shouldInitFetch: false,
-  });
+  // const { trigger, result, reqIdentifier, loading, error } = useApi({
+  //   method: "get",
+  //   path: `/${param.userId}/wishlist`,
+  //   data: {},
+  //   shouldInitFetch: false,
+  // });
 
-  useEffect(() => {
-    // trigger({
-    //   method: "get",
-    //   path: "/items",
-    //   data: null,
-    //   applyResult: true,
-    //   isShowBoundary: true,
-    //   shouldSetError: false,
-    // });
-    axios.get(`api/${param.userId}/wishlist`).then((data) => {
-      console.log(data);
-      return setLikes(data.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   // trigger({
+  //   //   method: "get",
+  //   //   path: "/items",
+  //   //   data: null,
+  //   //   applyResult: true,
+  //   //   isShowBoundary: true,
+  //   //   shouldSetError: false,
+  //   // });
+  //   axios.get(`api/${param.userId}/wishlist`).then((data) => {
+  //     console.log(data);
+  //     return setLikes(data.data);
+  //   });
+  // }, []);
 
   return (
     <div className="like__wrapper">
@@ -72,17 +72,17 @@ const LikeProducts = () => {
       <hr />
       <div className="like__wrapper">
         <div className="like">
-          {likes &&
-            likes?.map((like, idx) => (
-              <LikeProduct
-                key={`like-${idx}`}
-                src={like.img}
-                name={like.likeName}
-                price={like.likePrice}
-                bananaImg={banana}
-                bananaIdx={like.bananaIdx}
-              />
-            ))}
+          {/* {likes && */}
+          {LikeProductList?.map((like, idx) => (
+            <LikeProduct
+              key={`like-${idx}`}
+              src={like.img}
+              name={like.likeName}
+              price={like.likePrice}
+              bananaImg={banana}
+              bananaIdx={like.bananaIdx}
+            />
+          ))}
         </div>
       </div>
     </div>

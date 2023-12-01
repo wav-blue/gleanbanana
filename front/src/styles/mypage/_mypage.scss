@@ -4,7 +4,8 @@
 .mypage {
   display: flex;
   margin: 0 auto;
-  width: 1020px;
+  justify-content: center;
+  width: 100%;
 
   &__sidebar {
     width: 180px;
@@ -16,5 +17,20 @@
     width: 800px;
     margin-top: 30px;
     gap: 45px;
+  }
+  @include mobile-l {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: $breakpoint-mobile-l;
+    &__sidebar {
+      width: 90%;
+      margin: 20px 0 0 0;
+    }
+    &__content {
+      width: 90%;
+      margin-top: 18px;
+      gap: 25px;
+    }
   }
 }

@@ -4,12 +4,12 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 46px;
+    gap: 30px;
   }
 
   &__article1 {
     display: flex;
-    gap: 45px;
+    gap: 30px;
     margin-top: 34px;
     width: 100%;
     & > img {
@@ -18,12 +18,19 @@
     }
   }
   &__section {
-    width: 100%;
+    margin-top: 15px;
+    flex: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 20px;
-    font-size: $bbig-font-size;
+  }
+  &__section1 {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    h1 {
+      font-size: 30px;
+    }
     & > img {
       width: 63px;
       height: 69px;
@@ -31,27 +38,26 @@
   }
 
   &__bananaIndex {
-    transform: translateY(70px) translateX(30px);
+    transform: translateY(35px) translateX(30px);
     font-size: $big-font-size;
   }
 
   &__section2 {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     height: 59px;
-    &--input {
+    &--totalVal {
       display: flex;
-      gap: 19px;
     }
     &--total {
       display: flex;
-      justify-content: center;
       align-items: center;
+      margin-right: 20px;
       font-size: $big-font-size;
     }
     &--val {
-      font-size: $bbig-font-size;
+      font-size: 25px;
     }
   }
 
@@ -91,5 +97,79 @@
 
   &__article3 {
     width: 1020px;
+  }
+
+  @include mobile-l {
+    &__wrapper {
+      width: $breakpoint-mobile-l;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    &__article1 {
+      width: 90%;
+      gap: 0;
+      margin-top: 20px;
+      flex-direction: column;
+      & > img {
+        width: 100%;
+        height: 387px;
+      }
+    }
+    &__section {
+      gap: 10px;
+    }
+    &__section1 {
+      flex-direction: row;
+      justify-content: space-between;
+      margin-right: 20px;
+      h1 {
+        font-size: 20px;
+      }
+      img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+    &__bananaIndex {
+      transform: translateY(7px) translateX(180px);
+      font-size: 15px;
+    }
+    &__section2 {
+      &--total {
+        font-size: 15px;
+      }
+      &--val {
+        font-size: 22px;
+      }
+    }
+    &__section3 {
+      &--button {
+        svg {
+          width: 24px;
+        }
+        button {
+          height: 40px;
+          font-size: 15px;
+        }
+      }
+    }
+    &__section4 {
+      button {
+        height: 40px;
+        font-size: 15px;
+      }
+    }
+    &__article2 {
+      width: 90%;
+      margin-top: 10px;
+    }
+    &__article3 {
+      width: 90%;
+    }
+    &__section5 {
+      width: 100%;
+    }
   }
 }

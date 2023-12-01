@@ -7,12 +7,14 @@
   }
   &__header {
     &__wrapper {
-      width: 1020px;
-      margin: 34px auto;
-      margin-bottom: 21px;
+      width: 100%;
+      margin: 30px 0 20px 0;
     }
   }
-
+  &__head {
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
   &__category {
     &__wrapper {
       margin: 18px 30px 18px 10px;
@@ -44,5 +46,64 @@
     gap: 9px;
     justify-content: center;
     margin-bottom: 41px;
+  }
+
+  @include mobile-l {
+    &__wrapper {
+      display: flex;
+      flex-direction: column;
+      width: $breakpoint-mobile-l;
+      align-items: center;
+    }
+    &__header {
+      width: 90%;
+      &__wrapper {
+        width: 100%;
+        margin: 20px 0 0 0;
+      }
+    }
+    &__head {
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    &__category {
+      &__wrapper {
+        margin: 10px 7px;
+        justify-content: center;
+        align-items: center;
+      }
+      font-size: 10px;
+      justify-content: flex-start;
+
+      &__info {
+        width: 150px;
+        font-size: 12px;
+      }
+      &__val {
+        width: 60px;
+        font-size: 12px;
+      }
+      &__index {
+        font-size: 12px;
+      }
+    }
+    &__check {
+      gap: 7px;
+      margin-right: 33px;
+    }
+    &__button {
+      gap: 9px;
+      margin-bottom: 41px;
+      & > button {
+        width: 130px;
+        height: 40px;
+        font-size: 13px;
+      }
+      & > a {
+        width: 130px;
+        height: 40px;
+        font-size: 13px;
+      }
+    }
   }
 }

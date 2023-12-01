@@ -4,7 +4,6 @@
 
   &__head {
     font-size: 18px;
-    font-weight: lighter;
   }
 
   & > hr {
@@ -46,5 +45,29 @@
     flex-direction: column;
     margin-top: 5px;
     gap: 15px;
+  }
+  @include mobile-l {
+    width: 90%;
+    &__head {
+      font-size: 15px;
+    }
+    &__wrapper {
+      margin-top: 20px;
+      width: $breakpoint-mobile-l;
+      align-items: center;
+    }
+    &__input {
+      gap: 13px;
+    }
+    &__find {
+      font-size: 12px;
+    }
+    &__button {
+      button {
+        height: 50px;
+        width: 100%;
+        font-size: 15px;
+      }
+    }
   }
 }

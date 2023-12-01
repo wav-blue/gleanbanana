@@ -22,8 +22,22 @@
       }
     }
   }
-
   &--more {
     cursor: pointer;
+  }
+  @include mobile-l {
+    &--name {
+      font-size: 15px;
+    }
+    &__wrapper {
+      width: 90%;
+      & > ul > li {
+        width: 56px;
+        height: 56px;
+      }
+    }
+    &--more {
+      font-size: 12px;
+    }
   }
 }

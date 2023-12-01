@@ -18,8 +18,55 @@
   &__description {
     display: flex;
     flex-direction: row;
-    gap: 38px;
+    gap: 35px;
     justify-content: center;
     align-items: center;
+    svg {
+      width: 20px;
+    }
+  }
+  &__price {
+    display: flex;
+    gap: 35px;
+  }
+  &__delivery {
+    display: flex;
+    gap: 35px;
+  }
+  &__totalPrice {
+    display: flex;
+    gap: 35px;
+  }
+  @include mobile-l {
+    gap: 12px;
+    justify-content: center;
+    margin-right: 0;
+    margin-right: 45px;
+    &__wrapper {
+      width: 90%;
+      margin-bottom: 25px;
+    }
+    &__description {
+      font-size: 12px;
+      gap: 15px;
+    }
+    &__price {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+    &__delivery {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+    &__totalPrice {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
   }
 }

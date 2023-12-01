@@ -20,11 +20,17 @@
     }
   }
   &.gray-square {
-    background-color: $gray-lev1;
-    border-radius: 0;
+    border: 1px solid $gray-lev1;
+    border-radius: 5px;
     width: 98px;
     height: 58px;
     position: relative;
+    @include mobile-l {
+      width: 60px;
+      height: 40px;
+      font-size: 14px;
+      padding-left: 15px;
+    }
   }
   &.search {
     position: absolute;
@@ -37,6 +43,11 @@
     border: 1px solid $gray-lev1;
     border-radius: 5px;
     font-size: medium;
+    @include mobile-l {
+      height: 50px;
+      font-size: 13px;
+      width: 100%;
+    }
   }
   &.join {
     box-sizing: border-box;
@@ -45,6 +56,10 @@
     border: 1px solid $gray-lev1;
     border-radius: 5px;
     font-size: medium;
+    @include mobile-l {
+      height: 50px;
+      font-size: 13px;
+    }
   }
 
   &.white-square {
@@ -72,23 +87,39 @@ input#numberInput::-webkit-outer-spin-button {
   cursor: pointer;
   user-select: none;
   font-size: $big-font-size;
+  @include mobile-l {
+    transform: translateY(18px);
+    margin-right: 5px;
+  }
 }
 .upper {
   svg {
     width: 20px;
   }
-  transform: translateY(-50px) translateX(80px);
+  transform: translateY(-52px) translateX(80px);
   cursor: pointer;
   user-select: none;
+  @include mobile-l {
+    svg {
+      width: 15px;
+    }
+    transform: translateY(-40px) translateX(55px);
+  }
 }
 
 .down {
   svg {
     width: 20px;
   }
-  transform: translateY(-50px) translateX(80px);
+  transform: translateY(-47px) translateX(80px);
   cursor: pointer;
   user-select: none;
+  @include mobile-l {
+    svg {
+      width: 15px;
+    }
+    transform: translateY(-40px) translateX(55px);
+  }
 }
 
 // INPUT TYPE= CHECKBOX
@@ -203,11 +234,9 @@ input#numberInput::-webkit-outer-spin-button {
   }
 
   @include mobile-l {
-    width: 200px;
-    height: 260px;
-    & > img {
-      width: 100%;
-    }
+    width: 183px;
+    height: 240px;
+    gap: 15px;
   }
 }
 
@@ -222,12 +251,16 @@ input#numberInput::-webkit-outer-spin-button {
     width: 90px;
     height: 90px;
   }
-  &.row {
-    border-bottom: 1px solid $gray-lev1;
-  }
   &.rowcard {
     border: 1.5px solid $gray-lev1;
     background-color: white;
+  }
+  @include mobile-l {
+    & > img {
+      width: 65px;
+      height: 65px;
+    }
+    height: 90px;
   }
 }
 

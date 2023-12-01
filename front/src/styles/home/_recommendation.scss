@@ -5,11 +5,11 @@
   flex-wrap: wrap;
   &__wrapper {
     width: 100%;
-    height: 100%;
+    height: auto;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
   }
 
   &__head {
@@ -53,5 +53,13 @@
   }
   &__price {
     font-size: 13px;
+  }
+  @include mobile-l {
+    &__head {
+      font-size: 15px;
+    }
+    &__wrapper {
+      width: 90%;
+    }
   }
 }

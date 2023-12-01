@@ -50,7 +50,7 @@ const Recommendations = () => {
       <div className="recommendation__head">
         <div>추천상품</div>
       </div>
-      <div className="recommendation__wrapper">
+      <div className="recommendation__card__wrapper">
         <div className="recommendation">
           {recommendations.map((recom, idx) => (
             <ProductCard

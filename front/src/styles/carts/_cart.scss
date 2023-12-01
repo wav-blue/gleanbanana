@@ -44,7 +44,6 @@
     }
     &-delivery {
       font-size: $basic-font-size;
-      font-weight: 500;
     }
   }
 
@@ -57,5 +56,58 @@
 
   &__bananaIndexNum {
     transform: translateX(25px) translateY(-35px);
+  }
+
+  @include mobile-l {
+    margin-left: 7px;
+    gap: 10px;
+    justify-content: flex-start;
+    &__wrapper {
+      width: 100%;
+      padding: 0 0 10px 0;
+    }
+    &__check {
+      gap: 7px;
+      & > img {
+        width: 55px;
+        height: 55px;
+      }
+    }
+    &__description {
+      width: 100px;
+      &__wrapper {
+        display: flex;
+        align-items: center;
+        margin-right: 0;
+        justify-content: flex-start;
+        gap: 0;
+        flex: 0;
+      }
+      &-name {
+        font-size: 12px;
+      }
+      &-delivery {
+        font-size: 10px;
+      }
+      &__val {
+        width: 50px;
+        font-size: 12px;
+      }
+    }
+    &__bananaIndex {
+      font-size: 10px;
+      position: relative;
+      top: 5px;
+      left: 10px;
+      & > img {
+        width: 25px;
+        height: auto;
+      }
+    }
+    &__bananaIndexNum {
+      position: relative;
+      top: 8px;
+      left: -10px;
+    }
   }
 }

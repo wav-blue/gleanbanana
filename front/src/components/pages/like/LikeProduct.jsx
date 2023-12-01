@@ -5,20 +5,21 @@ import List from "../../UI/List";
 import { likeActions } from "../../../store/like";
 import { cartActions } from "../../../store/cart";
 
-const LikeProduct = ({ like }) => {
-  const { src, name, price, bananaImg, bananaIdx } = like;
-  const dispatch = useDispatch();
-  const removeHandler = async () => {
-    dispatch(likeActions.removeFromLike(like));
-  };
-  const addToCartHandler = async () => {
-    dispatch(
-      cartActions.addToCart({
-        ...like,
-        quantity: 1,
-      })
-    );
-  };
+const LikeProduct = ({ src, name, price, bananaImg, bananaIdx }) => {
+  // console.log(like);
+  // const { src, name, price, bananaImg, bananaIdx } = like;
+  // const dispatch = useDispatch();
+  // const removeHandler = async () => {
+  //   dispatch(likeActions.removeFromLike(like));
+  // };
+  // const addToCartHandler = async () => {
+  //   dispatch(
+  //     cartActions.addToCart({
+  //       ...like,
+  //       quantity: 1,
+  //     })
+  //   );
+  // };
 
   return (
     <List type="row">
@@ -36,12 +37,8 @@ const LikeProduct = ({ like }) => {
         </div>
       </Link>
       <div className="like__button__wrapper">
-        <ButtonCommon design="midsmall" onClick={addToCartHandler}>
-          장바구니 담기
-        </ButtonCommon>
-        <ButtonCommon design="midsmall" onClick={removeHandler}>
-          삭제
-        </ButtonCommon>
+        <ButtonCommon design="midsmall">장바구니 담기</ButtonCommon>
+        <ButtonCommon design="midsmall">삭제</ButtonCommon>
       </div>
     </List>
   );
