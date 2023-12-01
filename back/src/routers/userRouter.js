@@ -2,11 +2,12 @@ import { Router } from "express";
 import {} from "../../libraries/custom-error";
 import { userService } from "../services/userService";
 import { loginRequired } from "../middlewares/loginRequired";
+import { ulid } from "ulidx";
 
 const userRouter = Router();
 
 // 회원가입
-userRouter.post("/user/register", async function (req, res, next) {
+userRouter.post("/users/register", async function (req, res, next) {
   try {
     const { email, password, username, address, phone_number } = req.body;
     if (!email || !password || !username || !address || !phone_number) {
@@ -28,7 +29,7 @@ userRouter.post("/user/register", async function (req, res, next) {
 });
 
 // 로그인
-userRouter.post("/user/login", async function (req, res, next) {
+userRouter.post("/users/login", async function (req, res, next) {
   const { email, password } = req.body;
   const user = await userService.loginUser({ email, password });
 
@@ -40,18 +41,23 @@ userRouter.post("/user/login", async function (req, res, next) {
 });
 
 // 유저 본인의 정보 조회
-userRouter.get("/user/current", loginRequired, async function (req, res, next) {
-  try {
-    const { id } = req.body;
-    const user = await userService.getUser({ user_id: id });
-    res.status(201).json(user);
-  } catch (error) {
-    next(error);
+userRouter.get(
+  "/users/current",
+  loginRequired,
+  async function (req, res, next) {
+    try {
+      console.log(">> ", ulid());
+      const { id } = req.body;
+      const user = await userService.getUser({ user_id: id });
+      res.status(201).json(user);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // 회원 정보 수정
-userRouter.post("/user/:id", async function (req, res, next) {
+userRouter.post("/users/:id", async function (req, res, next) {
   const { id } = req.params;
   const { password, username, address, phone_number } = req.body;
   const user = await userService.updateUser({
@@ -65,7 +71,7 @@ userRouter.post("/user/:id", async function (req, res, next) {
 });
 
 // 회원탈퇴
-userRouter.delete("/user/:id", async function (req, res, next) {
+userRouter.delete("/users/:id", async function (req, res, next) {
   const { id } = req.params;
   const user = await userService.deleteUser({ user_id: id });
   res.status(201).json(user);
