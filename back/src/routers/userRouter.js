@@ -2,7 +2,6 @@ import { Router } from "express";
 import {} from "../../libraries/custom-error";
 import { userService } from "../services/userService";
 import { loginRequired } from "../middlewares/loginRequired";
-import { ulid } from "ulidx";
 
 const userRouter = Router();
 
@@ -21,7 +20,6 @@ userRouter.post("/users/register", async function (req, res, next) {
       address,
       phone_number,
     });
-
     res.status(201).json(newUser);
   } catch (error) {
     next(error);
@@ -30,14 +28,14 @@ userRouter.post("/users/register", async function (req, res, next) {
 
 // 로그인
 userRouter.post("/users/login", async function (req, res, next) {
-  const { email, password } = req.body;
-  const user = await userService.loginUser({ email, password });
+  try {
+    const { email, password } = req.body;
+    const user = await userService.loginUser({ email, password });
 
-  res.setHeader(
-    "Set-Cookie",
-    `jwtToken=${user.token};max-age=3600;same-site=Lax;path=/;httpOnly;secure=false;`
-  );
-  res.status(200).send(user);
+    res.status(200).send(user);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // 유저 본인의 정보 조회
@@ -46,10 +44,9 @@ userRouter.get(
   loginRequired,
   async function (req, res, next) {
     try {
-      console.log(">> ", ulid());
       const { id } = req.body;
       const user = await userService.getUser({ user_id: id });
-      res.status(201).json(user);
+      res.status(200).json(user);
     } catch (error) {
       next(error);
     }
@@ -58,23 +55,31 @@ userRouter.get(
 
 // 회원 정보 수정
 userRouter.post("/users/:id", async function (req, res, next) {
-  const { id } = req.params;
-  const { password, username, address, phone_number } = req.body;
-  const user = await userService.updateUser({
-    user_id: id,
-    password,
-    username,
-    address,
-    phone_number,
-  });
-  res.status(201).json(user);
+  try {
+    const { id } = req.params;
+    const { password, username, address, phone_number } = req.body;
+    const user = await userService.updateUser({
+      user_id: id,
+      password,
+      username,
+      address,
+      phone_number,
+    });
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // 회원탈퇴
 userRouter.delete("/users/:id", async function (req, res, next) {
-  const { id } = req.params;
-  const user = await userService.deleteUser({ user_id: id });
-  res.status(201).json(user);
+  try {
+    const { id } = req.params;
+    await userService.deleteUser({ user_id: id });
+    res.status(200).json("회원탈퇴가 완료되었습니다.");
+  } catch (error) {
+    next(error);
+  }
 });
 
 export { userRouter };
