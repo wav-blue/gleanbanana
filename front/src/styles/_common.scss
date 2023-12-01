@@ -75,7 +75,7 @@ input#numberInput::-webkit-outer-spin-button {
 }
 .upper {
   svg {
-    width: 25px;
+    width: 20px;
   }
   transform: translateY(-50px) translateX(80px);
   cursor: pointer;
@@ -84,7 +84,7 @@ input#numberInput::-webkit-outer-spin-button {
 
 .down {
   svg {
-    width: 25px;
+    width: 20px;
   }
   transform: translateY(-50px) translateX(80px);
   cursor: pointer;
@@ -92,27 +92,35 @@ input#numberInput::-webkit-outer-spin-button {
 }
 
 // INPUT TYPE= CHECKBOX
-input#check_btn {
+.checkInput {
   display: none;
 }
 
-input#check_btn + label {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border: none;
-  background-color: $gray-lev1;
+.checkInput + label {
   position: relative;
+  display: flex;
+  align-items: center;
+  &::before {
+    content: "";
+    height: 0.9rem;
+    width: 0.9rem;
+    background-color: white;
+    border: 1.5px solid black;
+    border-radius: 0.25rem;
+  }
 }
-input#check_btn:checked + label::after {
-  content: url("../assets/done_FILL0_wght400_GRAD0_opsz24.png");
-  font-size: 16px;
-  width: 18px;
-  height: 18px;
-  text-align: center;
+.checkInput:checked + label::after {
+  content: "";
   position: absolute;
-  left: 0;
-  top: 0;
+  height: 0.9rem;
+  width: 0.9rem;
+  border: 1.5px solid black;
+  border-radius: 0.25rem;
+  background-image: url("../assets/done_FILL0_wght400_GRAD0_opsz24.png");
+  background-size: 100% 100%;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  // background-color: $yellow-color;
 }
 
 // BUTTON

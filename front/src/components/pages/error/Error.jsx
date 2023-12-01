@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import banana from "../../../assets/banana.png";
 import { useErrorBoundary } from "react-error-boundary";
 import ButtonCommon from "../../UI/ButtonCommon";
@@ -17,7 +16,7 @@ const Error = () => {
         </div>
       </div>
       <ButtonCommon onClick={resetBoundary} className="error__button">
-        다시시도
+        이전으로 돌아가기
       </ButtonCommon>
     </div>
   );

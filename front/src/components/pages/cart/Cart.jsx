@@ -51,6 +51,7 @@ const Cart = ({ cart }) => {
           <InputCheckbox
             type="checkbox"
             id={cart.id}
+            className="checkInput"
             checked={isChecked}
             onChangeCheckhandler={onChangeCheckhandler}
           />

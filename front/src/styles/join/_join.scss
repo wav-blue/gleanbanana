@@ -82,12 +82,13 @@
     &__content {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
     &--check {
       display: flex;
       align-items: flex-start;
       font-weight: lighter;
+      gap: 7px;
       & > div {
         display: flex;
         flex-direction: column;

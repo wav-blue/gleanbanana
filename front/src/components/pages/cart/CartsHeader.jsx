@@ -15,6 +15,7 @@ const CartsHeader = () => {
           <div className="carts__check">
             <InputCommon
               type="checkbox"
+              className="checkInput"
               id="cartsHeader"
               checked={checked}
               checkAll={true}

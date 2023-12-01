@@ -1,6 +1,6 @@
 .header {
   width: 100%;
-  height: 135px;
+  height: 125px;
   align-items: center;
   background-color: #f6e173;
   @include mobile-l {
@@ -74,7 +74,7 @@
   hr {
     position: absolute;
     left: 0px;
-    top: 45px;
+    top: 38px;
     justify-content: center;
     height: 1.5px;
     background-color: white;
@@ -113,23 +113,27 @@
   display: flex;
   justify-content: flex-end;
   font-size: 11px;
-  font-weight: 600;
   gap: 20px;
-  margin: 16px 0px 12px 0px;
+  margin: 12px 0px 12px 0px;
   @include mobile-l {
     font-size: 11px;
+  }
+}
+.logo {
+  //로고 나오면 사이즈 넣기
+  &__wrapper {
+    width: 220px;
   }
 }
 .navSearch {
   display: flex;
   position: relative;
-  width: 42%;
-  margin-top: 6px;
+  width: 500px;
+  margin-top: 5px;
   &__wrapper {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin: 28px 0px 15px 0px;
+    margin-top: 24px;
   }
   svg {
     position: absolute;
@@ -137,27 +141,27 @@
     right: -7px;
     top: -11px;
   }
-  @include mobile-l {
-    &__wrapper {
-      gap: 10px;
-      margin-top: 23px;
-    }
-    width: 20%;
+  // @include mobile-l {
+  //   &__wrapper {
+  //     gap: 10px;
+  //     margin-top: 23px;
+  //   }
+  //   width: 20%;
 
-    span {
-      font-size: 20px;
-      top: -10px;
-    }
-  }
-  @include mobile-m {
-    &__wrapper {
-      gap: 10px;
-    }
-    font-size: 10px;
-    span {
-      font-size: 20px;
-    }
-  }
+  //   span {
+  //     font-size: 20px;
+  //     top: -10px;
+  //   }
+  // }
+  // @include mobile-m {
+  //   &__wrapper {
+  //     gap: 10px;
+  //   }
+  //   font-size: 10px;
+  //   span {
+  //     font-size: 20px;
+  //   }
+  // }
 }
 
 .menuBtn {
@@ -168,6 +172,7 @@
   &__wrapper {
     display: flex;
     gap: 20px;
+    margin: 0 0 0 auto;
   }
   svg {
     width: 25px;
