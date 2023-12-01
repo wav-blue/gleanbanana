@@ -40,7 +40,21 @@ orderRouter.post("/:userId/orders", async function (req, res, next) {
   }
 });
 
-// 주문내역 수정
+// 주문내역 상세조회
+orderRouter.get("/:userId/orders/:id", async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    console.log("userId: ", userId);
+
+    const order_id = req.params.id;
+    console.log("order_id: ", order_id);
+    const getOrderDetail = await orderService.getOrderDetail(userId, order_id);
+
+    res.status(200).json(getOrderDetail);
+  } catch (err) {
+    next(err);
+  }
+});
 
 // 주문내역 삭제
 orderRouter.delete(

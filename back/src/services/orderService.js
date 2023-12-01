@@ -14,7 +14,7 @@ class orderService {
       //order_item테이블 테스트쿼리
       //const query = `SELECT item_id,quantity FROM order_item WHERE order_id in (select order_id from orders where user_id = '${userId}')`;
       //주문테이블과 order_item테이블 조인 쿼리
-      const query = `SELECT ${table_name}.*,order_item.item_id_list,order_item.quantity_list,date_add(now(), interval item.expected_delivery day) as expected_delivery 
+      const query = `SELECT ${table_name}.*,order_item.item_id,order_item.quantity,date_add(now(), interval item.expected_delivery day) as expected_delivery
       FROM ${table_name} inner join order_item 
       on ${table_name}.order_id = order_item.order_id
       inner join item
@@ -74,9 +74,39 @@ class orderService {
       // });
     });
   }
+  // 주문내역 상세조회
+  static async getOrderDetail(userId, order_id) {
+    console.log("orderService.getOrderDetail(userId): ", userId);
+    console.log("orderService.getOrderDetail(order_id): ", order_id);
+    return new Promise((resolve, reject) => {
+      const query = `SELECT ${table_name}.*,order_item.item_id,order_item.quantity,date_add(now(), interval item.expected_delivery day) as expected_delivery
+      FROM ${table_name} inner join order_item 
+      on ${table_name}.order_id = order_item.order_id
+      inner join item
+      on order_item.item_id = item.item_id
+      where ${table_name}.user_id = '${userId}' and ${table_name}.order_id = '${order_id}'`;
+      console.log("query(innerjoin) : ", query);
+      db.query(query, function (error, results) {
+        if (error) {
+          reject(error);
+        } else {
+          if (results.length > 0) {
+            console.log("getOrderDetail results값 확인 == ", results);
+            resolve(results);
+          } else {
+            reject(new Error("주문내역이 없습니다."));
+          }
+        }
+      });
+    });
+  }
 
   // 추가
   static async createOrder({ userId, pay_method, items }) {
+    console.log(" userId  ", userId);
+    console.log(" pay_method  ", pay_method);
+    console.log(" items  ", items);
+
     var time = moment().format("YYYY-MM-DD HH:mm:ss");
 
     const order_id = ulid();
@@ -100,6 +130,7 @@ class orderService {
     // 주문 아이템들을 추가하는 쿼리 (order_item용)
     const insertquery2 = `INSERT INTO order_item SET ? ; `;
 
+    console.log(" items.length  ", items.length);
     // items: Order_item 테이블에 삽입할 객체들
     // 배열 내의 값 확인하는 코드
     for (let i = 0; i < items.length; i++) {
@@ -118,7 +149,6 @@ class orderService {
     }
 
     console.log("query_result: ", query_result);
-
     // 최종적으로 query_result의 값(예시)
     // INSERT INTO orders SET `order_id` = '01HGJ8X37165G70ET34V5BWWRG', `user_id` = ':userId',
     // `order_date_createdAt` = '2023-12-01 17:46:11', `order_date_updatedAt` = '2023-12-01 17:46:11',
@@ -140,13 +170,12 @@ class orderService {
           console.log("error : ", error);
           reject(error);
         } else {
+          console.log("results : ", results);
           resolve(results);
         }
       });
     });
   }
-
-  //수정
 
   //삭제
   static async deleteOrder(order_id) {
