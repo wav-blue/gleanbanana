@@ -21,22 +21,14 @@ orderRouter.get("/:userId/orders", async function (req, res, next) {
 orderRouter.post("/:userId/orders", async function (req, res, next) {
   try {
     const { userId } = req.params;
-    //const { pay_method, item } = req.body;
-    const { pay_method, id, quantity } = req.body;
-    console.log("orderRouter.post데이터추가(userId) : ", userId);
-    console.log("orderRouter.post데이터추가(pay_method) : ", pay_method);
-    //console.log("orderRouter.post데이터추가(item) : ", item);
-    console.log("orderRouter.post데이터추가(id) : ", id);
-    console.log("orderRouter.post데이터추가(quantity) : ", quantity);
-    //console.log("orderRouter.post데이터추가(deliveryDate) : ", deliveryDate);
-    //아이템식별자와 수량값 추가 전달 필요
-    // DB에 데이터 추가(uuid,datetime)
+
+    // item 여러 개가 온다는 느낌이 생기게 복수형으로 변경했습니다!
+    const { pay_method, items } = req.body;
+
     const newOrders = await orderService.createOrder({
       userId,
       pay_method,
-      id,
-      quantity,
-      // deliveryDate,
+      items,
     });
 
     if (newOrders.errorMessage) {
@@ -57,6 +49,7 @@ orderRouter.delete(
   //   check_permission,
 
   async (req, res, next) => {
+    console.log("dddddddddddddddddddddddd");
     try {
       const userId = req.params.userId;
       console.log("userId: ", userId);
