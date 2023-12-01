@@ -1,5 +1,6 @@
 import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
+import SearchMini from "../../icons/SearchMini";
 
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import { useState } from "react";
@@ -33,7 +34,8 @@ const JoinAddress = () => {
     };
     return (
       <ButtonCommon design="check" onClick={handleClick}>
-        <span className="material-symbols-outlined">search</span>주소 검색
+        <SearchMini />
+        주소 검색
       </ButtonCommon>
     );
   };

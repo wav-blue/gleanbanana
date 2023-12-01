@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
+import Check from "../../icons/CheckMini";
 
 const JoinEmail = () => {
   const [email, setEmail] = useState("");
@@ -39,7 +40,7 @@ const JoinEmail = () => {
         )}
       </div>
       <ButtonCommon design="check" onClick={handleClick}>
-        <span className="material-symbols-outlined">check</span>중복 확인
+        <Check /> 중복 확인
       </ButtonCommon>
     </div>
   );

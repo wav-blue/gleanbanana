@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../../store/cart";
 import { likeActions, likeStateSelector } from "../../../store/like";
 import Likes from "../../icons/Likes";
+import LikesFilled from "../../icons/LikesFilled";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -108,10 +109,7 @@ const ProductDetail = () => {
         </section>
         <section className="product__section3--button">
           <ButtonCommon design="small" onClick={addToLikeHandler}>
-            {!isLike && (
-              <span className="material-symbols-outlined">favorite</span>
-            )}
-            {isLike && <Likes />}
+            {!isLike ? <Likes /> : <LikesFilled />}
           </ButtonCommon>
           <ButtonCommon design="medium" onClick={addToCartHandler}>
             장바구니 담기
