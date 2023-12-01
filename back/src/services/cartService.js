@@ -2,8 +2,7 @@ import db from "../db";
 import { ulid } from "ulidx";
 
 class cartService {
-  // 사용자 등록 시 새로운 Cart 생성
-  // 이 함수는 사용자가 새로 가입할 때 한 번만 호출
+  // 사용자 등록 시 새로운 cart_id 생성
   static async createCartForUser({ userId }) {
     return new Promise((resolve, reject) => {
       // 새로운 cart_id 생성
@@ -23,7 +22,7 @@ class cartService {
   // 장바구니 전체 조회
   static async getCarts({ userId }) {
     return new Promise((resolve, reject) => {
-      // SELECT c.cart_id, c.user_id <- 테스트용
+      // SELECT c.cart_id, c.user_id <- 테스트
       db.query(
         `SELECT ci.item_id, i.item_name, i.price, i.expected_delivery, i.banana_index, quantity
         FROM cart_item ci
@@ -109,7 +108,7 @@ class cartService {
         // 사용자의 cart_id 가져오기
         const userCartId = await this.getCartIdForUser(userId);
 
-        // item_id에 대한 cart_id ID 가져오기
+        // item_id에 대한 cart_id 가져오기
         const cartId = await this.getCartIdForItem(itemId);
         if (!userCartId || userCartId !== cartId) {
           // 사용자의 cart_id와 상품에 연관된 cart_id가 일치하지 않을 경우 오류
@@ -141,7 +140,7 @@ class cartService {
     });
   }
 
-  // 쇼핑 카트에서 상품 삭제
+  // cart 테이블에서 상품 삭제
   static async deleteCartItem(itemId) {
     return new Promise((resolve, reject) => {
       db.query(`DELETE FROM cart_item WHERE item_id = ?`, [itemId], (error, results, fields) => {
