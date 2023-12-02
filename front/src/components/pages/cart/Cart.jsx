@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import banana from "../../../assets/banana.png";
 import InputCommon from "../../UI/InputCommon";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,21 +6,11 @@ import { cartActions } from "../../../store/cart";
 import InputCheckbox from "../../UI/InputCheckbox";
 import useDebouncing from "../../../hooks/useDebouncing";
 import useApi from "../../../hooks/useApi";
-//선택된 제품만 total값과 bananaIndex값 변경되어야 함.
 const Cart = ({ cart }) => {
-  const [isChecked, setIsChecked] = useState(null);
+  const [isChecked, setIsChecked] = useState(false); //백checked 추가시 |cart.checked
   const [isFirst, setIsFirst] = useState(true);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
-  const [debouncedQuantity, setDebouncedQuantity] = useDebouncing({
-    value: quantity,
-    delay: 2000,
-  });
-  const [debouncedCheck, setDebouncedCheck] = useDebouncing({
-    initialState: null,
-    value: isChecked,
-    delay: 2000,
-  });
   //----------id부분 나중에 로그인기능 추가후 수정필!!!---------------
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "post",
@@ -28,45 +18,67 @@ const Cart = ({ cart }) => {
     data: {},
     shouldInitFetch: false,
   });
+  const { debouncedValue } = useDebouncing({
+    value: quantity,
+    initialState: 0,
+    delay: 2000,
+  });
+  const { debouncedValue: debouncedCheck } = useDebouncing({
+    value: isChecked,
+    initialState: false, // |cart.checked
+    delay: 2000,
+  });
 
-  const onChangeNumHandler = (newValue) => {
-    //유저의 눈에보이는건 바로, post요청은 딜레이
+  const onChangeNumHandler = useCallback((newValue) => {
     setQuantity(newValue);
-    setDebouncedQuantity(newValue);
-  };
+  }, []);
 
-  //수량 변경시 바로 store cart에 추가 (화면 렌더링)
+  //수량 변경시 바로 store cart에 추가
+  //trigger도??? 계속 간다 수정필... + 에러 Column 'item_id' cannot be null
   useEffect(() => {
-    dispatch(cartActions.changeQuantity({ item_id: cart.itemId, quantity }));
+    trigger({
+      method: "post",
+      path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
+      data: {
+        item_id: cart.itemId,
+        quantity,
+      },
+      applyResult: true,
+      isShowBoundary: false,
+    });
+    dispatch(
+      cartActions.changeQuantity({
+        item_id: cart.itemId,
+        quantity,
+      })
+    );
     !isFirst && dispatch(cartActions.updateTotal());
-  }, [quantity, dispatch, cart.itemId]);
+  }, [quantity, dispatch, cart.itemId, isFirst]);
 
   //checkbox 변경시 isChecked변경
-  const onChangeCheckhandler = (e) => {
+  const onChangeCheckhandler = useCallback((e) => {
     setIsFirst(false);
-    console.log(isFirst);
     setIsChecked(e.target.checked);
-  };
-
-  //isChecked변경시 debouncedCheck변경
-  useEffect(() => {
-    setDebouncedCheck(isChecked);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isChecked]);
+  }, []);
 
   //debouncedCheck변경시 store checkedList에 추가
-  //check되고 수량변경시 요청이 계속 가므로 debouncedQuantity
+  //check되고 수량변경시 요청이 계속 가므로 debouncedValue??
+  //총 가격 렌더링 너무느리다 그러나 요청은 debounced되어야한다..
+
   //deps에 debouncedCheck만 변경될때만 trigger
+  //updateTotal
   useEffect(() => {
     if (debouncedCheck) {
+      console.log("debounced checked!");
       dispatch(
-        cartActions.addToCheckedList({ ...cart, quantity: debouncedQuantity })
+        cartActions.addToCheckedList({ ...cart, quantity: debouncedValue })
       );
     } else if (!debouncedCheck) {
-      //처음이 아닐때만 checkedList에서 빼기
+      console.log("debounced unChecked!");
       !isFirst && dispatch(cartActions.removeFromCheckedList(cart));
     }
-  }, [debouncedCheck]);
+    dispatch(cartActions.updateTotal());
+  }, [cart, debouncedCheck, isFirst, dispatch, debouncedValue]);
 
   return (
     <article className="cart__wrapper">

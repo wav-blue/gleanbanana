@@ -70,10 +70,10 @@ const cartSlice = createSlice({
         updatedTotal = state.cartCheckedList.reduce(
           (acc, cur) => {
             return {
+              totalPrice: acc.totalPrice + cur.totalPrice,
+              totalDeliveryFee: acc.totalDeliveryFee + cur.deliveryFee,
               totalBananaIndex:
                 acc.banana_index + cur.banana_index * cur.quantity,
-              totalDeliveryFee: acc.totalDeliveryFee + cur.deliveryFee,
-              totalPrice: acc.totalPrice + cur.totalPrice,
             };
           },
           { totalPrice: 0, totalDeliveryFee: 0, totalBananaIndex: 0 }
