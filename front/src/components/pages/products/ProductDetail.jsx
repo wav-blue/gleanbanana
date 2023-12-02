@@ -1,7 +1,7 @@
 import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
 import banana from "../../../assets/banana.png";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { likeActions } from "../../../store/like";
 import Likes from "../../icons/Likes";
@@ -10,29 +10,14 @@ import useApi from "../../../hooks/useApi";
 
 //장바구니에 추가하면 바로 장바구니 페이지로 가게 함
 const ProductDetail = () => {
-  useEffect(() => {
-    console.log("ProductDetail 렌더링 다 됨!--------->");
-  }, []);
-  const [product, setProduct] = useState({
-    image_url: "",
-    item_name: "",
-    banana_index: 0,
-    price: 0,
-  });
-  console.log("product", product);
-  const {
-    image_url: img,
-    item_name: itemName,
-    banana_index: bananaIdx,
-    price,
-  } = product;
+  const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
-  const itemPrice = price * quantity;
-  const bananaIndexes = bananaIdx * quantity;
+  const [bananaIndexes, setBananaIndexes] = useState(product.banana_index);
+  const [itemPrice, setItemPrice] = useState(product.price);
 
   const dispatch = useDispatch();
   const param = useParams();
-  const { trigger, result, reqIdentifier, loading } = useApi({
+  const { trigger, result, reqIdentifier } = useApi({
     method: "post",
     path: "/cart",
     data: {},
@@ -64,6 +49,8 @@ const ProductDetail = () => {
   const addToCartHandler = useCallback(async () => {
     const addCartData = {
       ...product,
+      price: itemPrice,
+      banana_index: bananaIndexes,
       quantity: quantity,
     };
     await trigger({
@@ -88,59 +75,58 @@ const ProductDetail = () => {
     setQuantity(newValue);
   };
 
+  //quantity변경시 bananaIndex, itemPrice변경
+  useEffect(() => {
+    setBananaIndexes(product.banana_index * quantity);
+    setItemPrice(product.price * quantity);
+  }, [quantity, product]);
+
   //trigger의 결과로 result가 변경이 되면
   useEffect(() => {
-    console.log("result.data가 변경되었습니다");
-    console.log(result);
-    console.log(result?.data?.data);
-    setProduct(
-      result?.data?.data |
-        {
-          image_url: "",
-          item_name: "",
-          banana_index: 0,
-          price: 0,
-        }
-    );
+    if (reqIdentifier === "getData") {
+      setProduct(result?.data[0]);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
 
   return (
-    <article className="product__article1">
-      <img src={img} alt={itemName} />
-      <section className="product__section">
-        <h1>{itemName}</h1>
-        <div className="product__bananaIndex">
-          x{(bananaIndexes / 100).toFixed(2)}
-        </div>
-        <img src={banana} alt="bananaIndex" />
-        <section className="product__section2">
-          <div className="product__section2--input">
-            <InputCommon
-              type="number"
-              className="gray-square"
-              onValueChange={onChangeNumHandler}
-            />
-            <div className="product__section2--total">총 상품 금액</div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <article className="product__article1">
+        <img src={product.image_url} alt={product.item_name} />
+        <section className="product__section">
+          <h1>{product.item_name}</h1>
+          <div className="product__bananaIndex">
+            x{(bananaIndexes / 100).toFixed(2)}
           </div>
-          <div className="product__section2--val">
-            {Number(itemPrice).toLocaleString()}원
-          </div>
+          <img src={banana} alt="bananaIndex" />
+          <section className="product__section2">
+            <div className="product__section2--input">
+              <InputCommon
+                type="number"
+                className="gray-square"
+                onValueChange={onChangeNumHandler}
+              />
+              <div className="product__section2--total">총 상품 금액</div>
+            </div>
+            <div className="product__section2--val">
+              {Number(itemPrice).toLocaleString()}원
+            </div>
+          </section>
+          <section className="product__section3--button">
+            <ButtonCommon design="small" onClick={addToLikeHandler}>
+              {!isLike && (
+                <span className="material-symbols-outlined">favorite</span>
+              )}
+              {isLike && <Likes />}
+            </ButtonCommon>
+            <ButtonCommon design="medium" onClick={addToCartHandler}>
+              장바구니 담기
+            </ButtonCommon>
+            <ButtonCommon design="medium">바로 구매하기</ButtonCommon>
+          </section>
         </section>
-        <section className="product__section3--button">
-          <ButtonCommon design="small" onClick={addToLikeHandler}>
-            {!isLike && (
-              <span className="material-symbols-outlined">favorite</span>
-            )}
-            {isLike && <Likes />}
-          </ButtonCommon>
-          <ButtonCommon design="medium" onClick={addToCartHandler}>
-            장바구니 담기
-          </ButtonCommon>
-          <ButtonCommon design="medium">바로 구매하기</ButtonCommon>
-        </section>
-      </section>
-    </article>
+      </article>
+    </Suspense>
   );
 };
 
