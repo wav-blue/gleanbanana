@@ -16,7 +16,7 @@ const cartSlice = createSlice({
       console.log("dispatch 실행됨!");
       const newItem = action.payload;
       const existedItem = state.cartItems.find(
-        (item) => item.id === newItem.id
+        (item) => item.item_id === newItem.item_id
       );
       if (!existedItem) {
         state.cartItems.push(newItem);
@@ -27,7 +27,6 @@ const cartSlice = createSlice({
     //장바구니에서 체크박스 선택했을 때
     //총량표시(계산?)
     addToCheckedList(state, action) {
-      console.log(action.payload);
       const checkedItem = state.cartItems.find(
         (cart) => cart.id === action.payload.id
       );
@@ -65,19 +64,23 @@ const cartSlice = createSlice({
       //cartCheckedList에 들어있는 모든 아이템의 bananaIndex
       //하나로 ㅠㅠ
       console.log("update Total");
-      state.totalBananaIndex = state.cartCheckedList.reduce(
-        (acc, cur) => {
-          return {
-            totalBananaIndex: (state.cartTotal.totalBananaIndex =
-              acc.banana_index + cur.banana_index * cur.quantity),
-            totalDeliveryFee: (state.cartTotal.totalDeliveryFee =
-              acc.totalDeliveryFee + cur.deliveryFee),
-            totalPrice: (state.cartTotal.totalPrice =
-              acc.totalPrice + cur.totalPrice),
-          };
-        },
-        { totalPrice: 0, totalDeliveryFee: 0, totalBananaIndex: 0 }
-      );
+      //acc : {}
+      if (state.cartCheckedList) {
+        let updatedTotal = { ...state.cartTotal };
+        updatedTotal = state.cartCheckedList.reduce(
+          (acc, cur) => {
+            return {
+              totalBananaIndex:
+                acc.banana_index + cur.banana_index * cur.quantity,
+              totalDeliveryFee: acc.totalDeliveryFee + cur.deliveryFee,
+              totalPrice: acc.totalPrice + cur.totalPrice,
+            };
+          },
+          { totalPrice: 0, totalDeliveryFee: 0, totalBananaIndex: 0 }
+        );
+        console.log(updatedTotal);
+        state.cartTotal = updatedTotal;
+      }
     },
   },
 });

@@ -49,13 +49,15 @@ const ProductDetail = () => {
   const addToCartHandler = useCallback(async () => {
     const addCartData = {
       ...product,
+      itemId: product.item_id,
       price: itemPrice,
       banana_index: bananaIndexes,
       quantity: quantity,
     };
+    console.log(addCartData);
     await trigger({
       method: "post",
-      path: "/cart",
+      path: "/01HGB9HKEM19XHHB180VF2N8XT/carts",
       data: addCartData,
       applyResult: true,
       isShowBoundary: true,

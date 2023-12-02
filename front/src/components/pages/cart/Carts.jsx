@@ -2,7 +2,7 @@ import Cart from "./Cart";
 import CartsHeader from "./CartsHeader";
 import CartsButton from "./CartsButton";
 import CartsTotal from "./CartsTotal";
-import { useEffect, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useApi from "../../../hooks/useApi";
 import { cartActions } from "../../../store/cart";
@@ -18,22 +18,23 @@ const Carts = () => {
   });
 
   // GET요청
-  const memoizedGetCarts = useCallback(async () => {
-    await trigger({
+  useEffect(() => {
+    trigger({
       method: "get",
       path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
       data: {},
       applyResult: true,
       isShowBoundary: false,
     });
-  }, [trigger]);
-  useEffect(() => {
-    memoizedGetCarts();
-  }, [memoizedGetCarts]);
+  }, []);
 
   //result가 변하면 cart에 dispatch
+  //store에 저장되어있는 것으로 cart화면 그려줌
   useEffect(() => {
-    reqIdentifier === "getData" && dispatch(cartActions.addToCart(result.data));
+    if (reqIdentifier === "getData") {
+      console.log("data를 가져와서 dispatch합니다");
+      dispatch(cartActions.addToCart(result?.data[0]));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
 

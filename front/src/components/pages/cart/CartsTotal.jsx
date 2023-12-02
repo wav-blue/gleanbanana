@@ -6,6 +6,7 @@ const CartsTotal = () => {
   const { totalPrice, totalDeliveryFee, totalBananaIndex } = useSelector(
     (state) => state.cart.cartTotal
   );
+  console.log({ totalPrice, totalDeliveryFee, totalBananaIndex });
   const totalPurchase = totalDeliveryFee + totalPrice;
   useEffect(() => {
     console.log("totalPrice ... etc");
