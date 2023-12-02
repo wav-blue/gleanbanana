@@ -10,21 +10,26 @@ import useApi from "../../../hooks/useApi";
 
 //장바구니에 추가하면 바로 장바구니 페이지로 가게 함
 const ProductDetail = () => {
+  useEffect(() => {
+    console.log("ProductDetail 렌더링 다 됨!--------->");
+  }, []);
   const [product, setProduct] = useState({
     image_url: "",
     item_name: "",
     banana_index: 0,
     price: 0,
   });
+  console.log("product", product);
   const {
     image_url: img,
     item_name: itemName,
     banana_index: bananaIdx,
     price,
   } = product;
-  const [itemPrice, setItemPrice] = useState(price);
-  const [bananaIndexes, setBananaIndexes] = useState(bananaIdx | 0);
   const [quantity, setQuantity] = useState(1);
+  const itemPrice = price * quantity;
+  const bananaIndexes = bananaIdx * quantity;
+
   const dispatch = useDispatch();
   const param = useParams();
   const { trigger, result, reqIdentifier, loading } = useApi({
@@ -47,9 +52,10 @@ const ProductDetail = () => {
         path: `/items/${param.id}`,
         data: undefined,
         applyResult: true,
-        isShowBoundary: false,
+        isShowBoundary: true,
       });
     };
+
     getProductDetail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param.id]);
@@ -65,7 +71,7 @@ const ProductDetail = () => {
       path: "/cart",
       data: addCartData,
       applyResult: true,
-      isShowBoundary: false,
+      isShowBoundary: true,
     });
     navigate("/cart");
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,19 +88,20 @@ const ProductDetail = () => {
     setQuantity(newValue);
   };
 
-  //quantity 변경 -> itemPrice변경
-  useEffect(() => {
-    setItemPrice(quantity * price);
-    setBananaIndexes(bananaIdx * quantity);
-  }, [price, quantity, bananaIdx]);
-
   //trigger의 결과로 result가 변경이 되면
-  //setProduct (dispatch는 cart로 바로 옮겨지고 get요청 할거기때문에 안해!)
-  //근데 옮겨지고 나서 product를 변경하면 어떻게해?!
-  //신나는 메모리릭하하하
   useEffect(() => {
+    console.log("result.data가 변경되었습니다");
+    console.log(result);
     console.log(result?.data?.data);
-    setProduct(result?.data?.data);
+    setProduct(
+      result?.data?.data |
+        {
+          image_url: "",
+          item_name: "",
+          banana_index: 0,
+          price: 0,
+        }
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
 

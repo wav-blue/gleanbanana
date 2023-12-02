@@ -1,16 +1,10 @@
 import axios from "axios";
 
 const config = {
-  baseURL: process.env.REACT_APP_API_BASE_URL + "/api",
-  // headers: {
-  //   "Content-type": "application/json",
-  // },
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-  },
-  withCredentials: false,
+  baseURL: "/api",
+  headers: { "Content-Type": "application/json" },
   timeout: 5000,
+  // withCredentials: true,
 };
 
 export const api = axios.create(config); // 인스턴스
@@ -45,8 +39,6 @@ api.interceptors.response.use(
     return res;
   },
   (err) => {
-    console.dir(err);
-    console.log(err.HttpStatusCode);
     console.log("인터셉터에서 잡은", err);
     throw new Error("잘못된 요청입니다");
   }

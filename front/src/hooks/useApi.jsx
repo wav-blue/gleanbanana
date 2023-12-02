@@ -25,14 +25,19 @@ const useApi = ({
     setLoading(true);
 
     console.log("trigger 호출");
+    console.log("triggerMethod", triggerMethod);
     setReqIdentifier(triggerMethod + "Data");
     try {
+      console.log("요청보내기!");
       const triggerResult = await API_FETCHER[triggerMethod](
         triggerPath,
         triggerData
       );
+      console.log("요청보내기 완료오오오 --------->!");
 
       if (applyResult) {
+        console.log("result를 적용");
+        console.log("triggerResult", triggerResult);
         setResult(triggerResult);
         return result;
       }
