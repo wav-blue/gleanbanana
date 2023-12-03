@@ -2,20 +2,23 @@ import Cart from "./Cart";
 import CartsHeader from "./CartsHeader";
 import CartsButton from "./CartsButton";
 import CartsTotal from "./CartsTotal";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useApi from "../../../hooks/useApi";
 import { cartActions } from "../../../store/cart";
+import ButtonCommon from "../../UI/ButtonCommon";
 
 const Carts = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",
     path: "/01HGB9HKEM19XHHB180VF2N8XT/carts",
     data: {},
     shouldInitFetch: false,
   });
+  const checkedItemIdList = cartCheckedList.map((list) => list.item_id);
 
   // GET요청
   useEffect(() => {
@@ -36,7 +39,21 @@ const Carts = () => {
       console.log(result?.data);
       dispatch(cartActions.storeToCart(result?.data));
     }
-  }, [result.data]);
+
+    if (reqIdentifier === "deleteData") {
+      dispatch(cartActions.removeFromCart(checkedItemIdList));
+    }
+  }, [result.data, reqIdentifier]);
+
+  const onClickDelete = useCallback(() => {
+    trigger({
+      method: "delete",
+      path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
+      data: checkedItemIdList,
+      applyResult: true,
+      isShowBoundary: true,
+    });
+  }, [checkedItemIdList]);
 
   return (
     <div className="carts__wrapper">
@@ -46,6 +63,7 @@ const Carts = () => {
           <Cart cart={cart} key={`carts-${index}`} />
         ))}
       </div>
+      <ButtonCommon onClick={onClickDelete}>선택 삭제하기</ButtonCommon>
       <CartsTotal />
       <CartsButton />
     </div>

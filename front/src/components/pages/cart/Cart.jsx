@@ -42,21 +42,21 @@ const Cart = ({ cart }) => {
     setQuantity(newValue);
   }, []);
 
-  //debouncedCheck, debouncedQuantity이 변경될때만 setIsChanged(true) => trigger
+  //debouncedCheck, debouncedQuantity이 변경될때만 setIsChanged(true) => trigger checkedvalue
   useEffect(() => {
     !isFirst && setIsChanged(true);
   }, [debouncedCheck, debouncedQuantity, isFirst]);
 
   useEffect(() => {
-    if (isChanged && !isFirst) {
-      trigger({
-        method: "post",
-        path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
-        data: postCartData,
-        applyResult: true,
-        isShowBoundary: false,
-      });
-    }
+    // if (isChanged && !isFirst) {
+    //   trigger({
+    //     method: "post",
+    //     path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
+    //     data: postCartData,
+    //     applyResult: true,
+    //     isShowBoundary: false,
+    //   });
+    // }
     setIsChanged(false);
   }, [isChanged, isFirst, postCartData]);
 
@@ -68,7 +68,6 @@ const Cart = ({ cart }) => {
 
   //checkbox 변경시 isChecked변경 deps확인
   const onChangeCheckhandler = useCallback((e) => {
-    console.log("CheckHandler발동으로 first변경");
     setIsFirst(false);
     setIsChecked(e.target.checked);
   }, []);
@@ -78,8 +77,6 @@ const Cart = ({ cart }) => {
     if (isChecked) {
       dispatch(cartActions.addToCheckedList({ ...cart, quantity }));
     } else if (!isChecked) {
-      console.log("debounced unChecked!");
-      console.log("isFirst? " + isFirst);
       !isFirst && dispatch(cartActions.removeFromCheckedList(cart));
     }
     !isFirst && dispatch(cartActions.updateTotal());

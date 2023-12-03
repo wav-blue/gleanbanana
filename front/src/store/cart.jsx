@@ -30,6 +30,16 @@ const cartSlice = createSlice({
         state.cartItems.push(action.payload);
       }
     },
+    removeFromCart(state, action) {
+      // action.payload의 형태는 숫자만있는 리스트
+      //해당 아이디를 모두 cartList에서 제거하는 로직
+      const toRemoveIdList = action.payload;
+      const removedCartList = state.cartItems.filter((items) =>
+        toRemoveIdList.includes(items.item_id)
+      );
+      state.cartItems = removedCartList;
+    },
+
     //장바구니에서 체크박스 선택했을 때
     //cartCheckedList.length가 0이든 말든 push
     addToCheckedList(state, action) {
@@ -50,10 +60,7 @@ const cartSlice = createSlice({
     },
 
     updateTotal(state) {
-      //cartCheckedList에 들어있는 모든 아이템의 bananaIndex
-      //하나로 ㅠㅠ
       console.log("update Total");
-      //acc : {}
       if (state.cartCheckedList) {
         let updatedTotal = { ...state.cartTotal };
         updatedTotal = state.cartCheckedList.reduce(
