@@ -5,21 +5,21 @@ import List from "../../UI/List";
 import { likeActions } from "../../../store/like";
 import { cartActions } from "../../../store/cart";
 
-const LikeProduct = ({ src, name, price, bananaImg, bananaIdx }) => {
-  // console.log(like);
-  // const { src, name, price, bananaImg, bananaIdx } = like;
-  // const dispatch = useDispatch();
-  // const removeHandler = async () => {
-  //   dispatch(likeActions.removeFromLike(like));
-  // };
-  // const addToCartHandler = async () => {
-  //   dispatch(
-  //     cartActions.addToCart({
-  //       ...like,
-  //       quantity: 1,
-  //     })
-  //   );
-  // };
+const LikeProduct = ({ like }) => {
+  console.log(like);
+  const { src, name, price, bananaImg, bananaIdx } = like;
+  const dispatch = useDispatch();
+  const removeHandler = async () => {
+    dispatch(likeActions.removeFromLike(like));
+  };
+  const addToCartHandler = async () => {
+    dispatch(
+      cartActions.addToCart({
+        ...like,
+        quantity: 1,
+      })
+    );
+  };
 
   return (
     <List type="row">

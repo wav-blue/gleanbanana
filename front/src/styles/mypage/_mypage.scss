@@ -3,33 +3,44 @@
 
 .mypage {
   display: flex;
-  margin: 0 auto;
   justify-content: center;
   width: 100%;
+  margin-top: 30px;
+  gap: 30px;
 
   &__sidebar {
     width: 180px;
-    margin: 30px 40px 0 0;
   }
   &__content {
     display: flex;
     flex-direction: column;
     width: 800px;
-    margin-top: 30px;
     gap: 45px;
   }
+
+  @include tablet {
+    width: $breakpoint-tablet;
+    gap: 20px;
+    &__sidebar {
+      width: 18%;
+    }
+    &__content {
+      width: 75%;
+    }
+  }
+
   @include mobile-l {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     width: $breakpoint-mobile-l;
+    margin-top: 20px;
+    gap: 20px;
     &__sidebar {
       width: 90%;
-      margin: 20px 0 0 0;
     }
     &__content {
       width: 90%;
-      margin-top: 18px;
       gap: 25px;
     }
   }

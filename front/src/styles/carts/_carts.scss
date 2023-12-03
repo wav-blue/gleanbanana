@@ -3,7 +3,9 @@
 
 .carts {
   &__wrapper {
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   &__header {
     &__wrapper {
@@ -16,49 +18,84 @@
     margin-bottom: 18px;
   }
   &__category {
-    &__wrapper {
-      margin: 18px 30px 18px 10px;
-      justify-content: center;
-      align-items: center;
-    }
     display: flex;
-    justify-content: space-between;
     align-items: center;
     text-align: center;
-
+    gap: 15px;
+    &__wrapper {
+      margin: 18px 0 18px 0;
+    }
     &__info {
-      width: 600px;
+      width: 610px;
     }
     &__val {
-      width: 100px;
+      width: 120px;
     }
   }
-
+  &__checkAll {
+    width: 92px;
+    text-align: left;
+  }
   &__check {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    align-items: center;
+    margin-left: 10px;
   }
 
   &__button {
     display: flex;
-    gap: 9px;
+    gap: 15px;
     justify-content: center;
     margin-bottom: 41px;
   }
 
+  @include tablet {
+    &__wrapper {
+      width: $breakpoint-tablet;
+    }
+    &__header {
+      width: 95%;
+    }
+    &__head {
+      font-size: 16px;
+    }
+    &__category {
+      font-size: 12px;
+      &__wrapper {
+        margin-top: 12px;
+        margin-bottom: 12px;
+      }
+      &__info {
+        width: 395px;
+        font-size: 14px;
+      }
+      &__val {
+        width: 105px;
+        font-size: 14px;
+      }
+      &__index {
+        font-size: 14px;
+      }
+    }
+    &__button {
+      & > button {
+        width: 250px;
+        height: 55px;
+        font-size: 16px;
+      }
+      & > a {
+        width: 250px;
+        height: 55px;
+        font-size: 16px;
+      }
+    }
+  }
+
   @include mobile-l {
     &__wrapper {
-      display: flex;
-      flex-direction: column;
       width: $breakpoint-mobile-l;
-      align-items: center;
     }
     &__header {
       width: 90%;
       &__wrapper {
-        width: 100%;
         margin: 20px 0 0 0;
       }
     }
@@ -67,29 +104,30 @@
       margin-bottom: 15px;
     }
     &__category {
-      &__wrapper {
-        margin: 10px 7px;
-        justify-content: center;
-        align-items: center;
-      }
       font-size: 10px;
-      justify-content: flex-start;
-
+      gap: 7px;
+      &__wrapper {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
       &__info {
-        width: 150px;
+        width: 165px;
         font-size: 12px;
       }
       &__val {
-        width: 60px;
+        width: 80px;
         font-size: 12px;
       }
       &__index {
-        font-size: 12px;
+        width: 30px;
+        font-size: 10px;
       }
     }
+    &__checkAll {
+      width: 45px;
+    }
     &__check {
-      gap: 7px;
-      margin-right: 33px;
+      margin-left: 5px;
     }
     &__button {
       gap: 9px;

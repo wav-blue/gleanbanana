@@ -20,8 +20,8 @@ const CartsHeader = () => {
               checked={checked}
               checkAll={true}
             />
-            <div>전체선택</div>
           </div>
+          <div className="carts__checkAll">전체선택</div>
           <div className="carts__category__info">상품정보</div>
           <div className="carts__category__val">금액</div>
           <div className="carts__category__index">바나나인덱스</div>

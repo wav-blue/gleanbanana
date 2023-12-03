@@ -6,6 +6,11 @@
     margin-top: 8px;
     font-size: $mid-font-size;
   }
+  @include tablet {
+    &__head {
+      font-size: 16px;
+    }
+  }
   @include mobile-l {
     &__head {
       font-size: 14px;

@@ -13,7 +13,7 @@ const PurchasedInfo = () => {
         <div>총 결재금액</div>
         <div>32,500원</div>
       </div>
-      <div className="flex flex__element-left">
+      <div className="flex flex__element-up">
         <div>결제 방법</div>
         <div>
           <div>계좌이체 신용 체크카드 법인카드 휴대폰 무통장입금(가상계좌)</div>

@@ -26,10 +26,10 @@
     height: 58px;
     position: relative;
     @include mobile-l {
-      width: 60px;
-      height: 40px;
-      font-size: 14px;
-      padding-left: 15px;
+      width: 40px;
+      height: 35px;
+      font-size: 12px;
+      padding-left: 12px;
     }
   }
   &.search {
@@ -63,10 +63,17 @@
   }
 
   &.white-square {
-    width: 190px;
+    width: 500px;
     height: 31px;
-    border: black 1px solid;
-    border-radius: 0;
+    border: $gray-lev1 1px solid;
+    border-radius: 5px;
+    padding-left: 12px;
+    @include mobile-l {
+      width: 280px;
+      height: 25px;
+      padding-left: 7px;
+      font-size: 13px;
+    }
   }
 }
 
@@ -89,7 +96,6 @@ input#numberInput::-webkit-outer-spin-button {
   font-size: $big-font-size;
   @include mobile-l {
     transform: translateY(18px);
-    margin-right: 5px;
   }
 }
 .upper {
@@ -101,9 +107,9 @@ input#numberInput::-webkit-outer-spin-button {
   user-select: none;
   @include mobile-l {
     svg {
-      width: 15px;
+      width: 12px;
     }
-    transform: translateY(-40px) translateX(55px);
+    transform: translateY(-37px) translateX(38px);
   }
 }
 
@@ -116,9 +122,9 @@ input#numberInput::-webkit-outer-spin-button {
   user-select: none;
   @include mobile-l {
     svg {
-      width: 15px;
+      width: 12px;
     }
-    transform: translateY(-40px) translateX(55px);
+    transform: translateY(-41px) translateX(38px);
   }
 }
 
@@ -229,14 +235,31 @@ input#numberInput::-webkit-outer-spin-button {
   flex-direction: column;
   gap: 15px;
   cursor: pointer;
-  & > img {
-    width: 100%;
+  &__img {
+    width: 240px;
+    height: 240px;
+    & > img {
+      width: 100%;
+      height: 100%;
+    }
   }
-
+  @include tablet {
+    width: 180px;
+    height: 240px;
+    gap: 15px;
+    &__img {
+      width: 180px;
+      height: 180px;
+    }
+  }
   @include mobile-l {
     width: 183px;
     height: 240px;
     gap: 15px;
+    &__img {
+      width: 183px;
+      height: 183px;
+    }
   }
 }
 
@@ -266,31 +289,52 @@ input#numberInput::-webkit-outer-spin-button {
 
 // HR LINE
 .line {
-  width: 1080px;
+  width: 100%;
   height: 1px;
-  margin: 0 auto;
-  margin-bottom: 20px;
-  &__hr {
-    &-gray {
-      background-color: $gray-lev1;
+  background-color: $gray-lev1;
+  &__in {
+    margin-bottom: 5px;
+  }
+  &__out {
+    margin-bottom: 20px;
+  }
+  @include mobile-l {
+    &__in {
+      margin-bottom: 0;
+    }
+    &__out {
+      margin-bottom: 15px;
     }
   }
 }
 
 //COMMON TITLE div
 .title {
-  font-size: $big-font-size;
-
+  font-size: 16px;
+  &__head {
+    font-size: $big-font-size;
+    margin-bottom: 12px;
+  }
   &__element {
     margin-bottom: 10px;
+  }
+  @include mobile-l {
+    font-size: 12px;
+    &__head {
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+    &__element {
+      margin-bottom: 0;
+    }
   }
 }
 
 // COMMON FLEX ELEMENT
 .flex {
   display: flex;
-  gap: 96px;
-  margin: 18px 0;
+  gap: 40px;
+  margin: 15px 0;
   align-items: center;
   &__element {
     &-left {
@@ -298,8 +342,26 @@ input#numberInput::-webkit-outer-spin-button {
         width: 128px;
       }
     }
-    &-short {
-      gap: 19px;
+    &-up {
+      > div:first-child {
+        width: 128px;
+      }
+      align-items: flex-start;
+    }
+  }
+  @include mobile-l {
+    gap: 10px;
+    &__element {
+      &-left {
+        > div:first-child {
+          width: 75px;
+        }
+      }
+      &-up {
+        > div:first-child {
+          width: 75px;
+        }
+      }
     }
   }
 }

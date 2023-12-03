@@ -23,8 +23,12 @@
       margin: 0 10px;
     }
     &__name {
+      width: 440px;
       font-size: $big-font-size;
-      font-weight: 700;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
     }
     &__price {
       font-size: $basic-font-size;
@@ -64,6 +68,37 @@
     }
   }
 
+  @include tablet {
+    &__head {
+      font-size: 16px;
+    }
+    &__description {
+      gap: 12px;
+      &__wrapper {
+        margin-left: 10px;
+      }
+      &__name {
+        width: 280px;
+      }
+      &__price {
+        font-size: 15px;
+      }
+      &-index {
+        position: absolute;
+        right: 12px;
+        width: 60px;
+        & > div {
+          position: absolute;
+          top: 15px;
+          left: 25px;
+        }
+      }
+    }
+    img {
+      margin: 10px 10px 10px 7px;
+    }
+  }
+
   @include mobile-l {
     &__head {
       font-size: 14px;
@@ -82,10 +117,6 @@
       &__name {
         width: 130px;
         font-size: 13px;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
       }
       &__price {
         font-size: 11px;

@@ -103,12 +103,6 @@
       }
     }
   }
-  @include mobile-s {
-    &__wrapper {
-      width: $breakpoint-mobile-s;
-      padding: 0 10px;
-    }
-  }
 }
 
 .navBar {
@@ -119,14 +113,20 @@
   font-size: 11px;
   gap: 20px;
   margin: 12px 0px 12px 0px;
+  @include tablet {
+    width: 95%;
+  }
   @include mobile-l {
-    width: 91%;
+    width: 90%;
   }
 }
 .logo {
   //로고 나오면 사이즈 넣기
   &__wrapper {
     width: 220px;
+    @include tablet {
+      width: 180px;
+    }
     @include mobile-l {
       width: 80px;
     }
@@ -149,14 +149,22 @@
     right: -7px;
     top: -11px;
   }
+  @include tablet {
+    width: 250px;
+    &__wrapper {
+      width: 95%;
+      margin-top: 25px;
+    }
+  }
   @include mobile-l {
     width: 120px;
     &__wrapper {
-      width: 91%;
+      width: 90%;
       margin-top: 28px;
     }
     svg {
       width: 18px;
+      margin-top: 2px;
     }
   }
 }
@@ -220,6 +228,11 @@
     position: absolute;
     right: 10px;
     width: 18px;
+  }
+  @include tablet {
+    &__head {
+      font-size: 16px;
+    }
   }
   @include mobile-l {
     height: 37px;

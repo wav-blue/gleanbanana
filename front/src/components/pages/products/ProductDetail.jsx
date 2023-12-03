@@ -90,7 +90,7 @@ const ProductDetail = () => {
       <img src={img} alt={itemName} />
       <section className="product__section">
         <section className="product__section1">
-          <h1>{itemName} 몰라</h1>
+          <h1>{itemName}</h1>
           <div className="product__bananaIndex">
             x{(bananaIndexes / 100).toFixed(2)}
           </div>

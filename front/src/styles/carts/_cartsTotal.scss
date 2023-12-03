@@ -12,8 +12,8 @@
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  margin-right: 55px;
-  gap: 88px;
+  margin-right: 35px;
+  gap: 50px;
 
   &__description {
     display: flex;
@@ -37,14 +37,33 @@
     display: flex;
     gap: 35px;
   }
+  @include tablet {
+    gap: 37px;
+    justify-content: center;
+    margin-right: 28px;
+    &__wrapper {
+      width: 95%;
+      height: 80px;
+      margin-bottom: 18px;
+    }
+    &__price {
+      gap: 25px;
+    }
+    &__delivery {
+      gap: 25px;
+    }
+    &__totalPrice {
+      gap: 25px;
+    }
+  }
   @include mobile-l {
     gap: 12px;
     justify-content: center;
-    margin-right: 0;
-    margin-right: 45px;
+    margin-right: 5px;
     &__wrapper {
       width: 90%;
-      margin-bottom: 25px;
+      height: 80px;
+      margin-bottom: 18px;
     }
     &__description {
       font-size: 12px;
