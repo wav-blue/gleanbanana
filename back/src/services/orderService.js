@@ -1,4 +1,4 @@
-import db from "../db/index_multi";
+import db from "../db";
 import { ulid } from "ulidx";
 import mysql from "mysql2";
 import moment from "moment";
