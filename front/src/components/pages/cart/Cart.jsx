@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import banana from "../../../assets/banana.png";
 import InputCommon from "../../UI/InputCommon";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,7 @@ const Cart = ({ cart }) => {
   const [isFirst, setIsFirst] = useState(true);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
+  const [isChanged, setIsChanged] = useState(false);
   //----------id부분 나중에 로그인기능 추가후 수정필!!!---------------
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "post",
@@ -28,63 +29,61 @@ const Cart = ({ cart }) => {
     initialState: false, // |cart.checked
     delay: 2000,
   });
+  //cart는 수시로 변하므로 useMemo해야함
+  const postCartData = useMemo(() => {
+    const obj = {
+      itemId: cart.item_id,
+      quantity: debouncedQuantity,
+    };
+    return obj;
+  }, [debouncedQuantity, cart.item_id]);
 
   const onChangeNumHandler = useCallback((newValue) => {
     setQuantity(newValue);
   }, []);
 
-  //수량 변경시 trigger ?? 그럼 안될듯
-  //상태가 변경될 때이지만, quantity와 checked가 변경시 지연후 트리거!
+  //debouncedCheck, debouncedQuantity이 변경될때만 setIsChanged(true) => trigger
   useEffect(() => {
-    !isFirst &&
+    !isFirst && setIsChanged(true);
+  }, [debouncedCheck, debouncedQuantity, isFirst]);
+
+  useEffect(() => {
+    if (isChanged && !isFirst) {
       trigger({
         method: "post",
         path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
-        data: {
-          itemId: cart.item_id,
-          quantity: debouncedQuantity,
-        },
+        data: postCartData,
         applyResult: true,
         isShowBoundary: false,
       });
-  }, [isFirst, cart.item_id, quantity]);
+    }
+    setIsChanged(false);
+  }, [isChanged, isFirst, postCartData]);
 
-  //수량변경시 cart에 추가
+  //수량변경시 cart변경
   useEffect(() => {
-    dispatch(
-      cartActions.addToCart({
-        item_id: cart.item_id,
-        quantity,
-      })
-    );
+    dispatch(cartActions.addToCart(postCartData));
     !isFirst && dispatch(cartActions.updateTotal());
-  }, [quantity]);
+  }, [quantity, isFirst, postCartData]);
 
-  //checkbox 변경시 isChecked변경
+  //checkbox 변경시 isChecked변경 deps확인
   const onChangeCheckhandler = useCallback((e) => {
     console.log("CheckHandler발동으로 first변경");
     setIsFirst(false);
     setIsChecked(e.target.checked);
   }, []);
 
-  //debouncedCheck변경시 store checkedList에 추가
-  //check되고 수량변경시 요청이 계속 가므로 debouncedValue??
-  //총 가격 렌더링 너무느리다 그러나 요청은 debounced되어야한다..
-
-  //deps에 debouncedCheck만 변경될때만 trigger
   //updateTotal
   useEffect(() => {
-    if (debouncedCheck) {
-      dispatch(
-        cartActions.addToCheckedList({ ...cart, quantity: debouncedQuantity })
-      );
-    } else if (!debouncedCheck) {
+    if (isChecked) {
+      dispatch(cartActions.addToCheckedList({ ...cart, quantity }));
+    } else if (!isChecked) {
       console.log("debounced unChecked!");
       console.log("isFirst? " + isFirst);
       !isFirst && dispatch(cartActions.removeFromCheckedList(cart));
     }
     !isFirst && dispatch(cartActions.updateTotal());
-  }, [cart, debouncedCheck, isFirst, dispatch, debouncedQuantity]);
+  }, [cart, isChecked, isFirst, dispatch, quantity]);
 
   return (
     <article className="cart__wrapper">
