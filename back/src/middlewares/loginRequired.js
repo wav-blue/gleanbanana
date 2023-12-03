@@ -9,10 +9,10 @@ exports.loginRequired = (req, res, next) => {
     const user_id = jwt.verify(userToken, secretKey).user_id;
 
     req.currentUserId = user_id;
-
+    // new UnauthorizedError("유효하지 않은 토큰입니다.")
     next();
   } catch (err) {
     // 유효하지 않은 토큰
-    next(new UnauthorizedError("유효하지 않은 토큰입니다."));
+    next(err);
   }
 };
