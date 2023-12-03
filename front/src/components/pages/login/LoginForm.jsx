@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
+import { validateEmail, validatePassword } from "../../../utils/validate";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -9,20 +10,8 @@ const LoginForm = () => {
   const [isFocusEmail, setIsFocusEmail] = useState(false);
   const [isFocusPassword, setIsFocusPassword] = useState(false);
 
-  const validateEmail = (email) => {
-    return email.match(
-      /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/
-    );
-  };
-
-  const validatePassword = (password) => {
-    return password.match(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/
-    );
-  };
-
-  const isEmailValid = validateEmail(email);
-  const isPasswordValid = validatePassword(password);
+  const isEmailValid = useMemo(() => validateEmail(email), [email]);
+  const isPasswordValid = useMemo(() => validatePassword(password), [password]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

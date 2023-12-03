@@ -48,15 +48,15 @@ const Cart = ({ cart }) => {
   }, [debouncedCheck, debouncedQuantity, isFirst]);
 
   useEffect(() => {
-    // if (isChanged && !isFirst) {
-    //   trigger({
-    //     method: "post",
-    //     path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
-    //     data: postCartData,
-    //     applyResult: true,
-    //     isShowBoundary: false,
-    //   });
-    // }
+    if (isChanged && !isFirst) {
+      trigger({
+        method: "post",
+        path: `/01HGDP28VSVEG6PQR7AJ56ZDKS/carts`,
+        data: postCartData,
+        applyResult: true,
+        isShowBoundary: false,
+      });
+    }
     setIsChanged(false);
   }, [isChanged, isFirst, postCartData]);
 

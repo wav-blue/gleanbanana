@@ -24,7 +24,7 @@ const Carts = () => {
   useEffect(() => {
     trigger({
       method: "get",
-      path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
+      path: `/01HGDP28VSVEG6PQR7AJ56ZDKS/carts`,
       data: {},
       applyResult: true,
       isShowBoundary: true,
@@ -43,7 +43,7 @@ const Carts = () => {
     if (reqIdentifier === "deleteData") {
       dispatch(cartActions.removeFromCart(checkedItemIdList));
     }
-  }, [result.data, reqIdentifier]);
+  }, [result.data]);
 
   const onClickDelete = useCallback(() => {
     trigger({
