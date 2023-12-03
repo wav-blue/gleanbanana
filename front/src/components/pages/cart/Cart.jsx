@@ -18,7 +18,7 @@ const Cart = ({ cart }) => {
     data: {},
     shouldInitFetch: false,
   });
-  const { debouncedValue } = useDebouncing({
+  const { debouncedValue: debouncedQuantity } = useDebouncing({
     value: quantity,
     initialState: 0,
     delay: 2000,
@@ -33,30 +33,36 @@ const Cart = ({ cart }) => {
     setQuantity(newValue);
   }, []);
 
-  //수량 변경시 바로 store cart에 추가
-  //trigger도??? 계속 간다 수정필... + 에러 Column 'item_id' cannot be null
+  //수량 변경시 trigger ?? 그럼 안될듯
+  //상태가 변경될 때이지만, quantity와 checked가 변경시 지연후 트리거!
   useEffect(() => {
-    trigger({
-      method: "post",
-      path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
-      data: {
-        item_id: cart.itemId,
-        quantity,
-      },
-      applyResult: true,
-      isShowBoundary: false,
-    });
+    !isFirst &&
+      trigger({
+        method: "post",
+        path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
+        data: {
+          itemId: cart.item_id,
+          quantity: debouncedQuantity,
+        },
+        applyResult: true,
+        isShowBoundary: false,
+      });
+  }, [isFirst, cart.item_id, quantity]);
+
+  //수량변경시 cart에 추가
+  useEffect(() => {
     dispatch(
-      cartActions.changeQuantity({
-        item_id: cart.itemId,
+      cartActions.addToCart({
+        item_id: cart.item_id,
         quantity,
       })
     );
     !isFirst && dispatch(cartActions.updateTotal());
-  }, [quantity, dispatch, cart.itemId, isFirst]);
+  }, [quantity]);
 
   //checkbox 변경시 isChecked변경
   const onChangeCheckhandler = useCallback((e) => {
+    console.log("CheckHandler발동으로 first변경");
     setIsFirst(false);
     setIsChecked(e.target.checked);
   }, []);
@@ -69,16 +75,16 @@ const Cart = ({ cart }) => {
   //updateTotal
   useEffect(() => {
     if (debouncedCheck) {
-      console.log("debounced checked!");
       dispatch(
-        cartActions.addToCheckedList({ ...cart, quantity: debouncedValue })
+        cartActions.addToCheckedList({ ...cart, quantity: debouncedQuantity })
       );
     } else if (!debouncedCheck) {
       console.log("debounced unChecked!");
+      console.log("isFirst? " + isFirst);
       !isFirst && dispatch(cartActions.removeFromCheckedList(cart));
     }
-    dispatch(cartActions.updateTotal());
-  }, [cart, debouncedCheck, isFirst, dispatch, debouncedValue]);
+    !isFirst && dispatch(cartActions.updateTotal());
+  }, [cart, debouncedCheck, isFirst, dispatch, debouncedQuantity]);
 
   return (
     <article className="cart__wrapper">

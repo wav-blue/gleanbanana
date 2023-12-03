@@ -12,12 +12,12 @@ const LikeProduct = ({ like }) => {
     dispatch(likeActions.removeFromLike(like));
   };
   const addToCartHandler = async () => {
-    dispatch(
-      cartActions.addToCart({
-        ...like,
-        quantity: 1,
-      })
-    );
+    // dispatch(
+    //   likeActions.addToLike({
+    //     ...like,
+    //     quantity: 1,
+    //   })
+    // );
   };
 
   return (

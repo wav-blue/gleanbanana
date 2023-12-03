@@ -24,7 +24,7 @@ const Carts = () => {
       path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
       data: {},
       applyResult: true,
-      isShowBoundary: false,
+      isShowBoundary: true,
     });
   }, []);
 
@@ -33,9 +33,9 @@ const Carts = () => {
   useEffect(() => {
     if (reqIdentifier === "getData") {
       console.log("data를 가져와서 dispatch합니다");
-      dispatch(cartActions.addToCart(result?.data[0]));
+      console.log(result?.data);
+      dispatch(cartActions.storeToCart(result?.data));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
 
   return (
