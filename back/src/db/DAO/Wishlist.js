@@ -33,6 +33,21 @@ class Wishlist {
       });
     });
   }
+  static async findWishlistWithItems({ user_id }) {
+    const sql = `SELECT i.item_id, i.item_name, i.price, i.banana_index, i.image_url FROM wishlist AS w INNER JOIN item AS i ON i.item_id = w.item_id WHERE user_id= ?;`;
+    return new Promise((resolve, reject) => {
+      db.query(sql, user_id, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          if (results.length === 0) {
+            resolve("찜 목록이 없습니다.");
+          }
+          resolve(results);
+        }
+      });
+    });
+  }
 
   // Delete
   static async deleteWishlist({ user_id, item_id }) {

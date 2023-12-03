@@ -11,7 +11,7 @@ class wishService {
         throw new NotFoundError("해당하는 유저가 없습니다.");
       }
 
-      const wishlists = await Wishlist.findWishlistByUser({ user_id });
+      const wishlists = await Wishlist.findWishlistWithItems({ user_id });
 
       return wishlists;
     } catch (error) {
