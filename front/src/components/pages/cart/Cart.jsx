@@ -11,6 +11,7 @@ const Cart = ({ cart }) => {
   const [isFirst, setIsFirst] = useState(true);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
+  const [isChanged, setIsChanged] = false;
   //----------id부분 나중에 로그인기능 추가후 수정필!!!---------------
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "post",
@@ -29,31 +30,37 @@ const Cart = ({ cart }) => {
     delay: 2000,
   });
 
-  const onChangeNumHandler = useCallback((newValue) => {
-    setQuantity(newValue);
-  }, []);
-
-  //수량 변경시 바로 store cart에 추가
-  //trigger도??? 계속 간다 수정필... + 에러 Column 'item_id' cannot be null
+  const onChangeNumHandler = useCallback(
+    (newValue) => {
+      setIsFirst(false);
+      setQuantity(newValue);
+      //   !isFirst && dispatch(cartActions.updateCartQuantity());
+    },
+    [setQuantity, setIsFirst]
+  );
+  //debouncedCheck, debouncedQuantity이 변경될때만 setIsChanged(true) => trigger checkedvalue
   useEffect(() => {
-    trigger({
-      method: "post",
-      path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
-      data: {
-        item_id: cart.itemId,
-        quantity,
-      },
-      applyResult: true,
-      isShowBoundary: false,
-    });
-    dispatch(
-      cartActions.changeQuantity({
-        item_id: cart.itemId,
-        quantity,
-      })
-    );
-    !isFirst && dispatch(cartActions.updateTotal());
-  }, [quantity, dispatch, cart.itemId, isFirst]);
+    !isFirst && setIsChanged(true);
+  }, [debouncedCheck, debouncedQuantity, isFirst]);
+
+  useEffect(() => {
+    if (isChanged && !isFirst) {
+      trigger({
+        method: "post",
+        path: `/01HGDP28VSVEG6PQR7AJ56ZDKS/carts`,
+        data: postCartData,
+        applyResult: true,
+        isShowBoundary: false,
+      });
+    }
+    setIsChanged(false);
+  }, [isChanged, isFirst, postCartData]);
+
+  // //수량변경시 cart변경
+  // useEffect(() => {
+  //   !isFirst && dispatch(cartActions.addToCart(postCartData));
+  //   !isFirst && dispatch(cartActions.updateTotal());
+  // }, [quantity, isFirst, postCartData]);
 
   //checkbox 변경시 isChecked변경
   const onChangeCheckhandler = useCallback((e) => {

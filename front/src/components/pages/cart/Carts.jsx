@@ -33,7 +33,18 @@ const Carts = () => {
   useEffect(() => {
     if (reqIdentifier === "getData") {
       console.log("data를 가져와서 dispatch합니다");
+<<<<<<< Updated upstream
       dispatch(cartActions.addToCart(result?.data[0]));
+=======
+      console.log(reqIdentifier);
+      console.log(result?.data);
+      dispatch(cartActions.storeToCart(result?.data));
+    }
+
+    if (reqIdentifier === "deleteData") {
+      console.log(reqIdentifier);
+      dispatch(cartActions.removeFromCart(checkedItemIdList));
+>>>>>>> Stashed changes
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
