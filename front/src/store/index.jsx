@@ -5,7 +5,7 @@ import likeReducer from "./like";
 
 const store = configureStore({
   reducer: {
-    userLogin: userLoginReducer,
+    user: userLoginReducer,
     cart: cartReducer,
     like: likeReducer,
   },

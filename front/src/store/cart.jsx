@@ -64,9 +64,11 @@ const cartSlice = createSlice({
 
     updateTotal(state) {
       console.log("update Total");
+
       if (state.cartCheckedList) {
         let updatedTotal = state.cartCheckedList.reduce(
           (acc, cur) => {
+            console.log("@@@@@@@@", cur.banana_idx, cur.quantity);
             return {
               totalPrice: acc.totalPrice + cur.totalPrice,
               totalDeliveryFee: acc.totalDeliveryFee + cur.deliveryFee,

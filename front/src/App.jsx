@@ -2,6 +2,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "../src/styles/style.css";
 import NotFound from "./components/pages/error/NotFound";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 const Layout = lazy(() => import("./components/layout/Layout"));
 const Home = lazy(() => import("./components/pages/home/Home"));
 const Login = lazy(() => import("./components/pages/login/Login"));
@@ -15,6 +17,11 @@ const Carts = lazy(() => import("./components/pages/cart/Carts"));
 const Purchase = lazy(() => import("./components/pages/purchase/Purchase"));
 
 function App() {
+  const userId = useSelector((state) => state.user.userInfo);
+  useEffect(() => {
+    console.log("user Login!! status changed!!!!", userId);
+  }, [userId]);
+
   return (
     <div className="app">
       <Suspense fallback={<div>Loading...</div>}>

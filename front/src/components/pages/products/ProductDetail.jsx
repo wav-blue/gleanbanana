@@ -36,7 +36,6 @@ const ProductDetail = () => {
       await trigger({
         method: "get",
         path: `/items/${param.id}`,
-        data: undefined,
         applyResult: true,
         isShowBoundary: true,
       });

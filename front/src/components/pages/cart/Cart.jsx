@@ -7,15 +7,15 @@ import InputCheckbox from "../../UI/InputCheckbox";
 import useDebouncing from "../../../hooks/useDebouncing";
 import useApi from "../../../hooks/useApi";
 const Cart = ({ cart }) => {
+  const dispatch = useDispatch();
   const [isChecked, setIsChecked] = useState(false); //백checked 추가시 |cart.checked
   const [isFirst, setIsFirst] = useState(true);
-  const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   const [isChanged, setIsChanged] = useState(false);
-  //----------id부분 나중에 로그인기능 추가후 수정필!!!---------------
+  const userId = useSelector((state) => state.user.userInfo);
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "post",
-    path: "/01HGB9HKEM19XHHB180VF2N8XT/carts",
+    path: `/${userId}/carts`,
     data: {},
     shouldInitFetch: false,
   });
@@ -72,6 +72,7 @@ const Cart = ({ cart }) => {
   useEffect(() => {
     !isFirst && setIsChanged(true);
   }, [debouncedQuantity, isFirst]);
+  //debouncedCheck추가
 
   useEffect(() => {
     if (isChanged && !isFirst) {
@@ -79,19 +80,14 @@ const Cart = ({ cart }) => {
       setIsChanged(false);
       trigger({
         method: "post",
-        path: `/01HGDP28VSVEG6PQR7AJ56ZDKS/carts`,
+        path: `/${userId}/carts`,
         data: postCartData,
         applyResult: true,
         isShowBoundary: true,
       });
     }
-  }, [isChanged, isFirst, postCartData]);
-
-  // //수량변경시 cart변경
-  // useEffect(() => {
-  //   !isFirst && dispatch(cartActions.addToCart(postCartData));
-  //   !isFirst && dispatch(cartActions.updateTotal());
-  // }, [quantity, isFirst, postCartData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isChanged, isFirst]);
 
   //checkbox 변경시 isChecked변경 deps확인
   const onChangeCheckhandler = useCallback((e) => {

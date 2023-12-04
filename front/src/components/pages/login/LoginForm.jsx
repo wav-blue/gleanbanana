@@ -1,31 +1,51 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useMemo, useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
 import { validateEmail, validatePassword } from "../../../utils/validate";
+import useApi from "../../../hooks/useApi";
+import { useDispatch } from "react-redux";
+import { userLoginActions } from "../../../store/userLogin";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFocusEmail, setIsFocusEmail] = useState(false);
   const [isFocusPassword, setIsFocusPassword] = useState(false);
+  const { trigger, result, reqIdentifier, loading, error } = useApi({
+    method: "post",
+    path: "/users/login",
+    data: {},
+    shouldInitFetch: false,
+  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const isEmailValid = useMemo(() => validateEmail(email), [email]);
   const isPasswordValid = useMemo(() => validatePassword(password), [password]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const loginData = { email, password };
 
-    if (!email || !password) {
-      return alert("아이디/비밀번호를 입력하세요.");
-    } else {
-      const body = { email, password };
-      // api 전달하고 코드에 따라 다른 결과.!
-    }
+  const onClickLogin = () => {
+    trigger({
+      method: "post",
+      data: loginData,
+      applyResult: true,
+      isShowBoundary: true,
+    });
   };
 
+  //result.status 성공시 201? 확인
+  //성공시 home으로
+  useEffect(() => {
+    if (reqIdentifier === "postData" && result.status === 201) {
+      dispatch(userLoginActions.loginUser(loginData.email));
+      navigate("/");
+    }
+  }, [result.status, reqIdentifier]);
+
   return (
-    <form className="login__input" onSubmit={handleSubmit}>
+    <form className="login__input">
       <div className="login__input-check">
         <InputCommon
           placeholder="이메일을 입력해주세요"
@@ -63,7 +83,12 @@ const LoginForm = () => {
         <Link to="">아이디/비밀번호 찾기 &gt;</Link>
       </div>
       <div className="login__button">
-        <ButtonCommon design="form" type="submit">
+        <ButtonCommon
+          design="form"
+          type="submit"
+          onSubmit={onClickLogin}
+          disabled={!isEmailValid | !isPasswordValid}
+        >
           로그인
         </ButtonCommon>
         <ButtonCommon design="form weak">
