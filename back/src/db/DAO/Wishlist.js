@@ -41,7 +41,7 @@ class Wishlist {
           reject(error);
         } else {
           if (results.length === 0) {
-            resolve("찜 목록이 없습니다.");
+            resolve([]);
           }
           resolve(results);
         }

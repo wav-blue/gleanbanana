@@ -40,14 +40,7 @@ const OrderProducts = () => {
       <div className="order__wrapper">
         <div className="order">
           {OrderProductList.map((order, idx) => (
-            <OrderProduct
-              key={`order-${idx}`}
-              src={order.img}
-              status={order.orderStaus}
-              date={order.orderDate}
-              price={order.orderPrice}
-              bananaIdx={order.bananaIdx}
-            />
+            <OrderProduct key={`order-${idx}`} order={order} />
           ))}
         </div>
       </div>

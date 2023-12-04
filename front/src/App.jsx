@@ -2,6 +2,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "../src/styles/style.css";
 import NotFound from "./components/pages/error/NotFound";
+import OrderedDetail from "./components/pages/order/OrderedDetail";
+import Loading from "./components/pages/loading/load";
 const Layout = lazy(() => import("./components/layout/Layout"));
 const Home = lazy(() => import("./components/pages/home/Home"));
 const Login = lazy(() => import("./components/pages/login/Login"));
@@ -17,7 +19,7 @@ const Purchase = lazy(() => import("./components/pages/purchase/Purchase"));
 function App() {
   return (
     <div className="app">
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading />}>
         <div className="container">
           <header className="header">
             <Layout />
@@ -34,6 +36,7 @@ function App() {
               <Route path="/cart" element={<Carts />} />
               <Route path="/myPage" element={<MyPage />} />
               <Route path="/order" element={<Order />} />
+              <Route path="/order/:id" element={<OrderedDetail />} />
               <Route path="/purchase" element={<Purchase />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
