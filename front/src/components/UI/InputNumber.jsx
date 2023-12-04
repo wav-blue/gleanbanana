@@ -1,20 +1,13 @@
 import { useId, useState } from "react";
 import Up from "../icons/Up";
 import Down from "../icons/Down";
+import InputBase from "./InputBase";
 
-const InputNumber = ({
-  type = "text",
-  id,
-  value = undefined,
-  className = "",
-  required = false,
-  disabled = false,
-  onValueChange,
-  checkAll = false,
-}) => {
+const InputNumber = (props = InputBase) => {
   const [inputNum, setInputNum] = useState(1);
   const [checked, setChecked] = useState(false);
   const uniqueId = useId();
+  const { type, className, onValueChange } = props;
 
   return (
     <>

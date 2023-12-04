@@ -1,125 +1,135 @@
 import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
 import banana from "../../../assets/banana.png";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { cartActions } from "../../../store/cart";
-import { likeActions, likeStateSelector } from "../../../store/like";
+import { likeActions } from "../../../store/like";
 import Likes from "../../icons/Likes";
 import LikesFilled from "../../icons/LikesFilled";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import useApi from "../../../hooks/useApi";
 
 //장바구니에 추가하면 바로 장바구니 페이지로 가게 함
 const ProductDetail = () => {
   const [product, setProduct] = useState({});
-  const {
-    image_url: img,
-    item_name: itemName,
-    banana_index: bananaIdx,
-    price,
-  } = product;
-  const [itemPrice, setItemPrice] = useState(price);
-  const [bananaIndexes, setBananaIndexes] = useState(bananaIdx | 0);
   const [quantity, setQuantity] = useState(1);
+  const [bananaIndexes, setBananaIndexes] = useState(product.banana_index);
+  const [itemPrice, setItemPrice] = useState(product.price);
+
   const dispatch = useDispatch();
   const param = useParams();
-
-  //likeState createSelector로 메모이즈?
-  const likeState = useSelector(likeStateSelector);
-  const isLike = likeState.find((like) => like.id);
-  const onChangeNumHandler = (newValue) => {
-    setQuantity(newValue);
-    setItemPrice(quantity * price);
-  };
+  const { trigger, result, reqIdentifier } = useApi({
+    method: "post",
+    path: "/cart",
+    data: {},
+    shouldInitFetch: false,
+  });
+  const likeState = useSelector((state) => state.likeLists);
+  const isLike =
+    likeState && likeState.find((like) => like.item_id === product.item_id);
   const navigate = useNavigate();
 
+  //ProductDetail GET
   useEffect(() => {
-    setItemPrice(price);
-    console.log(product);
-  }, [price, product]);
+    //detail정보 가져오기
+    const getProductDetail = async () => {
+      await trigger({
+        method: "get",
+        path: `/items/${param.id}`,
+        data: undefined,
+        applyResult: true,
+        isShowBoundary: true,
+      });
+    };
 
-  useEffect(() => {
-    axios.get(`/api/items/${param.id}`).then((data) => {
-      return setProduct(data.data[0]);
-    });
+    getProductDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param.id]);
 
-  //찜목록에 추가
-  //찜목록에 이미 있다면 해당 버튼을 채워지게 표현
-  const addToLikeHandler = () => {
-    dispatch(likeActions.addToLike(product));
-  };
-
-  //장바구니store에 수량과 함께 추가
-  //useCallback을.....
-  //depsㅠㅠ를 잘...넣자
-  //event 를 넣을필요없다
+  //Cart POST
   const addToCartHandler = useCallback(async () => {
-    // const { trigger } = useApi({
-    //   method: "post",
-    //   path: "/cart",
-    //   data: {},
-    //   shouldInitFetch: false,
-    // });
-    // const result = await trigger({
-    //   method: "post",
-    //   path: "/cart",
-    //   data: data,
-    //   applyResult: true,
-    //   isShowBoundary: false,
-    //   shouldSetError: false,
-    // });
-    dispatch(
-      cartActions.addToCart({
-        ...product,
-        quantity: quantity,
-      })
-    );
+    const addCartData = {
+      ...product,
+      itemId: product.item_id,
+      price: itemPrice,
+      banana_index: bananaIndexes,
+      quantity: quantity,
+    };
+    console.log(addCartData);
+    await trigger({
+      method: "post",
+      path: "/01HGB9HKEM19XHHB180VF2N8XT/carts",
+      data: addCartData,
+      applyResult: true,
+      isShowBoundary: true,
+    });
     navigate("/cart");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product, quantity]);
 
+  //POST like
+  const addToLikeHandler = useCallback(() => {
+    dispatch(likeActions.addToLike(product));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product]);
+
+  //quantity변경
+  const onChangeNumHandler = (newValue) => {
+    setQuantity(newValue);
+  };
+
+  //quantity변경시 bananaIndex, itemPrice변경
   useEffect(() => {
-    // setPrice(itemPrice * quantity);
-    setBananaIndexes(bananaIdx * quantity);
-  }, [price, bananaIdx, quantity]);
+    setBananaIndexes(product.banana_index * quantity);
+    setItemPrice(product.price * quantity);
+  }, [quantity, product]);
+
+  //trigger의 결과로 result가 변경이 되면
+  useEffect(() => {
+    if (reqIdentifier === "getData") {
+      setProduct(result?.data[0]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result.data]);
 
   return (
-    <article className="product__article1">
-      <img src={img} alt={itemName} />
-      <section className="product__section">
-        <section className="product__section1">
-          <h1>{itemName}</h1>
+    <Suspense fallback={<div>Loading...</div>}>
+      <article className="product__article1">
+        <img src={product.image_url} alt={product.item_name} />
+        <section className="product__section">
+          <h1>{product.item_name}</h1>
           <div className="product__bananaIndex">
             x{(bananaIndexes / 100).toFixed(2)}
           </div>
           <img src={banana} alt="bananaIndex" />
-        </section>
-        <section className="product__section2">
-          <InputCommon
-            type="number"
-            className="gray-square"
-            onValueChange={onChangeNumHandler}
-          />
-          <div className="product__section2--totalVal">
-            <div className="product__section2--total">총 상품 금액</div>
+          <section className="product__section2">
+            <div className="product__section2--input">
+              <InputCommon
+                type="number"
+                className="gray-square"
+                onValueChange={onChangeNumHandler}
+              />
+              <div className="product__section2--total">총 상품 금액</div>
+            </div>
             <div className="product__section2--val">
               {Number(itemPrice).toLocaleString()}원
             </div>
-          </div>
+          </section>
+          <section className="product__section3--button">
+            <ButtonCommon design="small" onClick={addToLikeHandler}>
+              {!isLike && (
+                <span className="material-symbols-outlined">favorite</span>
+              )}
+              {isLike && <Likes />}
+            </ButtonCommon>
+            <ButtonCommon design="medium" onClick={addToCartHandler}>
+              장바구니 담기
+            </ButtonCommon>
+            <ButtonCommon design="medium">바로 구매하기</ButtonCommon>
+          </section>
         </section>
-        <section className="product__section3--button">
-          <ButtonCommon design="small" onClick={addToLikeHandler}>
-            {!isLike ? <Likes /> : <LikesFilled />}
-          </ButtonCommon>
-          <ButtonCommon design="medium" onClick={addToCartHandler}>
-            장바구니 담기
-          </ButtonCommon>
-          <ButtonCommon design="medium">바로 구매하기</ButtonCommon>
-        </section>
-      </section>
-    </article>
+      </article>
+    </Suspense>
   );
 };
 

@@ -1,3 +1,4 @@
+import { NotFoundError } from "../../libraries/custom-error";
 import db from "../db";
 const table_name = "item";
 
@@ -32,7 +33,7 @@ class itemService {
             console.log("getItem results값 확인 == ", results);
             resolve(results);
           } else {
-            reject(new Error("상품이 없습니다."));
+            reject(new NotFoundError("상품이 없습니다."));
           }
         }
       });
@@ -76,7 +77,7 @@ class itemService {
       const query = `UPDATE ${table_name} SET ? WHERE item_id = ?;`;
       db.query(query, [itemObj, item_id], function (error, results, fields) {
         if (error) {
-          reject(error);
+          reject(new Error("수정 요청을 실패했습니다."));
         } else {
           resolve(results);
         }
