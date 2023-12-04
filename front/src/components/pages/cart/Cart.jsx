@@ -32,7 +32,7 @@ const Cart = ({ cart }) => {
   //cart는 수시로 변하므로 useMemo해야함
   const postCartData = useMemo(() => {
     const obj = {
-      itemId: cart.item_id,
+      item_id: cart.item_id,
       quantity: debouncedQuantity,
     };
     return obj;

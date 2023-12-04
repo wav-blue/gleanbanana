@@ -13,14 +13,14 @@ userRouter.post("/users/register", async function (req, res, next) {
       throw new BadRequestError("필수 정보가 입력되지 않았습니다");
     }
     // db에 데이터 추가
-    const newUser = await userService.addUser({
+    const results = await userService.addUser({
       email,
       password,
       username,
       address,
       phone_number,
     });
-    res.status(201).json(newUser);
+    res.status(201).json("회원가입 완료");
   } catch (error) {
     next(error);
   }
