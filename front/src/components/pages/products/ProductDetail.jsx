@@ -67,8 +67,16 @@ const ProductDetail = () => {
   }, [product, quantity]);
 
   //POST like
-  const addToLikeHandler = useCallback(() => {
-    dispatch(likeActions.addToLike(product));
+  const addToLikeHandler = useCallback(async () => {
+    console.log(product);
+    // await trigger({
+    //   method: "post",
+    //   path: "/01HGB9HKEM19XHHB180VF2N8XT/wishlist",
+    //   data: product,
+    //   applyResult: true,
+    //   isShowBoundary: true,
+    // });
+    await dispatch(likeActions.addToLike(product));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product]);
 
@@ -88,6 +96,7 @@ const ProductDetail = () => {
     if (reqIdentifier === "getData") {
       setProduct(result?.data[0]);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
 

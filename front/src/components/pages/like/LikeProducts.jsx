@@ -12,7 +12,6 @@ const LikeProducts = () => {
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",
     path: `/01HGB9HKEM19XHHB180VF2N8XT/wishlist`,
-    data: {},
     shouldInitFetch: false,
   });
 
@@ -20,7 +19,6 @@ const LikeProducts = () => {
     trigger({
       method: "get",
       path: `/01HGB9HKEM19XHHB180VF2N8XT/wishlist`,
-      data: {},
       applyResult: true,
       isShowBoundary: true,
     });
@@ -40,11 +38,10 @@ const LikeProducts = () => {
       <hr />
       <div className="like__wrapper">
         <div className="like">
-          {likeLists}
-          {/* {likeLists &&
+          {likeLists &&
             likeLists?.map((like, idx) => (
               <LikeProduct key={`like-${idx}`} like={like} />
-            ))} */}
+            ))}
         </div>
       </div>
     </div>

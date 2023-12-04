@@ -26,7 +26,9 @@ const likeSlice = createSlice({
       }
     },
     removeFromLike(state, action) {
-      state.likeLists.filter((like) => like.id !== action.payload.id);
+      state.likeLists = state.likeLists.filter(
+        (like) => like.id !== action.payload.id
+      );
     },
   },
 });
