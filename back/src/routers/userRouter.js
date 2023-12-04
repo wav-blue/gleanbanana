@@ -31,7 +31,10 @@ userRouter.post("/users/login", async function (req, res, next) {
   try {
     const { email, password } = req.body;
     const user = await userService.loginUser({ email, password });
-
+    res.cookie("token", user.token, {
+      httpOnly: true,
+      signed: true,
+    });
     res.status(200).send(user);
   } catch (error) {
     next(error);
@@ -44,8 +47,10 @@ userRouter.get(
   loginRequired,
   async function (req, res, next) {
     try {
-      const { id } = req.body;
-      const user = await userService.getUser({ user_id: id });
+      const user_id = req.currentUserId;
+      console.log("current : ", req.currentUserId);
+      const user = await userService.getUser({ user_id });
+      console.log("user : ", user);
       res.status(200).json(user);
     } catch (error) {
       next(error);
@@ -66,6 +71,18 @@ userRouter.post("/users/:id", async function (req, res, next) {
       phone_number,
     });
     res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 로그아웃
+userRouter.get("/users/logout", async function (req, res, next) {
+  try {
+    res.cookie("token", null, {
+      maxAge: 0,
+    });
+    res.send("완료");
   } catch (error) {
     next(error);
   }
