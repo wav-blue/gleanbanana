@@ -29,6 +29,7 @@ itemRouter.get("/items", async function (req, res, next) {
 itemRouter.get("/items/:itemId", async function (req, res, next) {
   const { itemId } = req.params;
   try {
+    console.log("1");
     const items = await itemService.getItem({
       itemId,
     });
@@ -38,9 +39,23 @@ itemRouter.get("/items/:itemId", async function (req, res, next) {
   }
 });
 
+// 추천 상품 조회
+itemRouter.get("/recommend", async function (req, res, next) {
+  try {
+    console.log(" random !!");
+    const items = await itemService.getRandomItem();
+    console.log("items : ", items);
+
+    res.status(200).json(items);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // 추가
 itemRouter.post("/items", async function (req, res, next) {
   try {
+    console.log("2");
     const {
       item_id,
       item_name,
