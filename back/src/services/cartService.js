@@ -24,7 +24,7 @@ class cartService {
     return new Promise((resolve, reject) => {
       // SELECT c.cart_id, c.user_id <- 테스트
       db.query(
-        `SELECT ci.item_id, i.item_name, i.price, i.expected_delivery, i.banana_index, quantity
+        `SELECT ci.item_id, i.item_name, i.price, i.expected_delivery, i.banana_index, quantity, i.image_url
         FROM cart_item ci
         JOIN cart c ON ci.cart_id = c.cart_id
         JOIN item i ON ci.item_id = i.item_id
@@ -37,7 +37,7 @@ class cartService {
             if (results.length > 0) {
               resolve(results);
             } else {
-              reject(new Error("장바구니가 비어 있습니다."));
+              resolve("장바구니가 비어 있습니다.");
             }
           }
         }
@@ -63,9 +63,9 @@ class cartService {
   }
 
   // 이미 장바구니에 있는지 확인
-  static async getCartItem({ cartId, itemId }) {
+  static async getCartItem({ cartId, item_id }) {
     return new Promise((resolve, reject) => {
-      db.query(`SELECT * FROM cart_item WHERE cart_id = ? AND item_id = ?`, [cartId, itemId], (error, results, fields) => {
+      db.query(`SELECT * FROM cart_item WHERE cart_id = ? AND item_id = ?`, [cartId, item_id], (error, results, fields) => {
         if (error) {
           reject(error);
         } else {
@@ -75,10 +75,10 @@ class cartService {
     });
   }
 
-  // 장바구니에 아이템 수량 업데이트
-  static async updateCartItem({ cartId, itemId, quantity }) {
+  // 장바구니에 아이템 수량 갱신
+  static async updateCartItem({ cartId, item_id, quantity }) {
     return new Promise((resolve, reject) => {
-      db.query(`UPDATE cart_item SET quantity = ? WHERE cart_id = ? AND item_id = ?`, [quantity, cartId, itemId], (error, results, fields) => {
+      db.query(`UPDATE cart_item SET quantity = ? WHERE cart_id = ? AND item_id = ?`, [quantity, cartId, item_id], (error, results, fields) => {
         if (error) {
           reject(error);
         } else {
@@ -89,9 +89,9 @@ class cartService {
   }
 
   // 장바구니에 새로운 아이템 추가
-  static async insertCartItem({ cartId, itemId, quantity }) {
+  static async insertCartItem({ cartId, item_id, quantity }) {
     return new Promise((resolve, reject) => {
-      db.query(`INSERT INTO cart_item (cart_id, item_id, quantity) VALUES (?, ?, ?)`, [cartId, itemId, quantity], (error, results, fields) => {
+      db.query(`INSERT INTO cart_item (cart_id, item_id, quantity) VALUES (?, ?, ?)`, [cartId, item_id, quantity], (error, results, fields) => {
         if (error) {
           reject(error);
         } else {
@@ -102,24 +102,27 @@ class cartService {
   }
 
   // 장바구니 상품 삭제
-  static async deleteCart({ userId, itemId }) {
+  static async deleteCart({ userId, itemIdList }) {
     return new Promise(async (resolve, reject) => {
       try {
         // 사용자의 cart_id 가져오기
         const userCartId = await this.getCartIdForUser(userId);
-
-        // item_id에 대한 cart_id 가져오기
-        const cartId = await this.getCartIdForItem(itemId);
-        if (!userCartId || userCartId !== cartId) {
-          // 사용자의 cart_id와 상품에 연관된 cart_id가 일치하지 않을 경우 오류
-          reject(new Error("사용자가 추가하지 않은 상품입니다."));
-          return;
+        itemIdList = itemIdList.sort((a, b) => a - b)
+        for (const item_id of itemIdList) {
+          // item_id에 대한 cart_id 가져오기
+          const cartId = await this.getCartIdForItem(item_id);
+          
+          if (!userCartId || userCartId !== cartId) {
+            // 사용자의 cart_id와 상품과 연관된 cart_id가 일치하지 않는 경우 오류
+            reject(new Error("하나 이상의 상품이 사용자에 의해 추가되지 않았습니다."));
+            return;
+          }
+  
+          // 장바구니에서 상품 삭제
+          await this.deleteCartItem(item_id);
         }
-
-        // 장바구니에서 상품 삭제
-        await this.deleteCartItem(itemId);
-
-        resolve("선택한 상품이 쇼핑 카트에서 제거되었습니다.");
+  
+        resolve("선택한 상품이 장바구니에서 제거되었습니다.");
       } catch (error) {
         reject(error);
       }
@@ -127,9 +130,9 @@ class cartService {
   }
 
   // item_id에 대한 cart_id 가져오기
-  static async getCartIdForItem(itemId) {
+  static async getCartIdForItem(item_id) {
     return new Promise((resolve, reject) => {
-      db.query(`SELECT cart_id FROM cart_item WHERE item_id = ? LIMIT 1`, [itemId], (error, results, fields) => {
+      db.query(`SELECT cart_id FROM cart_item WHERE item_id = ? LIMIT 1`, [item_id], (error, results, fields) => {
         if (error) {
           reject(error);
         } else {
@@ -141,9 +144,9 @@ class cartService {
   }
 
   // cart 테이블에서 상품 삭제
-  static async deleteCartItem(itemId) {
+  static async deleteCartItem(item_id) {
     return new Promise((resolve, reject) => {
-      db.query(`DELETE FROM cart_item WHERE item_id = ?`, [itemId], (error, results, fields) => {
+      db.query(`DELETE FROM cart_item WHERE item_id = ?`, [item_id], (error, results, fields) => {
         if (error) {
           reject(error);
         } else {
