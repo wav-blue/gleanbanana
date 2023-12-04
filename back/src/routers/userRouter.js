@@ -6,7 +6,7 @@ import { loginRequired } from "../middlewares/loginRequired";
 const userRouter = Router();
 
 // 회원가입
-userRouter.post("/user/register", async function (req, res, next) {
+userRouter.post("/users/register", async function (req, res, next) {
   try {
     const { email, password, username, address, phone_number } = req.body;
     if (!email || !password || !username || !address || !phone_number) {
@@ -20,7 +20,6 @@ userRouter.post("/user/register", async function (req, res, next) {
       address,
       phone_number,
     });
-
     res.status(201).json(newUser);
   } catch (error) {
     next(error);
@@ -28,47 +27,59 @@ userRouter.post("/user/register", async function (req, res, next) {
 });
 
 // 로그인
-userRouter.post("/user/login", async function (req, res, next) {
-  const { email, password } = req.body;
-  const user = await userService.loginUser({ email, password });
-
-  res.setHeader(
-    "Set-Cookie",
-    `jwtToken=${user.token};max-age=3600;same-site=Lax;path=/;httpOnly;secure=false;`
-  );
-  res.status(200).send(user);
-});
-
-// 유저 본인의 정보 조회
-userRouter.get("/user/current", loginRequired, async function (req, res, next) {
+userRouter.post("/users/login", async function (req, res, next) {
   try {
-    const { id } = req.body;
-    const user = await userService.getUser({ user_id: id });
-    res.status(201).json(user);
+    const { email, password } = req.body;
+    const user = await userService.loginUser({ email, password });
+
+    res.status(200).send(user);
   } catch (error) {
     next(error);
   }
 });
 
+// 유저 본인의 정보 조회
+userRouter.get(
+  "/users/current",
+  loginRequired,
+  async function (req, res, next) {
+    try {
+      const { id } = req.body;
+      const user = await userService.getUser({ user_id: id });
+      res.status(200).json(user);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 // 회원 정보 수정
-userRouter.post("/user/:id", async function (req, res, next) {
-  const { id } = req.params;
-  const { password, username, address, phone_number } = req.body;
-  const user = await userService.updateUser({
-    user_id: id,
-    password,
-    username,
-    address,
-    phone_number,
-  });
-  res.status(201).json(user);
+userRouter.post("/users/:id", async function (req, res, next) {
+  try {
+    const { id } = req.params;
+    const { password, username, address, phone_number } = req.body;
+    const user = await userService.updateUser({
+      user_id: id,
+      password,
+      username,
+      address,
+      phone_number,
+    });
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // 회원탈퇴
-userRouter.delete("/user/:id", async function (req, res, next) {
-  const { id } = req.params;
-  const user = await userService.deleteUser({ user_id: id });
-  res.status(201).json(user);
+userRouter.delete("/users/:id", async function (req, res, next) {
+  try {
+    const { id } = req.params;
+    await userService.deleteUser({ user_id: id });
+    res.status(200).json("회원탈퇴가 완료되었습니다.");
+  } catch (error) {
+    next(error);
+  }
 });
 
 export { userRouter };

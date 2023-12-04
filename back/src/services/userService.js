@@ -1,17 +1,17 @@
 //import bcrypt from "bcrypt";
 //import hashPassword from "../utils/hash-password";
-//import comparePassword from "../utils/compare-password";
 import { ulid } from "ulidx";
-import db from "../db";
-import { BadRequestError } from "../../libraries/custom-error";
+import db from "../db/index_multi";
+import { NotFoundError } from "../../libraries/custom-error";
 import jwt from "jsonwebtoken";
+import mysql from "mysql2";
 
 class userService {
   static async addUser({ email, password, username, address, phone_number }) {
     // 비밀번호 해쉬화
     // const hashedPassword = await hashPassword(password, 10);
 
-    const user_id = ulid(); // 01F7DKCVCVDZN1Z5Q4FWANHHCC
+    const user_id = ulid();
     const today = new Date();
     const newUser = {
       user_id,
@@ -25,12 +25,24 @@ class userService {
       updatedAt: today,
       deletedAt: null,
     };
+    const cart_id = ulid();
 
-    var query = `INSERT INTO user SET ?  `;
+    const query1 = `INSERT INTO user SET ?; `;
+    const query1s = mysql.format(query1, newUser);
+
+    // 회원가입과 동시에 카트를 추가하는 부분
+    const newCart = { cart_id, user_id };
+    const query2 = `INSERT INTO cart SET ?; `;
+    const query2s = mysql.format(query2, newCart);
+
     return new Promise((resolve, reject) => {
-      db.query(query, newUser, function (error, results, fields) {
+      db.query(query1s + query2s, function (error, results) {
         if (error) {
-          console.log("error : ", error);
+          if (error.errno === 1062) {
+            // code: 'ER_DUP_ENTRY'
+            reject(new ConflictError("이미 가입된 이메일입니다."));
+          }
+          console.log("error : ");
           reject(error);
         } else {
           resolve(results);
@@ -39,20 +51,20 @@ class userService {
     });
   }
 
+  // 비밀번호 추가 작성 필요
   // 유저 로그인
   static async loginUser({ email, password }) {
     const query = `SELECT user_id, email, password FROM user WHERE email = ?`;
     return new Promise((resolve, reject) => {
       db.query(query, email, function (error, results, fields) {
         if (error) {
-          // 유저가 존재하지 않음
           console.log("error : ", error);
           reject(error);
         } else {
           // 로그인 성공 -> JWT 웹 토큰 생성
           const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
 
-          // 토큰의 내용, 토큰의 비밀 키, 토큰의 설정
+          // 토큰의 내용/ 토큰의 비밀 키/ 토큰의 설정
           const token = jwt.sign({ user_id: results[0]["user_id"] }, secretKey);
 
           // 반환할 loginuser 객체
@@ -74,8 +86,17 @@ class userService {
 
       db.query(query, user_id, function (error, results, fields) {
         if (error) {
-          reject(error);
+          reject();
         } else {
+          if (results?.length === 0) {
+            // id에 해당되는 유저가 없는 경우
+            reject(new NotFoundError("해당하는 유저를 찾을 수 없습니다."));
+          }
+          if (results[0]?.deletedAt) {
+            // 탈퇴한 유저인 경우
+            // 보안을 위해 같은 메시지 출력
+            reject(new NotFoundError("해당하는 유저를 찾을 수 없습니다."));
+          }
           resolve(results);
         }
       });
@@ -107,6 +128,9 @@ class userService {
             console.log("error : ", error);
             reject(error);
           } else {
+            if (results.affectedRows === 0) {
+              reject(new NotFoundError("해당하는 유저를 찾을 수 없습니다."));
+            }
             resolve(results);
           }
         }
