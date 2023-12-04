@@ -40,12 +40,34 @@ const Cart = ({ cart }) => {
 
   const onChangeNumHandler = useCallback(
     (newValue) => {
+      console.log("1. number 변경!!!");
       setIsFirst(false);
       setQuantity(newValue);
       //   !isFirst && dispatch(cartActions.updateCartQuantity());
     },
     [setQuantity, setIsFirst]
   );
+
+  useEffect(() => {
+    console.log(quantity, "2. quantity변경!");
+  }, [quantity]);
+
+  useEffect(() => {
+    console.log(debouncedQuantity, "3. debouncedQuantity 변경!");
+  }, [debouncedQuantity]);
+
+  useEffect(() => {
+    console.log(isChanged, "isChanged 변경@");
+  }, [isChanged]);
+
+  useEffect(() => {
+    console.log(isFirst, "1.5 isFirst 변경!!!");
+  }, [isFirst]);
+
+  useEffect(() => {
+    console.log(postCartData, "4. postCartData변경!!!");
+  }, [postCartData]);
+
   //debouncedCheck, debouncedQuantity이 변경될때만 setIsChanged(true) => trigger checkedvalue
   useEffect(() => {
     !isFirst && setIsChanged(true);
@@ -53,15 +75,16 @@ const Cart = ({ cart }) => {
 
   useEffect(() => {
     if (isChanged && !isFirst) {
+      console.log("5.cart수량 변경 요청!");
+      setIsChanged(false);
       trigger({
         method: "post",
         path: `/01HGDP28VSVEG6PQR7AJ56ZDKS/carts`,
         data: postCartData,
         applyResult: true,
-        isShowBoundary: false,
+        isShowBoundary: true,
       });
     }
-    setIsChanged(false);
   }, [isChanged, isFirst, postCartData]);
 
   // //수량변경시 cart변경
