@@ -3,7 +3,7 @@ import db from "..";
 class Wishlist {
   // Create
   static async createWishlist({ user_id, item_id }) {
-    const sql = `INSERT INTO wishlist VALUES (null, ?, ?);`;
+    const sql = `INSERT INTO wishlist VALUES (?, ?);`;
     return new Promise((resolve, reject) => {
       db.query(sql, [user_id, item_id], function (error, results, fields) {
         if (error) {
@@ -19,14 +19,14 @@ class Wishlist {
 
   // Read
   static async findWishlistByUser({ user_id }) {
-    const sql = `SELECT * FROM wishlist WHERE user_id = ? ;`;
+    const sql = `SELECT item_id FROM wishlist WHERE user_id = ? ;`;
     return new Promise((resolve, reject) => {
       db.query(sql, user_id, function (error, results, fields) {
         if (error) {
           reject(error);
         } else {
           if (results.length === 0) {
-            resolve("찜 목록이 없습니다.");
+            resolve(null);
           }
           resolve(results);
         }
@@ -40,9 +40,7 @@ class Wishlist {
         if (error) {
           reject(error);
         } else {
-          if (results.length === 0) {
-            resolve("찜 목록이 없습니다.");
-          }
+          // 찜한 목록이 없는 경우 빈 배열 반환
           resolve(results);
         }
       });
