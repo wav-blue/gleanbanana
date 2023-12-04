@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { UnauthorizedError } from "../../libraries/custom-error";
 
-exports.loginRequired = (req, res, next) => {
+function loginRequired(req, res, next) {
   try {
     const userToken = req.signedCookies.token ?? null;
 
@@ -21,4 +21,6 @@ exports.loginRequired = (req, res, next) => {
     // 유효하지 않은 토큰
     next(err);
   }
-};
+}
+
+export { loginRequired };

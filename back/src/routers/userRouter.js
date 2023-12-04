@@ -2,6 +2,7 @@ import { Router } from "express";
 import {} from "../../libraries/custom-error";
 import { userService } from "../services/userService";
 import { loginRequired } from "../middlewares/loginRequired";
+import { checkPermission } from "../middlewares/checkPermission";
 
 const userRouter = Router();
 
@@ -59,22 +60,27 @@ userRouter.get(
 );
 
 // 회원 정보 수정
-userRouter.post("/users/:id", async function (req, res, next) {
-  try {
-    const { id } = req.params;
-    const { password, username, address, phone_number } = req.body;
-    const user = await userService.updateUser({
-      user_id: id,
-      password,
-      username,
-      address,
-      phone_number,
-    });
-    res.status(200).json(user);
-  } catch (error) {
-    next(error);
+userRouter.post(
+  "/users/:userId",
+  loginRequired,
+  checkPermission,
+  async function (req, res, next) {
+    try {
+      const { id } = req.params;
+      const { password, username, address, phone_number } = req.body;
+      const user = await userService.updateUser({
+        user_id: id,
+        password,
+        username,
+        address,
+        phone_number,
+      });
+      res.status(200).json(user);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // 로그아웃
 userRouter.get("/users/logout", async function (req, res, next) {
@@ -89,14 +95,19 @@ userRouter.get("/users/logout", async function (req, res, next) {
 });
 
 // 회원탈퇴
-userRouter.delete("/users/:id", async function (req, res, next) {
-  try {
-    const { id } = req.params;
-    await userService.deleteUser({ user_id: id });
-    res.status(200).json("회원탈퇴가 완료되었습니다.");
-  } catch (error) {
-    next(error);
+userRouter.delete(
+  "/users/:userId",
+  loginRequired,
+  checkPermission,
+  async function (req, res, next) {
+    try {
+      const user_id = req.currentUserId;
+      await userService.deleteUser({ user_id });
+      res.status(200).json("회원탈퇴가 완료되었습니다.");
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 export { userRouter };
