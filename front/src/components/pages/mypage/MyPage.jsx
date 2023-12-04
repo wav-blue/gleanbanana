@@ -15,7 +15,11 @@ const MyPage = () => {
   const toHome = () => {
     navigate("/home");
   };
-  const onConfirm = useConfirm("로그인후 사용해주세요!", toLogin, toHome);
+  const onConfirm = useConfirm(
+    "로그인된 유저만 사용가능합니다!",
+    toLogin,
+    toHome
+  );
 
   useEffect(() => {
     console.log(loggedInUser);

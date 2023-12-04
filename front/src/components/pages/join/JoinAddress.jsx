@@ -5,8 +5,7 @@ import SearchMini from "../../icons/SearchMini";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import { useState } from "react";
 
-const JoinAddress = () => {
-  const [address, setAddress] = useState("");
+const JoinAddress = ({ address, setAddress }) => {
   const PostCode = () => {
     const scriptUrl =
       "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";

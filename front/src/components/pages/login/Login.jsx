@@ -14,10 +14,7 @@ const Login = () => {
     dispatch(userLoginActions.loginUser("01HGB9HKEM19XHHB180VF2N8XT"));
   };
 
-  //userInfo가 변경이 되고나면 home으로 돌아가게 하고 싶다.
   useEffect(() => {
-    console.log(userInfo);
-
     if (userInfo) {
       navigate("/home");
     }

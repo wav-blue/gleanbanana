@@ -2,7 +2,6 @@ import { useState } from "react";
 import InputCommon from "../../UI/InputCommon";
 
 const JoinPassword = () => {
-  const [password, setPassword] = useState("");
   const [doublePassword, setDoublePassword] = useState("");
   const [isFocusPassword, setIsFocusPassword] = useState(false);
   const [isFocusDoublePassword, setIsFocusDoublePassword] = useState(false);
