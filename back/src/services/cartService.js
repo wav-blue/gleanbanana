@@ -93,25 +93,32 @@ class cartService {
   // 장바구니에 아이템 수량 갱신
   static async updateCartItem({ cartId, item_id, checked, quantity }) {
     return new Promise((resolve, reject) => {
-      db.query(`UPDATE cart_item SET quantity = ?, checked = ? WHERE cart_id = ? AND item_id = ?`, 
-      [quantity, checked, cartId, item_id], (error, results, fields) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve("장바구니의 제품 수량이 갱신되었습니다.");
+      db.query(
+        `UPDATE cart_item SET quantity = ?, checked = ? WHERE cart_id = ? AND item_id = ?`,
+        [quantity, checked, cartId, item_id],
+        (error, results, fields) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve("장바구니의 제품 수량이 갱신되었습니다.");
+          }
         }
-      });
+      );
     });
   }
 
   // 장바구니에 새로운 아이템 추가
   static async insertCartItem({ cartId, item_id, quantity }) {
     return new Promise((resolve, reject) => {
-      db.query(`INSERT INTO cart_item (cart_id, item_id, quantity, checked) VALUES (?, ?, ?, false)`, [cartId, item_id, quantity], (error, results, fields) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve("장바구니에 항목이 추가되었습니다.");
+      db.query(
+        `INSERT INTO cart_item (cart_id, item_id, quantity, checked) VALUES (?, ?, ?, false)`,
+        [cartId, item_id, quantity],
+        (error, results, fields) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve("장바구니에 항목이 추가되었습니다.");
+          }
         }
       );
     });
@@ -124,7 +131,7 @@ class cartService {
         // Get the user's cart_id
         const userCartId = await this.getCartIdForUser(userId);
         itemIdList = itemIdList.sort((a, b) => a - b);
-  
+
         // Delete product from shopping cart
         for (const itemId of itemIdList) {
           await this.deleteCartItem(userCartId, itemId);
@@ -140,14 +147,14 @@ class cartService {
   static async deleteCartItem(cartId, itemId) {
     return new Promise((resolve, reject) => {
       const query = "DELETE FROM cart_item WHERE cart_id = ? AND item_id = ?";
-  
+
       db.query(query, [cartId, itemId], (error, results, fields) => {
         if (error) {
           reject(error);
         } else {
           resolve();
         }
-      );
+      });
     });
   }
 }
