@@ -30,6 +30,19 @@ class orderService {
           reject(error);
         } else {
           if (results.length > 0) {
+            results[0].items = results[0].item_id + results[0].quantity;
+            console.log(
+              "getOrders results[0].items값 확인 == ",
+              results[0].items값
+            );
+            console.log(
+              "getOrders results[0].item_id값 확인 == ",
+              results[0].item_id
+            );
+            console.log(
+              "getOrders results[0].quantity 확인 == ",
+              results[0].quantity
+            );
             console.log("getOrders results값 확인 == ", results);
             resolve(results);
           } else {
@@ -90,8 +103,25 @@ class orderService {
           reject(error);
         } else {
           if (results.length > 0) {
-            console.log("getOrderDetail results값 확인 == ", results);
-            resolve(results);
+            let test_arr = [];
+            //const test_result = { items: test_arr };
+            //let test_result = [];
+            for (var i = 0; i < results.length; i++) {
+              const test_dic = {};
+              //console.log("results[" + i + "] : ", results[i].item_id);
+              //console.log("results[" + i + "] : ", results[i].quantity);
+              test_dic["item_id"] = results[i].item_id;
+              test_dic["quantity"] = results[i].quantity;
+              //console.log("test_dic : ", test_dic);
+              test_arr.push(test_dic);
+
+              //console.log("for loop test_arr 확인 == ", test_arr);
+              //console.log("test_arr[" + i + "] : ", test_arr[i]);
+            }
+            results[0]["items"] = test_arr;
+            const final_result = results[0];
+            console.log("getOrderDetail final_result값 확인 == ", final_result);
+            resolve(final_result);
           } else {
             reject(new Error("주문내역이 없습니다."));
           }
@@ -148,7 +178,8 @@ class orderService {
           reject(error);
         } else {
           console.log("results : ", results);
-          resolve(results);
+          resolve("201 : 새로운 주문 항목이 추가되었습니다.");
+          //resolve(results);
         }
       });
     });
@@ -180,8 +211,8 @@ class orderService {
           reject(error);
         } else {
           console.log("delete success deletequery1 : ", deletequery1);
-
-          resolve(results);
+          resolve("204 : 해당 주문 내역이 삭제 되었습니다.");
+          //resolve(results);
         }
       });
     });
