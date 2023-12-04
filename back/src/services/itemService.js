@@ -7,7 +7,7 @@ class itemService {
   // 전체 조회
   static async getItems() {
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM ${table_name}`;
+      const query = `SELECT * FROM ${table_name} LIMIT 20`;
       db.query(query, function (error, results, fields) {
         if (error) {
           reject(error);
