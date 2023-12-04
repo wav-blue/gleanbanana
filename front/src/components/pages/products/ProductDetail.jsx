@@ -97,30 +97,29 @@ const ProductDetail = () => {
       <article className="product__article1">
         <img src={product.image_url} alt={product.item_name} />
         <section className="product__section">
-          <h1>{product.item_name}</h1>
-          <div className="product__bananaIndex">
-            x{(bananaIndexes / 100).toFixed(2)}
-          </div>
-          <img src={banana} alt="bananaIndex" />
-          <section className="product__section2">
-            <div className="product__section2--input">
-              <InputCommon
-                type="number"
-                className="gray-square"
-                onValueChange={onChangeNumHandler}
-              />
-              <div className="product__section2--total">총 상품 금액</div>
+          <section className="product__section1">
+            <h1>{product.item_name}</h1>
+            <div className="product__bananaIndex">
+              x{(bananaIndexes / 100).toFixed(2)}
             </div>
-            <div className="product__section2--val">
-              {Number(itemPrice).toLocaleString()}원
+            <img src={banana} alt="bananaIndex" />
+          </section>
+          <section className="product__section2">
+            <InputCommon
+              type="number"
+              className="gray-square"
+              onValueChange={onChangeNumHandler}
+            />
+            <div className="product__section2--totalVal">
+              <div className="product__section2--total">총 상품 금액</div>
+              <div className="product__section2--val">
+                {Number(itemPrice).toLocaleString()}원
+              </div>
             </div>
           </section>
           <section className="product__section3--button">
             <ButtonCommon design="small" onClick={addToLikeHandler}>
-              {!isLike && (
-                <span className="material-symbols-outlined">favorite</span>
-              )}
-              {isLike && <Likes />}
+              {!isLike ? <Likes /> : <LikesFilled />}
             </ButtonCommon>
             <ButtonCommon design="medium" onClick={addToCartHandler}>
               장바구니 담기
