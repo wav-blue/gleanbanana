@@ -71,7 +71,7 @@ const Cart = ({ cart }) => {
   //debouncedCheck, debouncedQuantity이 변경될때만 setIsChanged(true) => trigger checkedvalue
   useEffect(() => {
     !isFirst && setIsChanged(true);
-  }, [debouncedCheck, debouncedQuantity, isFirst]);
+  }, [debouncedQuantity, isFirst]);
 
   useEffect(() => {
     if (isChanged && !isFirst) {
@@ -102,9 +102,11 @@ const Cart = ({ cart }) => {
   //updateTotal
   useEffect(() => {
     if (isChecked) {
-      dispatch(cartActions.addToCheckedList({ ...cart, quantity }));
+      dispatch(
+        cartActions.addToCheckedList({ item_id: cart.item_id, quantity })
+      );
     } else if (!isChecked) {
-      !isFirst && dispatch(cartActions.removeFromCheckedList(cart));
+      !isFirst && dispatch(cartActions.removeFromCheckedList(cart.item_id));
     }
     !isFirst && dispatch(cartActions.updateTotal());
   }, [cart, isChecked, isFirst, dispatch, quantity]);

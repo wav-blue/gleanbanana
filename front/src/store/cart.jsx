@@ -45,7 +45,6 @@ const cartSlice = createSlice({
     },
 
     //장바구니에서 체크박스 선택했을 때
-    //cartCheckedList.length가 0이든 말든 push
     addToCheckedList(state, action) {
       const newCartCheckedList = action.payload;
       state.cartCheckedList.push(newCartCheckedList);
@@ -53,7 +52,7 @@ const cartSlice = createSlice({
     //장바구니에서 check 해제했을 때
     removeFromCheckedList(state, action) {
       state.cartCheckedList = state.cartCheckedList.filter(
-        (item) => item.item_id !== action.payload.item_id
+        (item) => item.item_id !== action.payload
       );
       console.log(state.cartCheckedList);
     },
