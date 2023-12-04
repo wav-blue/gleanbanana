@@ -50,16 +50,23 @@ cartRouter.post("/:userId/carts", async function (req, res, next) {
 
 // 장바구니 안에서 수량 변경
 cartRouter.put("/:userId/carts", async function (req, res, next) {
-  const { userId} = req.params;
+  const { userId } = req.params;
   const { item_id, quantity } = req.body;
 
   try {
     // 사용자의 cart_id 가져오기
     const cartId = await cartService.getCartIdForUser(userId);
-
-    // 장바구니에서 상품 수량 갱신
-    await cartService.updateCartItem({ cartId, item_id, quantity });
-    res.status(200).send("장바구니 상품 수량이 갱신되었습니다.");
+    const existingItem = await cartService.getCartItem({ cartId, item_id });
+    if (existingItem) {
+      await cartService.updateCartItem({
+        cartId,
+        item_id,
+        quantity,
+      });
+      res.status(200).send("장바구니 상품 수량이 갱신되었습니다.");
+    } else {
+      res.status(404).send("장바구니에 항목이 없습니다.");
+    }  
   } catch (error) {
     next(error);
   }
