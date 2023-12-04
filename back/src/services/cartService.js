@@ -146,7 +146,6 @@ class cartService {
           // 장바구니에서 상품 삭제
           await this.deleteCartItem(item_id);
         }
-
         resolve("선택한 상품이 장바구니에서 제거되었습니다.");
       } catch (error) {
         reject(error);
