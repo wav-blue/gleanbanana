@@ -5,40 +5,19 @@ import db from "../db";
 
 class wishService {
   static async getWishlist({ user_id }) {
-    try {
-      const user = await User.findUser({ user_id });
-      console.log("user: ", user);
-      if (user.length === 0) {
-        throw new NotFoundError("해당하는 유저가 없습니다.");
-      }
-
-      const wishlists = await Wishlist.findWishlistWithItems({ user_id });
-
-      return wishlists;
-    } catch (error) {
-      return error;
-    }
+    const wishlists = await Wishlist.findWishlistWithItems({ user_id });
+    return wishlists;
   }
 
   static async getWishlistId({ user_id }) {
-    try {
-      const results = await Wishlist.findWishlistByUser({ user_id });
-      console.log("results : ", results);
-      return results;
-    } catch (error) {
-      return error;
-    }
+    const wishlists = await Wishlist.findWishlistByUser({ user_id });
+    return wishlists;
   }
 
-  // 존재하지 않는 user id를 받았다
   // 존재하지 않는 item id를 받았다
   static async createWishlist({ user_id, item_id }) {
-    try {
-      const results = await Wishlist.createWishlist({ user_id, item_id });
-      return results;
-    } catch (error) {
-      return error;
-    }
+    const results = await Wishlist.createWishlist({ user_id, item_id });
+    return results;
   }
 
   // 특정 유저의 특정 아이템 삭제
@@ -57,9 +36,6 @@ class wishService {
       return error;
     }
   }
-
-  // 특정 유저가 없다 (에러)
-  // 특정 유저가 있지만 삭제할 아이템이 없다(에러 아님)
 
   // 특정 유저의 전체 아이템 삭제
   static async deleteAllWishlist({ user_id }) {
