@@ -78,12 +78,28 @@ class cartService {
   // 장바구니에 아이템 수량 갱신
   static async updateCartItem({ cartId, item_id, quantity }) {
     return new Promise((resolve, reject) => {
-      db.query(`UPDATE cart_item SET quantity = ? WHERE cart_id = ? AND item_id = ?`, [quantity, cartId, item_id], (error, results, fields) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve("장바구니의 제품 수량이 갱신되었습니다.");
+      db.beginTransaction((err) => {
+        if (err) {
+          reject(err);
+          return;
         }
+
+        db.query(
+          `UPDATE cart_item SET quantity = ? WHERE cart_id = ? AND item_id = ?`,
+          [quantity, cartId, item_id],
+          (error, results, fields) => {
+            if (error) {
+              return db.rollback(() => reject(error));
+            }
+
+            db.commit((err) => {
+              if (err) {
+                return db.rollback(() => reject(err));
+              }
+              resolve("장바구니의 제품 수량이 갱신되었습니다.");
+            });
+          }
+        );
       });
     });
   }
