@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import banana from "../../../assets/banana.png";
 import InputCommon from "../../UI/InputCommon";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,7 @@ const Cart = ({ cart }) => {
   const [isFirst, setIsFirst] = useState(true);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
-  const [isChanged, setIsChanged] = false;
+  const [isChanged, setIsChanged] = useState(false);
   //----------id부분 나중에 로그인기능 추가후 수정필!!!---------------
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "post",
@@ -19,7 +19,7 @@ const Cart = ({ cart }) => {
     data: {},
     shouldInitFetch: false,
   });
-  const { debouncedValue } = useDebouncing({
+  const { debouncedValue: debouncedQuantity } = useDebouncing({
     value: quantity,
     initialState: 0,
     delay: 2000,
@@ -29,6 +29,14 @@ const Cart = ({ cart }) => {
     initialState: false, // |cart.checked
     delay: 2000,
   });
+  //cart는 수시로 변하므로 useMemo해야함
+  const postCartData = useMemo(() => {
+    const obj = {
+      itemId: cart.item_id,
+      quantity: debouncedQuantity,
+    };
+    return obj;
+  }, [debouncedQuantity, cart.item_id]);
 
   const onChangeNumHandler = useCallback(
     (newValue) => {
@@ -62,30 +70,21 @@ const Cart = ({ cart }) => {
   //   !isFirst && dispatch(cartActions.updateTotal());
   // }, [quantity, isFirst, postCartData]);
 
-  //checkbox 변경시 isChecked변경
+  //checkbox 변경시 isChecked변경 deps확인
   const onChangeCheckhandler = useCallback((e) => {
     setIsFirst(false);
     setIsChecked(e.target.checked);
   }, []);
 
-  //debouncedCheck변경시 store checkedList에 추가
-  //check되고 수량변경시 요청이 계속 가므로 debouncedValue??
-  //총 가격 렌더링 너무느리다 그러나 요청은 debounced되어야한다..
-
-  //deps에 debouncedCheck만 변경될때만 trigger
   //updateTotal
   useEffect(() => {
-    if (debouncedCheck) {
-      console.log("debounced checked!");
-      dispatch(
-        cartActions.addToCheckedList({ ...cart, quantity: debouncedValue })
-      );
-    } else if (!debouncedCheck) {
-      console.log("debounced unChecked!");
+    if (isChecked) {
+      dispatch(cartActions.addToCheckedList({ ...cart, quantity }));
+    } else if (!isChecked) {
       !isFirst && dispatch(cartActions.removeFromCheckedList(cart));
     }
-    dispatch(cartActions.updateTotal());
-  }, [cart, debouncedCheck, isFirst, dispatch, debouncedValue]);
+    !isFirst && dispatch(cartActions.updateTotal());
+  }, [cart, isChecked, isFirst, dispatch, quantity]);
 
   return (
     <article className="cart__wrapper">

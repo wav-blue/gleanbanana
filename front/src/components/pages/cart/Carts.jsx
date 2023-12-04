@@ -2,20 +2,23 @@ import Cart from "./Cart";
 import CartsHeader from "./CartsHeader";
 import CartsButton from "./CartsButton";
 import CartsTotal from "./CartsTotal";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useApi from "../../../hooks/useApi";
 import { cartActions } from "../../../store/cart";
+import ButtonCommon from "../../UI/ButtonCommon";
 
 const Carts = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",
     path: "/01HGB9HKEM19XHHB180VF2N8XT/carts",
     data: {},
     shouldInitFetch: false,
   });
+  const checkedItemIdList = cartCheckedList.map((list) => list.item_id);
 
   // GET요청
   useEffect(() => {
@@ -24,7 +27,7 @@ const Carts = () => {
       path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
       data: {},
       applyResult: true,
-      isShowBoundary: false,
+      isShowBoundary: true,
     });
   }, []);
 
@@ -33,9 +36,6 @@ const Carts = () => {
   useEffect(() => {
     if (reqIdentifier === "getData") {
       console.log("data를 가져와서 dispatch합니다");
-<<<<<<< Updated upstream
-      dispatch(cartActions.addToCart(result?.data[0]));
-=======
       console.log(reqIdentifier);
       console.log(result?.data);
       dispatch(cartActions.storeToCart(result?.data));
@@ -44,10 +44,18 @@ const Carts = () => {
     if (reqIdentifier === "deleteData") {
       console.log(reqIdentifier);
       dispatch(cartActions.removeFromCart(checkedItemIdList));
->>>>>>> Stashed changes
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
+
+  const onClickDelete = useCallback(() => {
+    trigger({
+      method: "delete",
+      path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
+      data: checkedItemIdList,
+      applyResult: true,
+      isShowBoundary: true,
+    });
+  }, [checkedItemIdList]);
 
   return (
     <div className="carts__wrapper">
@@ -57,6 +65,7 @@ const Carts = () => {
           <Cart cart={cart} key={`carts-${index}`} />
         ))}
       </div>
+      <ButtonCommon onClick={onClickDelete}>선택 삭제하기</ButtonCommon>
       <CartsTotal />
       <CartsButton />
     </div>

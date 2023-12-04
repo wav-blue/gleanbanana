@@ -10,20 +10,6 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: initialState,
   reducers: {
-<<<<<<< Updated upstream
-    //장바구니에서 수량을 변경했을 시 사용되는 로직(?)
-    //수량 변경하면 가격, 바나나 인덱스도 변경되어야 함.
-    addToCart(state, action) {
-      console.log("dispatch 실행됨!");
-      const newItem = action.payload;
-      const existedItem = state.cartItems.find(
-        (item) => item.item_id === newItem.item_id
-      );
-      if (!existedItem) {
-        state.cartItems.push(newItem);
-      } else if (existedItem) {
-        existedItem.quantity = existedItem.quantity + +action.payload.quantity;
-=======
     //cart api에서 가져와서 store에 저장하는 리듀서
     storeToCart(state, action) {
       console.log("store to cart!");
@@ -46,36 +32,28 @@ const cartSlice = createSlice({
         //있다면 수량변경
         const updatedCartQuantity = action.payload.quantity;
         state.cartItems[existedItemIndex].quantity = updatedCartQuantity;
->>>>>>> Stashed changes
       }
     },
-    //장바구니에서 체크박스 선택했을 때
-    //총량표시(계산?)
-    addToCheckedList(state, action) {
-      const checkedItem = state.cartItems.find(
-        (cart) => cart.id === action.payload.id
+    removeFromCart(state, action) {
+      // action.payload의 형태는 숫자만있는 리스트
+      //해당 아이디를 모두 cartList에서 제거하는 로직
+      const toRemoveIdList = action.payload;
+      const removedCartList = state.cartItems.filter((items) =>
+        toRemoveIdList.includes(items.item_id)
       );
-      state.cartCheckedList.push(checkedItem);
+      state.cartItems = removedCartList;
+    },
 
-      //여기서 numinput값이 변경될 경우는?
-    },
-    //quantity 변동시 (cartItems와 cartCheckedList모두 변경)
-    changeQuantity(state, action) {
-      const changedCartItem = state.cartItems.find(
-        (cart) => cart.id === action.payload.id
-      );
-      const changedCheckedItem = state.cartCheckedList.find(
-        (cart) => cart.id === action.payload.id
-      );
-      changedCartItem.quantity = action.payload.quantity;
-      if (changedCheckedItem) {
-        changedCheckedItem.quantity = action.payload.quantity;
-      }
+    //장바구니에서 체크박스 선택했을 때
+    //cartCheckedList.length가 0이든 말든 push
+    addToCheckedList(state, action) {
+      const newCartCheckedList = action.payload;
+      state.cartCheckedList.push(newCartCheckedList);
     },
     //장바구니에서 check 해제했을 때
     removeFromCheckedList(state, action) {
       state.cartCheckedList = state.cartCheckedList.filter(
-        (item) => item.id !== action.payload.id
+        (item) => item.item_id !== action.payload.item_id
       );
       console.log(state.cartCheckedList);
     },
@@ -86,10 +64,7 @@ const cartSlice = createSlice({
     },
 
     updateTotal(state) {
-      //cartCheckedList에 들어있는 모든 아이템의 bananaIndex
-      //하나로 ㅠㅠ
       console.log("update Total");
-      //acc : {}
       if (state.cartCheckedList) {
         let updatedTotal = state.cartCheckedList.reduce(
           (acc, cur) => {
