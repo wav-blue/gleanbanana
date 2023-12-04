@@ -2,8 +2,8 @@
   align-items: center;
   justify-content: center;
   display: flex;
-  width: 45px;
-  height: 40px;
+  width: 55px;
+  height: 50px;
   & > a {
     display: flex;
     justify-content: center;
@@ -24,6 +24,8 @@
     margin-top: 10px;
   }
   @include mobile-l {
+    width: 45px;
+    height: 40px;
     &__wrapper {
       font-size: 10px;
       padding-top: 0;
@@ -32,6 +34,8 @@
     }
   }
   @include tablet {
+    width: 45px;
+    height: 40px;
     &__wrapper {
       font-size: 10px;
       padding-top: 0;

@@ -9,6 +9,9 @@ const likeSlice = createSlice({
   name: "like",
   initialState: initialState,
   reducers: {
+    storeToLike(state, action) {
+      state.likeLists = action.payload;
+    },
     addToLike(state, action) {
       const newLike = action.payload;
       const exitedLike = state.likeLists.find((item) => item.id === newLike.id);

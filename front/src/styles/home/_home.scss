@@ -31,9 +31,4 @@
       width: $breakpoint-mobile-m;
     }
   }
-  @include mobile-s {
-    &__wrapper {
-      width: $breakpoint-mobile-s;
-    }
-  }
 }
