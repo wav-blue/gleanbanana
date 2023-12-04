@@ -23,7 +23,8 @@ class orderService {
       on ${table_name}.order_id = order_item.order_id
       inner join item
       on order_item.item_id = item.item_id
-      where ${table_name}.user_id = '${userId}'`;
+      where ${table_name}.user_id = '${userId}'
+      order by ${table_name}.order_date_createdAt desc;`;
 
       console.log("query(innerjoin) : ", query);
 
@@ -145,7 +146,8 @@ class orderService {
       on ${table_name}.order_id = order_item.order_id
       inner join item
       on order_item.item_id = item.item_id
-      where ${table_name}.user_id = '${userId}' and ${table_name}.order_id = '${order_id}'`;
+      where ${table_name}.user_id = '${userId}'
+      and ${table_name}.order_id = '${order_id}'`;
 
       console.log("query(innerjoin) : ", query);
 
