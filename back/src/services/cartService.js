@@ -24,7 +24,7 @@ class cartService {
     return new Promise((resolve, reject) => {
       // SELECT c.cart_id, c.user_id <- 테스트
       db.query(
-        `SELECT ci.item_id, i.item_name, i.price, i.expected_delivery, i.banana_index, quantity, i.image_url
+        `SELECT ci.item_id, i.item_name, i.price, i.expected_delivery, i.banana_index, quantity, i.image_url, checked
         FROM cart_item ci
         JOIN cart c ON ci.cart_id = c.cart_id
         JOIN item i ON ci.item_id = i.item_id
@@ -91,7 +91,7 @@ class cartService {
   // 장바구니에 새로운 아이템 추가
   static async insertCartItem({ cartId, item_id, quantity }) {
     return new Promise((resolve, reject) => {
-      db.query(`INSERT INTO cart_item (cart_id, item_id, quantity) VALUES (?, ?, ?)`, [cartId, item_id, quantity], (error, results, fields) => {
+      db.query(`INSERT INTO cart_item (cart_id, item_id, quantity, checked) VALUES (?, ?, ?, false)`, [cartId, item_id, quantity], (error, results, fields) => {
         if (error) {
           reject(error);
         } else {
