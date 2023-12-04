@@ -12,7 +12,9 @@ const ProductCard = ({
   return (
     <Link to={`/product/${id}`}>
       <Card>
-        <img src={src} alt={itemName} />
+        <div className="card__img">
+          <img src={src} alt={itemName} />
+        </div>
         <div className="recommendation__description__wrapper">
           <div className="recommendation__description">
             <div className="recommendation__description-detail">

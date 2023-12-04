@@ -1,4 +1,6 @@
 import { useEffect, useId, useState } from "react";
+import Up from "../icons/Up";
+import Down from "../icons/Down";
 
 const InputCommon = ({
   label = "",
@@ -80,9 +82,7 @@ const InputCommon = ({
               onValueChange(inputNum + 1);
             }}
           >
-            <span className="material-symbols-outlined ">
-              keyboard_control_key
-            </span>
+            <Up />
           </div>
           <div
             className="down"
@@ -95,7 +95,7 @@ const InputCommon = ({
               onValueChange(inputNum - 1);
             }}
           >
-            <span className="material-symbols-outlined">stat_minus_1</span>
+            <Down />
           </div>
         </div>
       )}

@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 const SideMenus = [
   { menuName: "탄소 소비량", to: "/myPage" },
   { menuName: "찜 목록", to: "/like" },
-  { menuName: "주문내역 / 배송조회", to: "/order" },
+  { menuName: "주문내역", to: "/order" },
   { menuName: "정보 수정", to: "/user" },
   { menuName: "문의내역", to: "/inquiry" },
 ];

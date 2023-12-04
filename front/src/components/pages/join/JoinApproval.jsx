@@ -1,20 +1,8 @@
 import { useState } from "react";
-import InputCommon from "../../UI/InputCommon";
+import InputCheckbox from "../../UI/InputCheckbox";
+import JoinApprovalContent from "./JoinApprovalContent";
 
 const JoinApprovalList = [
-  {
-    required: true,
-    content: (
-      <div>
-        전체 동의합니다.
-        <p>
-          선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할
-          수 있습니다.
-        </p>
-      </div>
-    ),
-    checkAll: true,
-  },
   { required: true, content: "이용약관 동의 (필수)", checkAll: false },
   {
     required: true,
@@ -29,9 +17,9 @@ const JoinApprovalList = [
 ];
 
 const JoinApproval = () => {
-  const [checked, setChecked] = useState(false);
-  const onValueChange = (val) => {
-    setChecked(val);
+  const [isChecked, setIsChecked] = useState(false);
+  const onCheckChange = () => {
+    setIsChecked((prev) => !prev);
   };
   return (
     <div className="join__approval">
@@ -40,17 +28,26 @@ const JoinApproval = () => {
         <p>*</p>
       </div>
       <div className="join__approval__content">
+        <label className="join__approval--check">
+          <InputCheckbox
+            type="checkbox"
+            className="checkInput"
+            checked={isChecked}
+            onChangeCheckhandler={onCheckChange}
+          />
+          <div>
+            전체 동의합니다.
+            <p>
+              선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를
+              이용할 수 있습니다.
+            </p>
+          </div>
+        </label>
         {JoinApprovalList.map((approval, idx) => (
-          <label key={`joinApproval-${idx}`} className="join__approval--check">
-            <InputCommon
-              type="checkbox"
-              required={approval.required}
-              className="checkbox"
-              onValueChange={onValueChange}
-              checkAll={approval.checkAll}
-            />
-            {approval.content}
-          </label>
+          <JoinApprovalContent
+            key={`joinApproval-${idx}`}
+            approval={approval}
+          ></JoinApprovalContent>
         ))}
       </div>
     </div>

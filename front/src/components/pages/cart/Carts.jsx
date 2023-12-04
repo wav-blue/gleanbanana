@@ -65,7 +65,11 @@ const Carts = () => {
           <Cart cart={cart} key={`carts-${index}`} />
         ))}
       </div>
-      <ButtonCommon onClick={onClickDelete}>선택 삭제하기</ButtonCommon>
+      <div className="carts__delButton">
+        <ButtonCommon design="midsmall" onClick={onClickDelete}>
+          선택 삭제하기
+        </ButtonCommon>
+      </div>
       <CartsTotal />
       <CartsButton />
     </div>

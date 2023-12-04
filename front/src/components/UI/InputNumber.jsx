@@ -1,4 +1,6 @@
 import { useId, useState } from "react";
+import Up from "../icons/Up";
+import Down from "../icons/Down";
 import InputBase from "./InputBase";
 
 const InputNumber = (props = InputBase) => {
@@ -31,9 +33,7 @@ const InputNumber = (props = InputBase) => {
             onValueChange(inputNum + 1);
           }}
         >
-          <span className="material-symbols-outlined ">
-            keyboard_control_key
-          </span>
+          <Up />
         </div>
         <div
           className="down"
@@ -46,7 +46,7 @@ const InputNumber = (props = InputBase) => {
             onValueChange(inputNum - 1);
           }}
         >
-          <span className="material-symbols-outlined">stat_minus_1</span>
+          <Down />
         </div>
       </div>
     </>

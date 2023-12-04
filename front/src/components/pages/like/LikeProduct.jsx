@@ -1,38 +1,39 @@
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import ButtonCommon from "../../UI/ButtonCommon";
+import banana from "../../../assets/banana.png";
 import List from "../../UI/List";
 import { likeActions } from "../../../store/like";
 import { cartActions } from "../../../store/cart";
 
 const LikeProduct = ({ like }) => {
-  const { src, name, price, bananaImg, bananaIdx } = like;
   const dispatch = useDispatch();
+
   const removeHandler = async () => {
     dispatch(likeActions.removeFromLike(like));
   };
   const addToCartHandler = async () => {
-    // dispatch(
-    //   likeActions.addToLike({
-    //     ...like,
-    //     quantity: 1,
-    //   })
-    // );
+    dispatch(
+      cartActions.addToCart({
+        ...like,
+        quantity: 1,
+      })
+    );
   };
 
   return (
     <List type="row">
-      <img src={src} alt={name} />
+      <img src={like.src} alt={like.name} />
       <Link className="like__description__wrapper">
         <div className="like__description">
-          <div className="like__description__name">{name}</div>
+          <div className="like__description__name">{like.name}</div>
           <div className="like__description__price">
-            {Number(price).toLocaleString()}원
+            {Number(like.price).toLocaleString()}원
           </div>
         </div>
         <div className="like__description-index">
-          <img src={bananaImg} alt="bananaIndex" />
-          <div>X {bananaIdx}</div>
+          <img src={banana} alt="bananaIndex" />
+          <div>X {like.bananaIdx}</div>
         </div>
       </Link>
       <div className="like__button__wrapper">

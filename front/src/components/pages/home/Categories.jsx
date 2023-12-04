@@ -37,15 +37,7 @@ const Categories = (props) => {
         <div className="categories--name">카테고리</div>
         {props.showAllBtn && (
           <div className="categories--more">
-            <Link to="/products">
-              모든 상품 보기
-              <span
-                className="material-symbols-outlined"
-                style={{ fontSize: "10px" }}
-              >
-                arrow_forward_ios
-              </span>
-            </Link>
+            <Link to="/products">모든 상품 보기 &gt;</Link>
           </div>
         )}
       </div>

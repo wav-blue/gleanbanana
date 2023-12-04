@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
+import Likes from "../icons/Likes";
+import Carts from "../icons/Carts";
+import Users from "../icons/Users";
 
 const MenuArray = [
-  { icon: "favorite", link: "/like", name: "찜하기" },
-  { icon: "shopping_cart", link: "/cart", name: "장바구니" },
-  { icon: "account_circle", link: "/myPage", name: "마이페이지" },
+  { icon: <Likes />, link: "/like", name: "찜하기" },
+  { icon: <Carts />, link: "/cart", name: "장바구니" },
+  { icon: <Users />, link: "/myPage", name: "마이페이지" },
   // { icon: "account_circle", link: "/myPage", name: "마이페이지", isLogin: false },
 ];
 
@@ -12,7 +15,7 @@ const MenuBtn = () => {
     <div className="menuBtn__wrapper">
       {MenuArray.map((menu, idx) => (
         <Link key={`menu-${idx}`} to={menu.link} className="menuBtn">
-          <span className="material-symbols-outlined">{menu.icon}</span>
+          {menu.icon}
           {menu.name}
         </Link>
       ))}

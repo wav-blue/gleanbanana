@@ -1,16 +1,41 @@
 @import "./product";
 
 .products {
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: 20px;
-  grid-row-gap: 35px;
-
+  width: 100%;
   display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  grid-row-gap: 25px;
+  margin-bottom: 50px;
   &__wrapper {
     display: flex;
     flex-direction: column;
-    margin: 42px auto 20px;
-    width: 1022px;
-    gap: 62px;
+    margin-top: 30px;
+    width: 1020px;
+    align-items: center;
+    gap: 30px;
+  }
+  @include tablet {
+    width: 95%;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    grid-row-gap: 20px;
+    &__wrapper {
+      width: $breakpoint-tablet;
+      gap: 25px;
+      margin: 30px 0 0 0;
+    }
+  }
+  @include mobile-l {
+    width: 90%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    grid-row-gap: 20px;
+    &__wrapper {
+      width: $breakpoint-mobile-l;
+      align-items: center;
+      gap: 20px;
+      margin: 20px 0 0 0;
+    }
   }
 }

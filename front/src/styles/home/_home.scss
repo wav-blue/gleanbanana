@@ -6,13 +6,13 @@
 .home {
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
   gap: 30px;
   &__wrapper {
     display: flex;
     flex-direction: column;
     gap: 25px;
     width: 1020px;
+    align-items: center;
   }
 
   @include tablet {
@@ -23,16 +23,12 @@
   @include mobile-l {
     &__wrapper {
       width: $breakpoint-mobile-l;
+      margin-top: 5px;
     }
   }
   @include mobile-m {
     &__wrapper {
       width: $breakpoint-mobile-m;
-    }
-  }
-  @include mobile-s {
-    &__wrapper {
-      width: $breakpoint-mobile-s;
     }
   }
 }

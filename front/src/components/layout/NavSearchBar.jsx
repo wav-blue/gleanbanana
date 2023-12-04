@@ -2,6 +2,7 @@ import ButtonCommon from "../UI/ButtonCommon";
 import InputCommon from "../UI/InputCommon";
 import Logo from "./Logo";
 import MenuBtn from "./MenuBtn";
+import Search from "../icons/Search";
 
 const NavSearchBar = () => {
   // const barWidth = window.innerWidth;
@@ -23,7 +24,7 @@ const NavSearchBar = () => {
             placeholder={isBig ? "원하는 식재료를 입력하세요." : ""}
           />
           <ButtonCommon design="none" type="submit">
-            <span className="material-symbols-outlined">search</span>
+            <Search />
           </ButtonCommon>
         </form>
       </div>

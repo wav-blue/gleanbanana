@@ -117,12 +117,13 @@ const Cart = ({ cart }) => {
         <div className="cart__check">
           <InputCheckbox
             type="checkbox"
+            className="checkInput"
             id={cart.item_id}
             checked={isChecked}
             onChangeCheckhandler={onChangeCheckhandler}
           />
-          <img src={cart.image_url} alt={cart.item_name} />
         </div>
+        <img className="cart__img" src={cart.image_url} alt={cart.item_name} />
         <div className="cart__description__wrapper">
           <div className="cart__description">
             <div className="cart__description-name">{cart.item_name}</div>
@@ -136,9 +137,9 @@ const Cart = ({ cart }) => {
             value={cart.quantity}
             onValueChange={onChangeNumHandler}
           />
-          <div className="cart__description__val">
-            {Number((cart.price * quantity).toFixed(2)).toLocaleString()}원
-          </div>
+        </div>
+        <div className="cart__description__val">
+          {Number((cart.price * quantity).toFixed(2)).toLocaleString()}원
         </div>
         <div className="cart__bananaIndex">
           <img src={banana} alt="bananaIndex" />
