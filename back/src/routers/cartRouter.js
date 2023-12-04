@@ -50,7 +50,7 @@ cartRouter.post("/:userId/carts", async function (req, res, next) {
 
 // 장바구니 안에서 수량 변경
 cartRouter.put("/:userId/carts", async function (req, res, next) {
-  const { userId} = req.params;
+  const { userId } = req.params;
   const { item_id, quantity, checked } = req.body;
 
   try {

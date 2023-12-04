@@ -1,12 +1,13 @@
 import { NotFoundError } from "../../libraries/custom-error";
 import db from "../db";
+import { Item } from "../db/DAO/Item";
 const table_name = "item";
 
 class itemService {
   // 전체 조회
   static async getItems() {
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM ${table_name}`;
+      const query = `SELECT * FROM ${table_name} LIMIT 20`;
       db.query(query, function (error, results, fields) {
         if (error) {
           reject(error);
@@ -38,6 +39,16 @@ class itemService {
         }
       });
     });
+  }
+  // 추천 상품 조회
+  static async getRandomItem() {
+    try {
+      console.log("getRandomItem");
+      const results = await Item.readRandomItem();
+      return results;
+    } catch (error) {
+      return error;
+    }
   }
   // 추가
   static async createItem({
@@ -101,9 +112,9 @@ class itemService {
   // 카테고리별 상품 조회
   static async getItemsByCategory({ category }) {
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM ${table_name} WHERE category = '${category}'`;
+      const query = `SELECT * FROM item WHERE category_id = (SELECT category_id FROM category WHERE category_name = ?);`;
 
-      db.query(query, function (error, results, fields) {
+      db.query(query, category, function (error, results, fields) {
         if (error) {
           reject(error);
         } else {

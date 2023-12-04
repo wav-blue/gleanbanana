@@ -14,16 +14,31 @@ wishRouter.get("/:userId/wishlist", async function (req, res, next) {
   }
 });
 
+wishRouter.get("/:userId/wishlist/id", async function (req, res, next) {
+  try {
+    const { userId } = req.params;
+    const results = await wishService.getWishlistId({ user_id: userId });
+    const itemid_list = [];
+
+    for (let i = 0; i < results?.length; i++) {
+      itemid_list.push(results[i].item_id);
+    }
+    res.status(200).json(itemid_list);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // 찜하기 버튼 클릭
 wishRouter.post("/:userId/wishlist", async function (req, res, next) {
   try {
     const { userId } = req.params;
     const { item_id } = req.body;
-    const items = await wishService.createWishlist({
+    await wishService.createWishlist({
       user_id: userId,
       item_id,
     });
-    res.status(201).json(items);
+    res.status(201).json("찜 목록에 성공적으로 추가되었습니다.");
   } catch (error) {
     next(error);
   }
