@@ -7,6 +7,7 @@ class wishService {
   static async getWishlist({ user_id }) {
     try {
       const user = await User.findUser({ user_id });
+      console.log("user: ", user);
       if (user.length === 0) {
         throw new NotFoundError("해당하는 유저가 없습니다.");
       }
@@ -19,12 +20,21 @@ class wishService {
     }
   }
 
+  static async getWishlistId({ user_id }) {
+    try {
+      const results = await Wishlist.findWishlistByUser({ user_id });
+      console.log("results : ", results);
+      return results;
+    } catch (error) {
+      return error;
+    }
+  }
+
   // 존재하지 않는 user id를 받았다
   // 존재하지 않는 item id를 받았다
   static async createWishlist({ user_id, item_id }) {
     try {
       const results = await Wishlist.createWishlist({ user_id, item_id });
-      console.log(results);
       return results;
     } catch (error) {
       return error;

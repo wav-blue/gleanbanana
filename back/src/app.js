@@ -2,6 +2,8 @@ import express from "express";
 import path from "path";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
 
+import cookieParser from "cookie-parser";
+
 // router import
 import { itemRouter } from "./routers/itemRouter";
 import { wishRouter } from "./routers/wishRouter";
@@ -14,6 +16,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(cookieParser("sercret"));
 
 // 기본 페이지
 app.get("/", (req, res) => {
