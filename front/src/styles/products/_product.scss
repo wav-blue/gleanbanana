@@ -19,6 +19,7 @@
     }
   }
   &__section {
+    width: 630px;
     margin-top: 15px;
     display: flex;
     flex-direction: column;
@@ -66,7 +67,6 @@
     &--button {
       justify-content: space-between;
       display: flex;
-      gap: 10px;
       svg {
         width: 30px;
       }
@@ -145,6 +145,7 @@
       }
     }
     &__section {
+      width: 387px;
       gap: 10px;
     }
     &__section1 {
@@ -160,7 +161,7 @@
       }
     }
     &__bananaIndex {
-      transform: translateY(7px) translateX(180px);
+      transform: translateY(7px) translateX(155px);
       font-size: 15px;
     }
     &__section2 {

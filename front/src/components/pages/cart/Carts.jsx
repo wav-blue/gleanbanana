@@ -2,51 +2,60 @@ import Cart from "./Cart";
 import CartsHeader from "./CartsHeader";
 import CartsButton from "./CartsButton";
 import CartsTotal from "./CartsTotal";
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useApi from "../../../hooks/useApi";
-import axios from "axios";
 import { cartActions } from "../../../store/cart";
+import ButtonCommon from "../../UI/ButtonCommon";
 
 const Carts = () => {
-  //다른곳에서 store에있는 cart가 변경되면?
-  //안되니까 결국 store에 있는 cart로 가져와야 겠구만
-  const cartItems = useSelector((state) => state.cart.cartItems);
-  console.log("cartItems", cartItems);
   const dispatch = useDispatch();
-  // const { trigger, result, reqIdentifier, loading, error } = useApi({
-  //   method: "get",
-  //   path: "/cart", //확인필요
-  //   data: {},
-  //   shouldInitFetch: false,
-  // });
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
+  const { trigger, result, reqIdentifier, loading, error } = useApi({
+    method: "get",
+    path: "/01HGB9HKEM19XHHB180VF2N8XT/carts",
+    data: {},
+    shouldInitFetch: false,
+  });
+  const checkedItemIdList = cartCheckedList.map((list) => list.item_id);
 
   // GET요청
-  const memoizedGetCarts = useCallback(async () => {
-    // trigger({
-    //   method: "get",
-    //   path: `/carts`,
-    //   data: {},
-    //   applyResult: true,
-    //   isShowBoundary: true,
-    //   shouldSetError: true,
-    // });
-    const fetchedCarts = await axios.get(
-      "/api/user/01HGB9HKEM19XHHB180VF2N8XT/carts/"
-    );
-    dispatch(cartActions.addToCart(fetchedCarts));
-  }, [dispatch]);
-
-  // carts가 변경되면 서버와 통신하여 해당 데이터들을 가져옴
   useEffect(() => {
-    // memoizedGetCarts();
-  }, [cartItems, memoizedGetCarts]);
+    trigger({
+      method: "get",
+      path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
+      data: {},
+      applyResult: true,
+      isShowBoundary: true,
+    });
+  }, []);
 
-  // RESULT가 변하면 세팅 useApi사용할때
-  // useEffect(() => {
-  //   if (reqIdentifier !== "getData") return;
-  //   setCarts(result.data?.cart);
-  // }, [result.data, reqIdentifier]);
+  //result가 변하면 cart에 dispatch
+  //store에 저장되어있는 것으로 cart화면 그려줌
+  useEffect(() => {
+    if (reqIdentifier === "getData") {
+      console.log("data를 가져와서 dispatch합니다");
+      console.log(reqIdentifier);
+      console.log(result?.data);
+      dispatch(cartActions.storeToCart(result?.data));
+    }
+
+    if (reqIdentifier === "deleteData") {
+      console.log(reqIdentifier);
+      dispatch(cartActions.removeFromCart(checkedItemIdList));
+    }
+  }, [result.data]);
+
+  const onClickDelete = useCallback(() => {
+    trigger({
+      method: "delete",
+      path: `/01HGB9HKEM19XHHB180VF2N8XT/carts`,
+      data: checkedItemIdList,
+      applyResult: true,
+      isShowBoundary: true,
+    });
+  }, [checkedItemIdList]);
 
   return (
     <div className="carts__wrapper">
@@ -55,6 +64,11 @@ const Carts = () => {
         {cartItems.map((cart, index) => (
           <Cart cart={cart} key={`carts-${index}`} />
         ))}
+      </div>
+      <div className="carts__delButton">
+        <ButtonCommon design="midsmall" onClick={onClickDelete}>
+          선택 삭제하기
+        </ButtonCommon>
       </div>
       <CartsTotal />
       <CartsButton />

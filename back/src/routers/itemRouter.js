@@ -75,8 +75,8 @@ itemRouter.post("/items", async function (req, res, next) {
 itemRouter.delete("/items/:itemId", async function (req, res, next) {
   try {
     const { itemId } = req.params;
-    const items = await itemService.deleteItem({ item_id: itemId });
-    res.status(204).json(items);
+    await itemService.deleteItem({ item_id: itemId });
+    res.status(204).json();
   } catch (error) {
     next(error);
   }

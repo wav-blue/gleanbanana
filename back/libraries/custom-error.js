@@ -45,6 +45,14 @@ class ConflictError extends Error {
     this.status = 409;
   }
 }
+
+// 419: Token 유효기간 만료
+class TokenExpiredError extends Error {
+  constructor(message) {
+    super(message);
+    this.status = 419;
+  }
+}
 export {
   BadRequestError,
   NotFoundError,
@@ -52,4 +60,5 @@ export {
   UnauthorizedError,
   ConflictError,
   INVALID_USER_Error,
+  TokenExpiredError,
 };

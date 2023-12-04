@@ -224,6 +224,16 @@ input#numberInput::-webkit-outer-spin-button {
       width: 15px;
     }
   }
+  &--error {
+    width: 250px;
+    height: 58px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-size: $big-font-size;
+    background-color: $gray-lev1;
+  }
 }
 
 // CARD

@@ -10,48 +10,50 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: initialState,
   reducers: {
-    //장바구니에서 수량을 변경했을 시 사용되는 로직(?)
-    //수량 변경하면 가격, 바나나 인덱스도 변경되어야 함.
-    addToCart(state, action) {
-      console.log("dispatch 실행됨!");
-      const newItem = action.payload;
-      const existedItem = state.cartItems.find(
-        (item) => item.id === newItem.id
-      );
-      if (!existedItem) {
-        state.cartItems.push(newItem);
-      } else if (existedItem) {
-        existedItem.quantity = existedItem.quantity + +action.payload.quantity;
-      }
+    //cart api에서 가져와서 store에 저장하는 리듀서
+    storeToCart(state, action) {
+      console.log("store to cart!");
+      state.cartItems = action.payload;
     },
-    //장바구니에서 체크박스 선택했을 때
-    //총량표시(계산?)
-    addToCheckedList(state, action) {
-      console.log(action.payload);
-      const checkedItem = state.cartItems.find(
-        (cart) => cart.id === action.payload.id
-      );
-      state.cartCheckedList.push(checkedItem);
 
-      //여기서 numinput값이 변경될 경우는?
-    },
-    //quantity 변동시 (cartItems와 cartCheckedList모두 변경)
-    changeQuantity(state, action) {
-      const changedCartItem = state.cartItems.find(
-        (cart) => cart.id === action.payload.id
+    //고객이 productDetail 추가/ 장바구니에서수량변경때 사용
+    //에러 나오는 이유
+
+    //수량변경 트리거 되어야 하는 이유는
+    //Cart에서 수량변경시!
+    updateCartQuantity(state, action) {
+      console.log("updateCartQuantity", action.payload);
+      console.log("newItemId", action.payload.item_ids);
+      const newItemId = action.payload.item_id;
+      const existedItemIndex = state.cartItems.findIndex(
+        (cart) => cart.item_id === newItemId
       );
-      const changedCheckedItem = state.cartCheckedList.find(
-        (cart) => cart.id === action.payload.id
-      );
-      changedCartItem.quantity = action.payload.quantity;
-      if (changedCheckedItem) {
-        changedCheckedItem.quantity = action.payload.quantity;
+      if (existedItemIndex !== -1) {
+        //있다면 수량변경
+        const updatedCartQuantity = action.payload.quantity;
+        state.cartItems[existedItemIndex].quantity = updatedCartQuantity;
       }
+    },
+    removeFromCart(state, action) {
+      // action.payload의 형태는 숫자만있는 리스트
+      //해당 아이디를 모두 cartList에서 제거하는 로직
+      const toRemoveIdList = action.payload;
+      const removedCartList = state.cartItems.filter((items) =>
+        toRemoveIdList.includes(items.item_id)
+      );
+      state.cartItems = removedCartList;
+    },
+
+    //장바구니에서 체크박스 선택했을 때
+    //cartCheckedList.length가 0이든 말든 push
+    addToCheckedList(state, action) {
+      const newCartCheckedList = action.payload;
+      state.cartCheckedList.push(newCartCheckedList);
     },
     //장바구니에서 check 해제했을 때
     removeFromCheckedList(state, action) {
       state.cartCheckedList = state.cartCheckedList.filter(
-        (item) => item.id !== action.payload.id
+        (item) => item.item_id !== action.payload.item_id
       );
       console.log(state.cartCheckedList);
     },
@@ -62,22 +64,22 @@ const cartSlice = createSlice({
     },
 
     updateTotal(state) {
-      //cartCheckedList에 들어있는 모든 아이템의 bananaIndex
-      //하나로 ㅠㅠ
       console.log("update Total");
-      state.totalBananaIndex = state.cartCheckedList.reduce(
-        (acc, cur) => {
-          return {
-            totalBananaIndex: (state.cartTotal.totalBananaIndex =
-              acc.banana_index + cur.banana_index * cur.quantity),
-            totalDeliveryFee: (state.cartTotal.totalDeliveryFee =
-              acc.totalDeliveryFee + cur.deliveryFee),
-            totalPrice: (state.cartTotal.totalPrice =
-              acc.totalPrice + cur.totalPrice),
-          };
-        },
-        { totalPrice: 0, totalDeliveryFee: 0, totalBananaIndex: 0 }
-      );
+      if (state.cartCheckedList) {
+        let updatedTotal = state.cartCheckedList.reduce(
+          (acc, cur) => {
+            return {
+              totalPrice: acc.totalPrice + cur.totalPrice,
+              totalDeliveryFee: acc.totalDeliveryFee + cur.deliveryFee,
+              totalBananaIndex:
+                acc.banana_index + cur.banana_index * cur.quantity,
+            };
+          },
+          { totalPrice: 0, totalDeliveryFee: 0, totalBananaIndex: 0 }
+        );
+        console.log(updatedTotal);
+        state.cartTotal = updatedTotal;
+      }
     },
   },
 });

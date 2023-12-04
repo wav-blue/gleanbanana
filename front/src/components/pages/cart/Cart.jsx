@@ -1,57 +1,99 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import banana from "../../../assets/banana.png";
 import InputCommon from "../../UI/InputCommon";
 import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../../store/cart";
 import InputCheckbox from "../../UI/InputCheckbox";
 import useDebouncing from "../../../hooks/useDebouncing";
+import useApi from "../../../hooks/useApi";
 const Cart = ({ cart }) => {
-  //선택된 제품만 total값과 bananaIndex값 변경되어야 함.
-  const [isChecked, setIsChecked] = useState(null);
+  const [isChecked, setIsChecked] = useState(false); //백checked 추가시 |cart.checked
   const [isFirst, setIsFirst] = useState(true);
-  const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
-  const { debouncedQuantity } = useDebouncing({
+  const [isChanged, setIsChanged] = useState(false);
+  //----------id부분 나중에 로그인기능 추가후 수정필!!!---------------
+  const { trigger, result, reqIdentifier, loading, error } = useApi({
+    method: "post",
+    path: "/01HGB9HKEM19XHHB180VF2N8XT/carts",
+    data: {},
+    shouldInitFetch: false,
+  });
+  const { debouncedValue: debouncedQuantity } = useDebouncing({
     value: quantity,
+    initialState: 0,
     delay: 2000,
   });
-  const onChangeNumHandler = (newValue) => {
-    setQuantity(newValue);
-  };
+  const { debouncedValue: debouncedCheck } = useDebouncing({
+    value: isChecked,
+    initialState: false, // |cart.checked
+    delay: 2000,
+  });
+  //cart는 수시로 변하므로 useMemo해야함
+  const postCartData = useMemo(() => {
+    const obj = {
+      itemId: cart.item_id,
+      quantity: debouncedQuantity,
+    };
+    return obj;
+  }, [debouncedQuantity, cart.item_id]);
+
+  const onChangeNumHandler = useCallback(
+    (newValue) => {
+      setIsFirst(false);
+      setQuantity(newValue);
+      //   !isFirst && dispatch(cartActions.updateCartQuantity());
+    },
+    [setQuantity, setIsFirst]
+  );
+  //debouncedCheck, debouncedQuantity이 변경될때만 setIsChanged(true) => trigger checkedvalue
+  useEffect(() => {
+    !isFirst && setIsChanged(true);
+  }, [debouncedCheck, debouncedQuantity, isFirst]);
 
   useEffect(() => {
-    dispatch(
-      cartActions.changeQuantity({ id: cart.id, quantity: debouncedQuantity })
-    );
-    dispatch(cartActions.updateTotal());
-  }, [debouncedQuantity, dispatch, cart.id]);
+    if (isChanged && !isFirst) {
+      trigger({
+        method: "post",
+        path: `/01HGDP28VSVEG6PQR7AJ56ZDKS/carts`,
+        data: postCartData,
+        applyResult: true,
+        isShowBoundary: false,
+      });
+    }
+    setIsChanged(false);
+  }, [isChanged, isFirst, postCartData]);
 
-  //onChangeCheckHandler를 useCallback의 callback함수에 넣으려면...   //useRef?
-  //checkbox 변경시
-  const onChangeCheckhandler = (e) => {
+  // //수량변경시 cart변경
+  // useEffect(() => {
+  //   !isFirst && dispatch(cartActions.addToCart(postCartData));
+  //   !isFirst && dispatch(cartActions.updateTotal());
+  // }, [quantity, isFirst, postCartData]);
+
+  //checkbox 변경시 isChecked변경 deps확인
+  const onChangeCheckhandler = useCallback((e) => {
     setIsFirst(false);
-    console.log(isFirst);
-    //checked되었을 때
-    if (e.target.checked) {
-      dispatch(
-        cartActions.addToCheckedList({ ...cart, quantity: debouncedQuantity })
-      );
-    } else {
-      console.log("e target unChecked!");
+    setIsChecked(e.target.checked);
+  }, []);
+
+  //updateTotal
+  useEffect(() => {
+    if (isChecked) {
+      dispatch(cartActions.addToCheckedList({ ...cart, quantity }));
+    } else if (!isChecked) {
       !isFirst && dispatch(cartActions.removeFromCheckedList(cart));
     }
-    dispatch(cartActions.updateTotal());
-    setIsChecked((prev) => !prev);
-  };
+    !isFirst && dispatch(cartActions.updateTotal());
+  }, [cart, isChecked, isFirst, dispatch, quantity]);
+
   return (
     <article className="cart__wrapper">
       <div className="cart">
         <div className="cart__check">
           <InputCheckbox
             type="checkbox"
-            id={cart.id}
             className="checkInput"
+            id={cart.item_id}
             checked={isChecked}
             onChangeCheckhandler={onChangeCheckhandler}
           />
@@ -64,22 +106,12 @@ const Cart = ({ cart }) => {
               {cart.expected_delivery}에 도착예정
             </div>
           </div>
-          {isFirst && (
-            <InputCommon
-              type="number"
-              className="gray-square"
-              value={cart.quantity}
-              onValueChange={onChangeNumHandler}
-            />
-          )}
-          {!isFirst && (
-            <InputCommon
-              type="number"
-              className="gray-square"
-              value={cart.debouncedQuantity}
-              onValueChange={onChangeNumHandler}
-            />
-          )}
+          <InputCommon
+            type="number"
+            className="gray-square"
+            value={cart.quantity}
+            onValueChange={onChangeNumHandler}
+          />
         </div>
         <div className="cart__description__val">
           {Number((cart.price * quantity).toFixed(2)).toLocaleString()}원

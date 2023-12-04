@@ -11,7 +11,7 @@ const LikeProducts = () => {
 
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",
-    path: `/user/01HGB9HKEM19XHHB180VF2N8XT/wishlist`,
+    path: `/01HGB9HKEM19XHHB180VF2N8XT/wishlist`,
     data: {},
     shouldInitFetch: false,
   });
@@ -19,7 +19,7 @@ const LikeProducts = () => {
   useEffect(() => {
     trigger({
       method: "get",
-      path: `/user/01HGB9HKEM19XHHB180VF2N8XT/wishlist`,
+      path: `/01HGB9HKEM19XHHB180VF2N8XT/wishlist`,
       data: {},
       applyResult: true,
       isShowBoundary: true,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { API_FETCHER } from "../utils/axiosConfig";
 import { useErrorBoundary } from "react-error-boundary";
 
@@ -15,42 +15,42 @@ const useApi = ({
   const [extra, setExtra] = useState("");
   const { showBoundary } = useErrorBoundary();
 
-  const trigger = async ({
-    method: triggerMethod = method,
-    path: triggerPath = path,
-    data: triggerData = data,
-    applyResult = false,
-    isShowBoundary = true,
-    shouldSetError = true,
-  }) => {
-    setLoading(true);
+  const trigger = useCallback(
+    async ({
+      method: triggerMethod = method,
+      path: triggerPath = path,
+      data: triggerData = data,
+      applyResult = false,
+      isShowBoundary = true,
+    }) => {
+      setLoading(true);
+      setReqIdentifier(triggerMethod + "Data");
+      try {
+        const triggerResult = await API_FETCHER[triggerMethod](
+          triggerPath,
+          triggerData
+        );
 
-    console.log("trigger 호출");
-    setReqIdentifier(triggerMethod + "Data");
-    try {
-      const triggerResult = await API_FETCHER[triggerMethod](
-        triggerPath,
-        triggerData
-      );
-
-      if (applyResult) {
-        setResult(triggerResult);
-        return result;
-      }
-      return triggerResult;
-    } catch (err) {
-      console.log(err);
-      if (isShowBoundary) {
-        //에러 바운더리를 보여줘야 할때만 보여줌
-        showBoundary(err);
+        if (applyResult) {
+          setResult(triggerResult);
+          return result;
+        }
+        return triggerResult;
+      } catch (err) {
+        console.log(err);
+        if (isShowBoundary) {
+          //에러 바운더리를 보여줘야 할때만 보여줌
+          showBoundary(err);
+          return;
+        }
+        setError(err);
         return;
+      } finally {
+        setLoading(false);
       }
-      shouldSetError && setError(err);
-      return;
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [data, method, showBoundary, path, result]
+  );
 
   useEffect(() => {
     shouldInitFetch && console.log("초기 요청합니다!!", method, path);

@@ -39,6 +39,10 @@
   &__check {
     margin-left: 10px;
   }
+  &__delButton {
+    align-self: flex-start;
+    margin: 15px 10px;
+  }
 
   &__button {
     display: flex;
@@ -74,6 +78,9 @@
       &__index {
         font-size: 14px;
       }
+    }
+    &__delButton {
+      margin: 15px 30px;
     }
     &__button {
       & > button {
@@ -128,6 +135,14 @@
     }
     &__check {
       margin-left: 5px;
+    }
+    &__delButton {
+      margin: 10px 25px;
+      button {
+        font-size: 10px;
+        width: 70px;
+        height: 25px;
+      }
     }
     &__button {
       gap: 9px;

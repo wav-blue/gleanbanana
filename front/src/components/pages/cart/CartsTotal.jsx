@@ -8,10 +8,12 @@ const CartsTotal = () => {
   const { totalPrice, totalDeliveryFee, totalBananaIndex } = useSelector(
     (state) => state.cart.cartTotal
   );
+  //-----------------수량 NaN해결필요------------------*****
+  console.log({ totalPrice, totalDeliveryFee, totalBananaIndex });
   const totalPurchase = totalDeliveryFee + totalPrice;
   useEffect(() => {
-    console.log("totalPrice ... etc");
-    console.log(`${totalPrice}, ${totalDeliveryFee}, ${totalBananaIndex}`);
+    // console.log("totalPrice ... etc");
+    // console.log(`${totalPrice}, ${totalDeliveryFee}, ${totalBananaIndex}`);
   }, [totalPrice, totalDeliveryFee, totalBananaIndex]);
   return (
     <div className="cartsTotal__wrapper">
