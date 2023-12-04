@@ -4,20 +4,20 @@ const config = {
   baseURL: "/api",
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    // Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
   },
   timeout: 5000,
 };
 
 export const api = axios.create(config); // 인스턴스
 
-//refresh token api
-export async function postRefreshToken() {
-  const response = await api.post("/refresh", {
-    refreshToken: localStorage.getItem("refreshToken"),
-  });
-  return response;
-}
+// //refresh token api
+// export async function postRefreshToken() {
+//   const response = await api.post("/refresh", {
+//     refreshToken: localStorage.getItem("refreshToken"),
+//   });
+//   return response;
+// }
 
 // [Client] ------[ Interceptor ] -----> [Server]
 api.interceptors.request.use(
@@ -50,33 +50,33 @@ api.interceptors.response.use(
   },
   async (err) => {
     console.log("인터셉터에서 응답에러", err);
-    const {
-      config,
-      response: { status },
-    } = err;
-    if (status === 401) {
-      if (err.response.data.message === "Unauthorized") {
-        const originRequest = config;
-        //리프레시 토큰 api
-        const response = await postRefreshToken();
-        //리프레시 토큰 요청이 성공할 때
-        if (response.status === 200) {
-          const newAccessToken = response.data.token;
-          localStorage.setItem("accessToken", response.data.token);
-          localStorage.setItem("refreshToken", response.data.refreshToken);
-          axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-          //진행중이던 요청 이어서하기
-          originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-          return axios(originRequest);
-          //리프레시 토큰 요청이 실패할때(리프레시 토큰도 만료되었을때 = 재로그인 안내)
-        } else if (response.status === 404) {
-          alert("로그인이 만료되었습니다. 다시 로그인해주세요");
-          window.location.replace("/login");
-        } else {
-          alert("????");
-        }
-      }
-    }
+    // const {
+    //   config,
+    //   response: { status },
+    // } = err;
+    // if (status === 401) {
+    //   if (err.response.data.message === "Unauthorized") {
+    //     const originRequest = config;
+    //     //리프레시 토큰 api
+    //     const response = await postRefreshToken();
+    //     //리프레시 토큰 요청이 성공할 때
+    //     if (response.status === 200) {
+    //       const newAccessToken = response.data.token;
+    //       localStorage.setItem("accessToken", response.data.token);
+    //       localStorage.setItem("refreshToken", response.data.refreshToken);
+    //       axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
+    //       //진행중이던 요청 이어서하기
+    //       originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+    //       return axios(originRequest);
+    //       //리프레시 토큰 요청이 실패할때(리프레시 토큰도 만료되었을때 = 재로그인 안내)
+    //     } else if (response.status === 404) {
+    //       alert("로그인이 만료되었습니다. 다시 로그인해주세요");
+    //       window.location.replace("/login");
+    //     } else {
+    //       alert("????");
+    //     }
+    //   }
+    // }
     throw new Error("잘못된 요청입니다");
   }
 );
