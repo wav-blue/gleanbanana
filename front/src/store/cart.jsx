@@ -70,7 +70,6 @@ const cartSlice = createSlice({
       state.cartCheckedList = state.cartCheckedList.filter(
         (item) => item.item_id !== action.payload
       );
-      console.log(state.cartCheckedList);
     },
     removeAllFromCheckedList(state) {
       //전체 선택해제 눌렀을 경우
@@ -82,8 +81,8 @@ const cartSlice = createSlice({
     updateTotal(state) {
       console.log("update Total");
 
-      if (state.cartCheckedList) {
-        let updatedTotal = state.cartCheckedList.reduce(
+      if (state?.cartCheckedList) {
+        let updatedTotal = state?.cartCheckedList.reduce(
           (acc, cur) => {
             return {
               totalPrice: acc.totalPrice + cur.price * cur.quantity,

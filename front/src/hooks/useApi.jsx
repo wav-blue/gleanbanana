@@ -12,7 +12,6 @@ const useApi = ({
   const [loading, setLoading] = useState(false);
   const [reqIdentifier, setReqIdentifier] = useState("");
   const [error, setError] = useState(false);
-  const [extra, setExtra] = useState("");
   const { showBoundary } = useErrorBoundary();
 
   const trigger = useCallback(
@@ -58,6 +57,6 @@ const useApi = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { result, loading, reqIdentifier, extra, trigger, error };
+  return { result, loading, reqIdentifier, trigger, error };
 };
 export default useApi;

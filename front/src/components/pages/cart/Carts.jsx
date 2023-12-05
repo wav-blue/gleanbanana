@@ -32,6 +32,7 @@ const Carts = () => {
   useEffect(() => {
     console.log("checkedItemIdList가 변경", checkedItemIdList);
   }, [checkedItemIdList]);
+
   // GET요청
   useEffect(() => {
     trigger({
@@ -52,9 +53,14 @@ const Carts = () => {
     }
 
     if (reqIdentifier === "deleteData") {
+      console.log("delete성공하여 removeFromCart redux###@@@");
       dispatch(cartActions.removeFromCart(checkedItemIdList));
     }
   }, [reqIdentifier, result.data]);
+
+  useEffect(() => {
+    console.log(cartItems, "cartItems변경");
+  }, [cartItems]);
 
   //itemIdList중 삭제할 id들만 넣어줘야함
   //삭제 요청 뒤, result가 변경되면 UI를 변경해줘야함

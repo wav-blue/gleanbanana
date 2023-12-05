@@ -96,7 +96,6 @@ const Cart = ({ cart }) => {
     } else if (!isChecked) {
       !isFirst && dispatch(cartActions.removeFromCheckedList(item_id));
     }
-    dispatch(cartActions.updateTotal());
   }, [isChecked]);
 
   //============PUT요청================

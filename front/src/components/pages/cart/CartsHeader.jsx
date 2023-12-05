@@ -3,9 +3,8 @@ import InputCommon from "../../UI/InputCommon";
 
 const CartsHeader = () => {
   const [checked, setChecked] = useState(false);
-  const onValueChange = (val) => {
-    setChecked(val);
-  };
+  //checkAll 기능 구현이 필요하다
+
   return (
     <div className="carts__header__wrapper">
       <div className="carts__head">장바구니</div>

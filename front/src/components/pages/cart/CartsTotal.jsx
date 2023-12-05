@@ -1,20 +1,15 @@
 import { useSelector } from "react-redux";
 import banana from "../../../assets/banana.png";
-import { useEffect } from "react";
 import Plus from "../../icons/Plus";
 
 const CartsTotal = () => {
-  //이건 선택된 cartCheckedList에서 계산된 결괏값
+  //cartCheckedList에서만 계산된 결괏값
   const { totalPrice, totalDeliveryFee, totalBananaIndex } = useSelector(
     (state) => state.cart.cartTotal
   );
-  //-----------------수량 NaN해결필요------------------*****
   console.log({ totalPrice, totalDeliveryFee, totalBananaIndex });
   const totalPurchase = totalDeliveryFee + totalPrice;
-  useEffect(() => {
-    // console.log("totalPrice ... etc");
-    // console.log(`${totalPrice}, ${totalDeliveryFee}, ${totalBananaIndex}`);
-  }, [totalPrice, totalDeliveryFee, totalBananaIndex]);
+
   return (
     <div className="cartsTotal__wrapper">
       <div className="cartsTotal">
