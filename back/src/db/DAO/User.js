@@ -47,6 +47,33 @@ class User {
       });
     });
   }
+
+  static async checkDeletedAt({ user_id }) {
+    return new Promise((resolve, reject) => {
+      const query = `SELECT deletedAt FROM user WHERE user_id = ? ;`;
+      db.query(query, user_id, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          console.log("check result ", results);
+          resolve(results);
+        }
+      });
+    });
+  }
+  static async updateDeletedAt({ user_id }) {
+    return new Promise((resolve, reject) => {
+      const query = `UPDATE user SET deletedAt = ? WHERE user_id = ? ;`;
+      const today = new Date();
+      db.query(query, [today, user_id], function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
 }
 
 export { User };
