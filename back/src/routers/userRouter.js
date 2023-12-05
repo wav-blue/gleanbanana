@@ -27,6 +27,16 @@ userRouter.post("/users/register", async function (req, res, next) {
   }
 });
 
+userRouter.get("/users/email", async function (req, res, next) {
+  try {
+    const { email } = req.body;
+    const results = await userService.getEmail({ email });
+    res.status(200).json(results[0]["COUNT(email)"]);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // 로그인
 userRouter.post("/users/login", async function (req, res, next) {
   try {

@@ -73,6 +73,20 @@ class userService {
     }
   }
 
+  // 중복 이메일이 있는지 체크
+  static async getEmail({ email }) {
+    const query = "SELECT COUNT(email) FROM user WHERE email = ? ;";
+    return new Promise((resolve, reject) => {
+      db.query(query, email, function (error, results, fields) {
+        if (error) {
+          reject();
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
+
   // 유저 정보 조회
   static async getUser({ user_id }) {
     return new Promise((resolve, reject) => {
