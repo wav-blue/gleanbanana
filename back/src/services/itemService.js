@@ -5,9 +5,9 @@ const table_name = "item";
 
 class itemService {
   // 전체 조회
-  static async getItems() {
+  static async getItems({ contentSize, skipSize }) {
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM ${table_name} LIMIT 20`;
+      const query = `SELECT * FROM ${table_name} order by item_id desc LIMIT ${skipSize},${contentSize}`;
       db.query(query, function (error, results, fields) {
         if (error) {
           reject(error);

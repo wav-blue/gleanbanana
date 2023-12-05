@@ -102,37 +102,6 @@ class orderService {
           }
         }
       });
-
-      //test query
-      // var order_id_arr = [];
-      // db.query(query, function (err, row) {
-      //   if (err) {
-      //     reject(err);
-      //   } else {
-      //     for (var i = 0; i < row.length; i++) {
-      //       order_id_arr.push(row[i].order_id);
-      //       console.log("order_id_arr.push() == ", order_id_arr[i]);
-      //     }
-      //
-      //     for (var j = 0; j < order_id_arr.length; j++) {
-      //       console.log("333333333333333333333333333333333333");
-      //       console.log("order_id_arr[j] == ", order_id_arr[j]);
-      //     }
-      //     const testquery = `SELECT expected_delievery from item`;
-      //     const query2 = `SELECT ${table_name}.*,order_item.item_id,order_item.quantity FROM ${table_name} inner join order_item on ${table_name}.order_id = order_item.order_id where ${table_name}.user_id = '${userId}'`;
-      //     db.query(query2, function (error, results) {
-      //       if (error) {
-      //         reject(error);
-      //       } else {
-      //         if (results.length > 0) {
-      //           resolve(results);
-      //         } else {
-      //           reject(new Error("주문내역이 없습니다."));
-      //         }
-      //       }
-      //     });
-      //   }
-      // });
     });
   }
   // 주문내역 상세조회
