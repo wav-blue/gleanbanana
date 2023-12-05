@@ -25,12 +25,26 @@ const ProductDetail = () => {
     data: {},
     shouldInitFetch: false,
   });
+
   const likeState = useSelector((state) => state.like.likeLists);
-  const isLike =
-    likeState && likeState.find((like) => like.item_id === product.item_id);
-  // useEffect(() => {
-  //   console.log(likeState);
-  // }, [likeState]);
+  const [wasLike, setWasLike] = useState(null);
+  const [isLike, setIsLike] = useState(!!wasLike);
+
+  useEffect(() => {
+    const foundLike = likeState.find(
+      (like) => like.item_id === product.item_id
+    );
+    setWasLike(foundLike);
+  }, [likeState, product.item_id]);
+
+  useEffect(() => {
+    setIsLike(!!wasLike);
+  }, [wasLike]);
+
+  console.log("likeState1: ", likeState);
+  console.log("wasLike1: ", wasLike);
+  console.log("isLike1: ", isLike);
+
   const navigate = useNavigate();
 
   //ProductDetail GET
@@ -72,16 +86,28 @@ const ProductDetail = () => {
 
   //POST like
   const addToLikeHandler = useCallback(async () => {
-    await trigger({
-      method: "post",
-      path: `/${userId}/wishlist`,
-      data: product,
-      applyResult: true,
-      isShowBoundary: true,
-    });
-    alert("찜 목록에 추가되었습니다.");
+    if (!isLike) {
+      await trigger({
+        method: "post",
+        path: `/${userId}/wishlist`,
+        data: product,
+        applyResult: true,
+        isShowBoundary: true,
+      });
+      alert("찜 목록에 추가되었습니다.");
+      setIsLike(true);
+    } else {
+      trigger({
+        method: "delete",
+        path: `/${userId}/wishlist/${product.item_id}`,
+        applyResult: true,
+        isShowBoundary: true,
+      });
+      alert("찜 해제되었습니다.");
+      setIsLike(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [product]);
+  }, [product, isLike]);
 
   //quantity변경
   const onChangeNumHandler = (newValue) => {
@@ -99,7 +125,6 @@ const ProductDetail = () => {
     if (reqIdentifier === "getData") {
       setProduct(result?.data[0]);
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
 

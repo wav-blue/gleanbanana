@@ -17,6 +17,7 @@ const likeSlice = createSlice({
       const exitedLike = state.likeLists.find(
         (item) => item.item_id === newLike.item_id
       );
+
       if (exitedLike) {
         //like에 아이템이 있으면 return
         console.log("이미 찜목록에 해당 아이템 존재함");
@@ -31,7 +32,6 @@ const likeSlice = createSlice({
       const removedLike = state.likeLists.filter(
         (like) => like.item_id !== action.payload.item_id
       );
-      console.log("removedLike : ", removedLike);
       state.likeLists = removedLike;
     },
   },
