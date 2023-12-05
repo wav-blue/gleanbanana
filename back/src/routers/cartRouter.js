@@ -67,9 +67,8 @@ cartRouter.put("/:userId/carts", async function (req, res, next) {
 
 // 장바구니에서 물품 삭제
 cartRouter.delete("/:userId/cart", async function (req, res, next) {
-  const { userId: userId } = req.params;
-  const { itemIdList } = req.body;
-
+  const { userId } = req.params;
+  const { itemIdList } = req.query;
   try {
     await cartService.deleteCart({ userId, itemIdList });
     res.status(200).send("장바구니에서 상품이 삭제되었습니다.");
