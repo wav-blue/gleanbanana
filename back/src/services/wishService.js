@@ -23,13 +23,12 @@ class wishService {
   // 특정 유저의 특정 아이템 삭제
   static async deleteWishlist({ user_id, item_id }) {
     try {
-      const user = await User.findUser({ user_id });
-      if (user.length === 0) {
-        throw new NotFoundError("해당하는 유저가 없습니다.");
-      }
       const results = await Wishlist.deleteWishlist({ user_id, item_id });
       if (results.affectedRows === 0) {
-        throw new NotFoundError("해당하는 물품이 찜 목록에 없습니다.");
+        return {
+          errorType: "NotFoundError",
+          errorMessage: "해당하는 물품이 찜 목록에 없습니다.",
+        };
       }
       return results;
     } catch (error) {

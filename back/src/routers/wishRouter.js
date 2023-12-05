@@ -82,7 +82,16 @@ wishRouter.delete(
   async function (req, res, next) {
     try {
       const { userId, itemId } = req.params;
-      await wishService.deleteWishlist({ user_id: userId, item_id: itemId });
+      const results = await wishService.deleteWishlist({
+        user_id: userId,
+        item_id: itemId,
+      });
+      if (results?.errorMessage) {
+        if (results?.errorType === "NotFoundError") {
+          throw new NotFoundError(results.errorMessage);
+        }
+        throw new Error(results.errorMessage);
+      }
       res.status(204).json();
     } catch (error) {
       next(error);
