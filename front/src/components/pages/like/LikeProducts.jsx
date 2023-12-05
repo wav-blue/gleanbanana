@@ -7,18 +7,19 @@ import { likeActions } from "../../../store/like";
 const LikeProducts = () => {
   const dispatch = useDispatch();
   const likeLists = useSelector((state) => state.like.likeLists);
+  const userId = useSelector((state) => state.user.userInfo);
   // id 가져오기
 
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",
-    path: `/01HGB9HKEM19XHHB180VF2N8XT/wishlist`,
+    path: `/${userId}/wishlist`,
     shouldInitFetch: false,
   });
 
   useEffect(() => {
     trigger({
       method: "get",
-      path: `/01HGB9HKEM19XHHB180VF2N8XT/wishlist`,
+      path: `/${userId}/wishlist`,
       applyResult: true,
       isShowBoundary: true,
     });
@@ -33,7 +34,7 @@ const LikeProducts = () => {
   return (
     <div className="like__wrapper">
       <div className="like__head">
-        <div>찜 목록 ()</div>
+        <div>찜 목록 ({likeLists && likeLists.length})</div>
       </div>
       <hr />
       <div className="like__wrapper">
@@ -42,6 +43,7 @@ const LikeProducts = () => {
             likeLists?.map((like, idx) => (
               <LikeProduct key={`like-${idx}`} like={like} />
             ))}
+          {!likeLists && "아직 찜한 상품이 없습니다."}
         </div>
       </div>
     </div>

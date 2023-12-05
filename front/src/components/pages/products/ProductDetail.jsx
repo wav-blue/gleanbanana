@@ -25,9 +25,12 @@ const ProductDetail = () => {
     data: {},
     shouldInitFetch: false,
   });
-  const likeState = useSelector((state) => state.likeLists);
+  const likeState = useSelector((state) => state.like.likeLists);
   const isLike =
     likeState && likeState.find((like) => like.item_id === product.item_id);
+  // useEffect(() => {
+  //   console.log(likeState);
+  // }, [likeState]);
   const navigate = useNavigate();
 
   //ProductDetail GET
@@ -69,15 +72,14 @@ const ProductDetail = () => {
 
   //POST like
   const addToLikeHandler = useCallback(async () => {
-    console.log(product);
-    // await trigger({
-    //   method: "post",
-    //   path: "/01HGB9HKEM19XHHB180VF2N8XT/wishlist",
-    //   data: product,
-    //   applyResult: true,
-    //   isShowBoundary: true,
-    // });
-    await dispatch(likeActions.addToLike(product));
+    await trigger({
+      method: "post",
+      path: `/${userId}/wishlist`,
+      data: product,
+      applyResult: true,
+      isShowBoundary: true,
+    });
+    alert("찜 목록에 추가되었습니다.");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product]);
 

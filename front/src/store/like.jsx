@@ -14,7 +14,9 @@ const likeSlice = createSlice({
     },
     addToLike(state, action) {
       const newLike = action.payload;
-      const exitedLike = state.likeLists.find((item) => item.id === newLike.id);
+      const exitedLike = state.likeLists.find(
+        (item) => item.item_id === newLike.item_id
+      );
       if (exitedLike) {
         //like에 아이템이 있으면 return
         console.log("이미 찜목록에 해당 아이템 존재함");
@@ -26,9 +28,11 @@ const likeSlice = createSlice({
       }
     },
     removeFromLike(state, action) {
-      state.likeLists = state.likeLists.filter(
-        (like) => like.id !== action.payload.id
+      const removedLike = state.likeLists.filter(
+        (like) => like.item_id !== action.payload.item_id
       );
+      console.log("removedLike : ", removedLike);
+      state.likeLists = removedLike;
     },
   },
 });
