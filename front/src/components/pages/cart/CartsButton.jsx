@@ -5,9 +5,10 @@ import useApi from "../../../hooks/useApi";
 
 const CartsButton = () => {
   const checkedList = useSelector((state) => state.cart.cartCheckedList);
+  const userId = useSelector((state) => state.user.userInfo);
   const { trigger } = useApi({
     method: "post",
-    path: `/01HGB9HKEM19XHHB180VF2N8XT/orders`,
+    path: `/${userId}/orders`,
     data: checkedList,
     shouldInitFetch: false,
   });
@@ -20,7 +21,7 @@ const CartsButton = () => {
     if (checkedList.length === 0) return alert("선택된 제품이 없습니다.");
     trigger({
       method: "post",
-      path: `/01HGB9HKEM19XHHB180VF2N8XT/orders`,
+      path: `/${userId}/orders`,
       data: checkedList,
       applyResult: true,
       isShowBoundary: true,

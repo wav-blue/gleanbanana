@@ -1,9 +1,10 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "../src/styles/style.css";
 import NotFound from "./components/pages/error/NotFound";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+
 import OrderedDetail from "./components/pages/order/OrderedDetail";
 import Loading from "./components/pages/loading/load";
 const Layout = lazy(() => import("./components/layout/Layout"));
@@ -20,8 +21,10 @@ const Purchase = lazy(() => import("./components/pages/purchase/Purchase"));
 
 function App() {
   const userId = useSelector((state) => state.user.userInfo);
+  const navigate = useNavigate();
   useEffect(() => {
-    console.log("user Login!! status changed!!!!", userId);
+    console.log("user Login status changed!!!!", userId);
+    if (!userId) navigate("/");
   }, [userId]);
 
   return (

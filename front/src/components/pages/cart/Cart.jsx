@@ -8,11 +8,21 @@ import useDebouncing from "../../../hooks/useDebouncing";
 import useApi from "../../../hooks/useApi";
 const Cart = ({ cart }) => {
   const dispatch = useDispatch();
-  const [isChecked, setIsChecked] = useState(false); //백checked 추가시 |cart.checked
-  const [isFirst, setIsFirst] = useState(true);
-  const [quantity, setQuantity] = useState(1);
-  const [isChanged, setIsChanged] = useState(false);
+  const {
+    banana_index,
+    checked,
+    expected_delivery,
+    image_url,
+    item_id,
+    item_name,
+    price,
+    quantity,
+  } = cart;
   const userId = useSelector((state) => state.user.userInfo);
+  const [isFirst, setIsFirst] = useState(true);
+  const [isChanged, setIsChanged] = useState(false);
+  const [isChecked, setIsChecked] = useState(checked);
+  const [changedQuantity, setChangedQuantity] = useState(quantity);
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "post",
     path: `/${userId}/carts`,
@@ -20,66 +30,93 @@ const Cart = ({ cart }) => {
     shouldInitFetch: false,
   });
   const { debouncedValue: debouncedQuantity } = useDebouncing({
-    value: quantity,
+    value: changedQuantity,
     initialState: 0,
     delay: 2000,
   });
   const { debouncedValue: debouncedCheck } = useDebouncing({
     value: isChecked,
-    initialState: false, // |cart.checked
+    initialState: checked,
     delay: 2000,
   });
-  //cart는 수시로 변하므로 useMemo해야함
-  const postCartData = useMemo(() => {
-    const obj = {
-      item_id: cart.item_id,
-      quantity: debouncedQuantity,
-    };
-    return obj;
-  }, [debouncedQuantity, cart.item_id]);
 
-  const onChangeNumHandler = useCallback(
-    (newValue) => {
-      console.log("1. number 변경!!!");
-      setIsFirst(false);
-      setQuantity(newValue);
-      //   !isFirst && dispatch(cartActions.updateCartQuantity());
-    },
-    [setQuantity, setIsFirst]
-  );
-
-  useEffect(() => {
-    console.log(quantity, "2. quantity변경!");
-  }, [quantity]);
-
-  useEffect(() => {
-    console.log(debouncedQuantity, "3. debouncedQuantity 변경!");
-  }, [debouncedQuantity]);
-
-  useEffect(() => {
-    console.log(isChanged, "isChanged 변경@");
-  }, [isChanged]);
-
-  useEffect(() => {
-    console.log(isFirst, "1.5 isFirst 변경!!!");
-  }, [isFirst]);
-
-  useEffect(() => {
-    console.log(postCartData, "4. postCartData변경!!!");
-  }, [postCartData]);
-
-  //debouncedCheck, debouncedQuantity이 변경될때만 setIsChanged(true) => trigger checkedvalue
+  //============STATE CHANGED================
+  //debounced state -> trigger
   useEffect(() => {
     !isFirst && setIsChanged(true);
-  }, [debouncedQuantity, isFirst]);
-  //debouncedCheck추가
+  }, [debouncedQuantity, debouncedCheck, isFirst]);
+
+  useEffect(() => {
+    dispatch(cartActions.updateTotal());
+  }, [changedQuantity, isChecked, dispatch]);
+
+  //==========Change NUMBER ============
+  //quantity변경시 id와 quantity
+  const updatedQuantityData = useMemo(
+    () => ({
+      item_id: item_id,
+      quantity: changedQuantity,
+    }),
+    [changedQuantity, item_id]
+  );
+  const onChangeNumHandler = useCallback(
+    (newValue) => {
+      console.log("number 변경!!!");
+      setIsFirst(false);
+      setChangedQuantity(newValue);
+      !isFirst && dispatch(cartActions.updateCartQuantity(updatedQuantityData));
+    },
+    [setChangedQuantity, setIsFirst, dispatch, isFirst, updatedQuantityData]
+  );
+
+  //==========CHECKBOX 변경===============
+  //checkbox 변경시 isChecked변경 deps확인
+  //이벤트는 deps안넣어도 되는듯?
+  const onChangeCheckhandler = useCallback((e) => {
+    setIsFirst(false);
+    setIsChecked(e.target.checked);
+  }, []);
+  //checkbox변경시 updateTotal, addToCheckedList
+  //remove는 한개씩만 뺄수있음. check버튼
+
+  //checkedCartData는
+  //check상태 포함 각state 변경이 될 때마다 변경.
+  const checkedCartData = useMemo(() => {
+    return {
+      banana_index,
+      item_id,
+      price,
+      quantity: changedQuantity,
+    };
+  }, [banana_index, item_id, price, changedQuantity]);
+
+  useEffect(() => {
+    if (isChecked) {
+      dispatch(cartActions.addToCheckedList(checkedCartData));
+    } else if (!isChecked) {
+      !isFirst && dispatch(cartActions.removeFromCheckedList(item_id));
+    }
+    dispatch(cartActions.updateTotal());
+  }, [isChecked]);
+
+  //============PUT요청================
+  //PUT cart에 날릴 데이터. item_id와 quantity, checked
+  //cart는 수시로 변하므로 useMemo해야함, debounced된 값을 보냄
+  const postCartData = useMemo(() => {
+    const obj = {
+      item_id: item_id,
+      quantity: debouncedQuantity,
+      checked: debouncedCheck,
+    };
+    return obj;
+  }, [debouncedQuantity, debouncedCheck, item_id]);
 
   useEffect(() => {
     if (isChanged && !isFirst) {
-      console.log("5.cart수량 변경 요청!");
+      console.log("cart수량 및 checked상태 변경 요청!");
       setIsChanged(false);
       trigger({
-        method: "post",
+        method: "put",
         path: `/${userId}/carts`,
         data: postCartData,
         applyResult: true,
@@ -89,24 +126,6 @@ const Cart = ({ cart }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isChanged, isFirst]);
 
-  //checkbox 변경시 isChecked변경 deps확인
-  const onChangeCheckhandler = useCallback((e) => {
-    setIsFirst(false);
-    setIsChecked(e.target.checked);
-  }, []);
-
-  //updateTotal
-  useEffect(() => {
-    if (isChecked) {
-      dispatch(
-        cartActions.addToCheckedList({ item_id: cart.item_id, quantity })
-      );
-    } else if (!isChecked) {
-      !isFirst && dispatch(cartActions.removeFromCheckedList(cart.item_id));
-    }
-    !isFirst && dispatch(cartActions.updateTotal());
-  }, [cart, isChecked, isFirst, dispatch, quantity]);
-
   return (
     <article className="cart__wrapper">
       <div className="cart">
@@ -114,33 +133,33 @@ const Cart = ({ cart }) => {
           <InputCheckbox
             type="checkbox"
             className="checkInput"
-            id={cart.item_id}
+            id={item_id}
             checked={isChecked}
             onChangeCheckhandler={onChangeCheckhandler}
           />
         </div>
-        <img className="cart__img" src={cart.image_url} alt={cart.item_name} />
+        <img className="cart__img" src={image_url} alt={item_name} />
         <div className="cart__description__wrapper">
           <div className="cart__description">
-            <div className="cart__description-name">{cart.item_name}</div>
+            <div className="cart__description-name">{item_name}</div>
             <div className="cart__description-delivery">
-              {cart.expected_delivery}에 도착예정
+              {expected_delivery}에 도착예정
             </div>
           </div>
           <InputCommon
             type="number"
             className="gray-square"
-            value={cart.quantity}
+            value={changedQuantity}
             onValueChange={onChangeNumHandler}
           />
         </div>
         <div className="cart__description__val">
-          {Number((cart.price * quantity).toFixed(2)).toLocaleString()}원
+          {Number((price * changedQuantity).toFixed(2)).toLocaleString()}원
         </div>
         <div className="cart__bananaIndex">
           <img src={banana} alt="bananaIndex" />
           <div className="cart__bananaIndexNum">
-            x{((cart.banana_index / 100) * quantity).toFixed(2)}
+            x{((banana_index / 100) * changedQuantity).toFixed(2)}
           </div>
         </div>
       </div>

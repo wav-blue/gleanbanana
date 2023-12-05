@@ -21,17 +21,27 @@ const cartSlice = createSlice({
 
     //수량변경 트리거 되어야 하는 이유는
     //Cart에서 수량변경시!
+    //전제조건은 cartItems에 있다는것! 없으면 안됨... 에러분기(?)
+    //필요한것 item_id와 quantity만. quantity만 업뎃하면 됨.
     updateCartQuantity(state, action) {
       console.log("updateCartQuantity", action.payload);
-      console.log("newItemId", action.payload.item_ids);
+      console.log("newItemId", action.payload.item_id);
       const newItemId = action.payload.item_id;
-      const existedItemIndex = state.cartItems.findIndex(
+      const existedCartItemIndex = state.cartItems.findIndex(
         (cart) => cart.item_id === newItemId
       );
-      if (existedItemIndex !== -1) {
+      const existedCheckedItemIndex = state.cartCheckedList.findIndex(
+        (cart) => cart.item_id === newItemId
+      );
+      if (existedCartItemIndex > 0) {
         //있다면 수량변경
         const updatedCartQuantity = action.payload.quantity;
-        state.cartItems[existedItemIndex].quantity = updatedCartQuantity;
+        state.cartItems[existedCartItemIndex].quantity = updatedCartQuantity;
+      }
+      if (existedCheckedItemIndex > 0) {
+        const updatedCheckQuantity = action.payload.quantity;
+        state.cartCheckedList[existedCartItemIndex].quantity =
+          updatedCheckQuantity;
       }
     },
     removeFromCart(state, action) {
@@ -46,8 +56,14 @@ const cartSlice = createSlice({
 
     //장바구니에서 체크박스 선택했을 때
     addToCheckedList(state, action) {
+      //만약 있다면 return
       const newCartCheckedList = action.payload;
-      state.cartCheckedList.push(newCartCheckedList);
+      const existCartItem = state.cartCheckedList.find(
+        (list) => list.item_id === action.payload.item_id
+      );
+      if (!existCartItem) {
+        state.cartCheckedList.push(newCartCheckedList);
+      }
     },
     //장바구니에서 check 해제했을 때
     removeFromCheckedList(state, action) {
@@ -62,18 +78,18 @@ const cartSlice = createSlice({
       state.cartCheckedList = [];
     },
 
+    //cartCheckedList에서 price와 deleveryFee,bananaindex를 줘야함!
     updateTotal(state) {
       console.log("update Total");
 
       if (state.cartCheckedList) {
         let updatedTotal = state.cartCheckedList.reduce(
           (acc, cur) => {
-            console.log("@@@@@@@@", cur.banana_idx, cur.quantity);
             return {
-              totalPrice: acc.totalPrice + cur.totalPrice,
-              totalDeliveryFee: acc.totalDeliveryFee + cur.deliveryFee,
+              totalPrice: acc.totalPrice + cur.price * cur.quantity,
+              totalDeliveryFee: acc.totalDeliveryFee + 2500,
               totalBananaIndex:
-                acc.banana_index + cur.banana_index * cur.quantity,
+                acc.totalBananaIndex + cur.banana_index * cur.quantity,
             };
           },
           { totalPrice: 0, totalDeliveryFee: 0, totalBananaIndex: 0 }

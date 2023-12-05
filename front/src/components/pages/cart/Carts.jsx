@@ -20,11 +20,21 @@ const Carts = () => {
     shouldInitFetch: false,
   });
   const checkedItemIdList = cartCheckedList.map((list) => list.item_id);
+  //checkedItemList와 cartItems를 비교해서 cartItems에서 checked에 없는 item_id
+  const unCheckedCartIdList = cartItems?.filter(
+    (cart) => !checkedItemIdList.includes(cart.item_id)
+  );
 
+  useEffect(() => {
+    console.log("unCheckedCartIdList", unCheckedCartIdList);
+  }, [unCheckedCartIdList]);
+
+  useEffect(() => {
+    console.log("checkedItemIdList가 변경", checkedItemIdList);
+  }, [checkedItemIdList]);
   // GET요청
   useEffect(() => {
     trigger({
-      method: "get",
       applyResult: true,
       isShowBoundary: true,
     });
@@ -33,22 +43,26 @@ const Carts = () => {
   //result가 변하면 cart에 dispatch
   //store에 저장되어있는 것으로 cart화면 그려줌
   //result.data가 deps에 필요?
-
+  //dispatch or result.data를 안하면 작동 안됨 ㅜ_ㅠ
+  //result가 변경되기 전에 reqIdentifier가 한번 작동을해서 그다음엔 작동안해서그런듯
   useEffect(() => {
     if (reqIdentifier === "getData") {
-      console.log("data를 가져와서 dispatch합니다");
+      console.log("1. data를 가져와서 dispatch합니다");
       dispatch(cartActions.storeToCart(result?.data));
     }
 
     if (reqIdentifier === "deleteData") {
       dispatch(cartActions.removeFromCart(checkedItemIdList));
     }
-  }, [reqIdentifier, dispatch, result.data]);
+  }, [reqIdentifier, result.data]);
 
+  //itemIdList중 삭제할 id들만 넣어줘야함
+  //삭제 요청 뒤, result가 변경되면 UI를 변경해줘야함
   const onClickDelete = useCallback(() => {
     trigger({
       method: "delete",
-      data: checkedItemIdList,
+      path: `/${userId}/cart`,
+      data: { itemIdList: checkedItemIdList },
       applyResult: true,
       isShowBoundary: true,
     });
