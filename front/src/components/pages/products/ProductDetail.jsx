@@ -15,6 +15,7 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [bananaIndexes, setBananaIndexes] = useState(product.banana_index);
   const [itemPrice, setItemPrice] = useState(product.price);
+  const userId = useSelector((state) => state.user.userInfo);
 
   const dispatch = useDispatch();
   const param = useParams();
@@ -57,7 +58,7 @@ const ProductDetail = () => {
     console.log(addCartData);
     await trigger({
       method: "post",
-      path: "/01HGB9HKEM19XHHB180VF2N8XT/carts",
+      path: `/${userId}/carts`,
       data: addCartData,
       applyResult: true,
       isShowBoundary: true,
