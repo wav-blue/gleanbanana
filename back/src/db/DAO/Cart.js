@@ -83,7 +83,7 @@ class Cart {
           if (error) {
             reject(error);
           } else {
-            resolve("The product quantity in the shopping cart has been updated.");
+            resolve("장바구니의 제품 수량이 갱신되었습니다.");
           }
         }
       );
@@ -100,7 +100,7 @@ class Cart {
           if (error) {
             reject(error);
           } else {
-            resolve("Item has been added to your shopping cart.");
+            resolve("장바구니에 상품이 추가되었습니다.");
           }
         }
       );
@@ -117,7 +117,7 @@ class Cart {
         for (const itemId of itemIdList) {
           await this.deleteCartItem(userCartId, itemId);
         }
-        resolve("The selected product has been removed from your shopping cart.");
+        resolve("선택한 상품이 장바구니에서 제거되었습니다.");
       } catch (error) {
         reject(error);
       }
@@ -133,7 +133,12 @@ class Cart {
         if (error) {
           reject(error);
         } else {
-          resolve();
+          if (results.affectedRows === 0) {
+            // 쿼리로 인해 바뀐 데이터가 없을시
+            reject(new Error("해당 상품이 장바구니에 없습니다."));
+          } else {
+            resolve();
+          }
         }
       });
     });
