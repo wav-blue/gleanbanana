@@ -32,9 +32,15 @@ userRouter.post("/users/login", async function (req, res, next) {
   try {
     const { email, password } = req.body;
     const user = await userService.loginUser({ email, password });
-    res.cookie("token", user.token, {
+    res.cookie("accessToken", user.accessToken, {
       httpOnly: true,
       signed: true,
+      maxAge: 1 * 60 * 60 * 1000,
+    });
+    res.cookie("refreshToken", user.refreshToken, {
+      httpOnly: true,
+      signed: true,
+      maxAge: 24 * 60 * 60 * 1000,
     });
     res.status(200).send(user);
   } catch (error) {
@@ -43,21 +49,15 @@ userRouter.post("/users/login", async function (req, res, next) {
 });
 
 // 유저 본인의 정보 조회
-userRouter.get(
-  "/users/current",
-  loginRequired,
-  async function (req, res, next) {
-    try {
-      const user_id = req.currentUserId;
-      console.log("current : ", req.currentUserId);
-      const user = await userService.getUser({ user_id });
-      console.log("user : ", user);
-      res.status(200).json(user);
-    } catch (error) {
-      next(error);
-    }
+userRouter.get("/:userId", loginRequired, async function (req, res, next) {
+  try {
+    const user_id = req.currentUserId;
+    const user = await userService.getUser({ user_id });
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 // 회원 정보 수정
 userRouter.post(
@@ -83,12 +83,16 @@ userRouter.post(
 );
 
 // 로그아웃
-userRouter.get("/users/logout", async function (req, res, next) {
+userRouter.get("/:userId/logout", async function (req, res, next) {
   try {
-    res.cookie("token", null, {
+    res.cookie("accessToken", null, {
       maxAge: 0,
     });
-    res.send("완료");
+
+    res.cookie("refreshToken", null, {
+      maxAge: 0,
+    });
+    res.send("로그아웃 완료");
   } catch (error) {
     next(error);
   }
