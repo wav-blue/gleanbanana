@@ -5,28 +5,14 @@ import JoinAddress from "./JoinAddress";
 import JoinApproval from "./JoinApproval";
 import JoinEmail from "./JoinEmail";
 import JoinPassword from "./JoinPassword";
-import { useEffect, useState } from "react";
-
-const JoinInputNoCheck = [
-  {
-    label: "이름",
-    placeholder: "이름을 입력해주세요",
-    className: "join",
-    id: "username",
-  },
-  {
-    label: "휴대폰 번호",
-    placeholder: "숫자만 입력해주세요",
-    type: "tel",
-    id: "phone_number",
-    className: "join",
-  },
-];
+import { useEffect, useState, useMemo } from "react";
 
 const JoinForm = () => {
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [phone_number, setPhone_number] = useState(0);
 
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "post",
@@ -34,7 +20,43 @@ const JoinForm = () => {
     data: {},
     shouldInitFetch: false,
   });
-  const joinData = { email, password, username, address, phone_number };
+
+  const JoinInputNoCheck = useMemo(
+    () => [
+      {
+        label: "이름",
+        placeholder: "이름을 입력해주세요",
+        className: "join",
+        onChange: (e) => {
+          setUsername(e.target.value);
+        },
+        id: "username",
+      },
+      {
+        label: "휴대폰 번호",
+        placeholder: "숫자만 입력해주세요",
+        className: "join",
+        type: "tel",
+        id: "phone_number",
+        onChange: (e) => {
+          setPhone_number(e.target.value);
+        },
+      },
+    ],
+    []
+  );
+  const joinData = useMemo(() => {
+    return {
+      email,
+      password,
+      username,
+      address,
+      phone_number,
+    };
+  }, [email, password, username, address, phone_number]);
+  useEffect(() => {
+    console.log(joinData);
+  }, [joinData]);
   const onClickJoinHandler = () => {
     trigger({ data: joinData });
   };
@@ -48,15 +70,7 @@ const JoinForm = () => {
       <JoinEmail email={email} setEmail={setEmail} />
       <JoinPassword password={password} setPassword={setPassword} />
       {JoinInputNoCheck.map((input, idx) => (
-        <InputCommon
-          label={input.label}
-          placeholder={input.placeholder}
-          type={input.type}
-          id={input.id}
-          className={input.className}
-          required={true}
-          key={`joinInput-${idx}`}
-        />
+        <InputCommon {...input} required={true} key={`joinInput-${idx}`} />
       ))}
       <JoinAddress address={address} setAddress={setAddress} />
       <hr />

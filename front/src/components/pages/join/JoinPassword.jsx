@@ -1,16 +1,12 @@
 import { useState } from "react";
 import InputCommon from "../../UI/InputCommon";
+import { validatePassword } from "../../../utils/validate";
 
-const JoinPassword = () => {
+const JoinPassword = ({ password, setPassword }) => {
   const [doublePassword, setDoublePassword] = useState("");
   const [isFocusPassword, setIsFocusPassword] = useState(false);
   const [isFocusDoublePassword, setIsFocusDoublePassword] = useState(false);
 
-  const validatePassword = (password) => {
-    return password.match(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/
-    );
-  };
   const validateDoublePassword = (doublePassword) => {
     return password === doublePassword;
   };

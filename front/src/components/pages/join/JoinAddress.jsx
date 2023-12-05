@@ -3,7 +3,6 @@ import InputCommon from "../../UI/InputCommon";
 import SearchMini from "../../icons/SearchMini";
 
 import { useDaumPostcodePopup } from "react-daum-postcode";
-import { useState } from "react";
 
 const JoinAddress = ({ address, setAddress }) => {
   const PostCode = () => {
@@ -28,7 +27,8 @@ const JoinAddress = ({ address, setAddress }) => {
       setAddress(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
     };
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+      e.preventDefault();
       open({ onComplete: handleComplete });
     };
     return (
