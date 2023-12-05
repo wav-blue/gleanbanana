@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {} from "../../libraries/custom-error";
+import { NotFoundError, UnauthorizedError } from "../../libraries/custom-error";
 import { userService } from "../services/userService";
 import { loginRequired } from "../middlewares/loginRequired";
 import { checkPermission } from "../middlewares/checkPermission";
@@ -21,7 +21,17 @@ userRouter.post("/users/register", async function (req, res, next) {
       address,
       phone_number,
     });
-    res.status(201).json("회원가입 완료");
+
+    if (results?.errorMessage) {
+      if (results?.errorType === "UnauthorizedError") {
+        throw new UnauthorizedError(results.errorMessage);
+      } else if (results?.errorType === "NotFoundError") {
+        throw new NotFoundError(results.errorMessage);
+      }
+      throw new Error(results.errorMessage);
+    }
+
+    res.status(201).json(results);
   } catch (error) {
     next(error);
   }
@@ -30,8 +40,8 @@ userRouter.post("/users/register", async function (req, res, next) {
 userRouter.get("/users/email", async function (req, res, next) {
   try {
     const { email } = req.body;
-    const results = await userService.getEmail({ email });
-    res.status(200).json(results[0]["COUNT(email)"]);
+    const findEmail = await userService.getEmail({ email });
+    res.status(200).json(findEmail[0]["COUNT(email)"]);
   } catch (error) {
     next(error);
   }
@@ -42,6 +52,16 @@ userRouter.post("/users/login", async function (req, res, next) {
   try {
     const { email, password } = req.body;
     const user = await userService.loginUser({ email, password });
+
+    if (user?.errorMessage) {
+      if (user?.errorType === "UnauthorizedError") {
+        throw new UnauthorizedError(user.errorMessage);
+      } else if (user?.errorType === "NotFoundError") {
+        throw new NotFoundError(user.errorMessage);
+      }
+      throw new Error(user.errorMessage);
+    }
+
     res.cookie("accessToken", user.accessToken, {
       httpOnly: true,
       signed: true,

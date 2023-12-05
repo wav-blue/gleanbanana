@@ -1,40 +1,40 @@
-//import bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 //import hashPassword from "../utils/hash-password";
 import { ulid } from "ulidx";
 import db from "../db";
 import { NotFoundError } from "../../libraries/custom-error";
-import jwt from "jsonwebtoken";
 import { User } from "../db/DAO/User";
 import { createAccessToken, createRefreshToken } from "../utils/createToken";
+import { bcryptPassword } from "../utils/bcryptPassword";
 
 class userService {
   static async addUser({ email, password, username, address, phone_number }) {
-    try {
-      const user_id = ulid();
-      const today = new Date();
+    const user_id = ulid();
+    const today = new Date();
 
-      const newUser = {
-        user_id,
-        email,
-        password,
-        username,
-        address,
-        phone_number,
-        my_carbon: 0,
-        createdAt: today,
-        updatedAt: today,
-        deletedAt: null,
+    // password 암호화
+    const encryptPassword = await bcryptPassword(password, 10);
+
+    const newUser = {
+      user_id,
+      email,
+      password: encryptPassword,
+      username,
+      address,
+      phone_number,
+      my_carbon: 0,
+      createdAt: today,
+      updatedAt: today,
+      deletedAt: null,
+    };
+
+    const results = await User.createUser({ newUser });
+    if (results.affectedRows === 0) {
+      return {
+        errorMessage: "회원가입 중 예기치 못한 에러가 발생했습니다.",
       };
-      const results = await User.createUser({ newUser });
-
-      if (results.affectedRows === 0) {
-        throw new Error("회원가입 중 예기치 못한 에러가 발생했습니다.");
-      }
-
-      return results;
-    } catch (error) {
-      return error;
     }
+    return results;
   }
 
   // 비밀번호 추가 작성 필요
@@ -45,10 +45,25 @@ class userService {
       const findUser = await User.findUserByEmail({ email });
 
       if (findUser.length === 0) {
-        throw new NotFoundError("가입 이력이 없습니다.");
+        return {
+          errorType: "NotFoundError",
+          errorMessage: "가입 이력이 없습니다.",
+        };
       }
 
       // 비밀번호 확인
+      const correctPasswordHash = findUser[0].password;
+      const isPasswordCorrect = await bcrypt.compare(
+        password,
+        correctPasswordHash
+      );
+
+      if (!isPasswordCorrect) {
+        return {
+          errorType: "UnauthorizedError",
+          errorMessage: "비밀번호가 일치하지 않습니다.",
+        };
+      }
 
       // 로그인 성공 -> JWT 웹 토큰 생성
       const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
@@ -144,20 +159,12 @@ class userService {
       );
     });
   }
-
+  // 이미 회원탈퇴한 유저 확인하는 작업 필요
   // 회원 탈퇴
   static async deleteUser({ user_id }) {
-    return new Promise((resolve, reject) => {
-      const query = `UPDATE user SET deletedAt = ? WHERE user_id = ? ;`;
-      const today = new Date();
-      db.query(query, [today, user_id], function (error, results, fields) {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(results);
-        }
-      });
-    });
+    const results = await User.updateDeletedAt({ user_id });
+    console.log("deleteUser: ", results.affectedRows);
+    return results;
   }
 }
 export { userService };
