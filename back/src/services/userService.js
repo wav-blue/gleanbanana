@@ -5,6 +5,7 @@ import db from "../db";
 import { NotFoundError } from "../../libraries/custom-error";
 import jwt from "jsonwebtoken";
 import { User } from "../db/DAO/User";
+import { createAccessToken, createRefreshToken } from "../utils/createToken";
 
 class userService {
   static async addUser({ email, password, username, address, phone_number }) {
@@ -12,11 +13,6 @@ class userService {
       const user_id = ulid();
       const today = new Date();
 
-      // 회원가입과 동시에 카트를 추가하는 부분
-      //const cart_id = ulid();
-      //const newCart = { cart_id, user_id };
-      //const query2 = `INSERT INTO cart SET ?; `;
-      //const query2s = mysql.format(query2, newCart);
       const newUser = {
         user_id,
         email,
@@ -57,12 +53,16 @@ class userService {
       // 로그인 성공 -> JWT 웹 토큰 생성
       const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
 
-      // 토큰의 내용/ 토큰의 비밀 키/ 토큰의 설정
-      const token = jwt.sign({ user_id: findUser[0]["user_id"] }, secretKey);
+      const user_data = { user_id: findUser[0]["user_id"] };
+
+      // access token, refresh token 발급
+      const accessToken = await createAccessToken(user_data, secretKey);
+      const refreshToken = await createRefreshToken(secretKey);
 
       // 반환할 loginuser 객체
       const loginUser = {
-        token,
+        accessToken,
+        refreshToken,
         email,
         errorMessage: null,
       };
