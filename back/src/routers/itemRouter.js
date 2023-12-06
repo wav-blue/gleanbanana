@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { itemService } from "../services/itemService";
+
 const itemRouter = Router();
 
 // 전체조회 + 카테고리 + 검색 조회
@@ -48,10 +49,7 @@ itemRouter.get("/items/:itemId", async function (req, res, next) {
 // 추천 상품 조회
 itemRouter.get("/recommend", async function (req, res, next) {
   try {
-    console.log(" random !!");
     const items = await itemService.getRandomItem();
-    console.log("items : ", items);
-
     res.status(200).json(items);
   } catch (error) {
     next(error);
@@ -61,14 +59,13 @@ itemRouter.get("/recommend", async function (req, res, next) {
 // 추가
 itemRouter.post("/items", async function (req, res, next) {
   try {
-    console.log("2");
     const {
       item_id,
       item_name,
-      category,
       price,
       description,
       banana_index,
+      category_id,
       image_url,
     } = req.body;
 
@@ -76,10 +73,10 @@ itemRouter.post("/items", async function (req, res, next) {
     const newItems = await itemService.createItem({
       item_id,
       item_name,
-      category,
       price,
       description,
       banana_index,
+      category_id,
       image_url,
     });
 
@@ -87,6 +84,16 @@ itemRouter.post("/items", async function (req, res, next) {
       throw new Error(newItems.errorMessage);
     }
     res.status(201).json(newItems);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 그래프를 위한 조회
+itemRouter.get("/graph", async function (req, res, next) {
+  try {
+    const items = await itemService.graphItems();
+    res.status(200).json(items);
   } catch (error) {
     next(error);
   }
