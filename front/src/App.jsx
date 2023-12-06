@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 import OrderedDetail from "./components/pages/order/OrderedDetail";
 import Loading from "./components/pages/loading/load";
+import About from "./components/pages/about/About";
 const Layout = lazy(() => import("./components/layout/Layout"));
 const Home = lazy(() => import("./components/pages/home/Home"));
 const Login = lazy(() => import("./components/pages/login/Login"));
@@ -48,6 +49,7 @@ function App() {
               <Route path="/order" element={<Order />} />
               <Route path="/order/:id" element={<OrderedDetail />} />
               <Route path="/purchase" element={<Purchase />} />
+              <Route path="/about" element={<About />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
