@@ -8,6 +8,7 @@ const db = mysql.createConnection({
   database: "banana",
   // 다중 쿼리를 사용하기 위한 설정
   multipleStatements: true,
+  enableKeepAlive: true,
 });
 
 db.connect(function (err) {
