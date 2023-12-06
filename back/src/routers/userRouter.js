@@ -119,19 +119,22 @@ userRouter.post("/users/login", async function (req, res, next) {
       signed: true,
       maxAge: 1 * 60 * 60 * 1000,
     });
-    res.cookie("refreshToken", user.refreshToken, {
-      httpOnly: true,
-      signed: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-    res.status(200).send(user);
+    // res.cookie("refreshToken", user.refreshToken, {
+    //   httpOnly: true,
+    //   signed: true,
+    //   maxAge: 24 * 60 * 60 * 1000,
+    // });
+    const response = {
+      Authorization: user.refreshToken,
+    };
+    res.status(200).send(response);
   } catch (error) {
     next(error);
   }
 });
 
 // 유저 본인의 정보 조회
-userRouter.get("/:userId", async function (req, res, next) {
+userRouter.get("/:userId", loginRequired, async function (req, res, next) {
   try {
     //const user_id = req.currentUserId;
     const { userId } = req.params;
