@@ -13,9 +13,9 @@ class Order {
       //order_item테이블 테스트쿼리
       //const query = `SELECT item_id,quantity FROM order_item WHERE order_id in (select order_id from orders where user_id = '${userId}')`;
 
-      //주문테이블과 order_item테이블 조인 쿼리
+      //주문테이블과 order_item테이블 조인 쿼리(항목추가:이미지경로,총가격,총바나나인덱스)
       const query = `SELECT ${table_name}.order_id,date_format(${table_name}.order_date_createdAt, '%Y-%m-%d') as order_date_createdAt,${table_name}.pay_method,${table_name}.delivery_fee
-        ,item.item_name,order_item.item_id,order_item.quantity
+        ,item.item_name,item.price,item.image_url,item.banana_index,order_item.item_id,order_item.quantity
         ,date_format(date_add(now(), interval item.expected_delivery day), '%Y-%m-%d') as expected_delivery,item.expected_delivery as expected_delivery_days
         FROM ${table_name} inner join order_item 
         on ${table_name}.order_id = order_item.order_id
@@ -32,31 +32,96 @@ class Order {
         } else {
           if (results.length > 0) {
             let item_array_length = 0;
+            //let total_price = 0;
             let temp_order_id = "ulid"; //동일 주문번호 비교를 위한 임시변수
             let max_delivery_days = 0;
             let final_results = []; //전체 조회에서 주문번호가 같은 중복된 row가 제거된 최종 결과 데이터 담는 변수
             let final_idx = 0;
+            let temp_idx = 0;
             for (var i = 0; i < results.length; i++) {
+              // 배송비 2500 고정값
+              results[i]["delivery_fee"] = 2500;
               // delete results[i]["user_id"];
               // delete results[i]["order_date_updatedAt"];
               // delete results[i]["order_date_deletedAt"];
               delete results[i]["item_id"];
-              delete results[i]["quantity"];
+
               if (results[i].order_id != temp_order_id) {
+                //total_price = 0;
+                //console.log("results[" + i + "].price : ", results[i].price);
+                console.log(
+                  "results[" + i + "].total_banana_index : ",
+                  results[i].total_banana_index
+                );
+                results[i].total_price = results[i].price * results[i].quantity;
+                results[i].total_banana_index =
+                  results[i].banana_index * results[i].quantity;
+                console.log(
+                  "results[" + i + "].total_banana_index : ",
+                  results[i].total_banana_index
+                );
+                // console.log(
+                //   "results[" + i + "].total_price : ",
+                //   results[i].price
+                // );
                 //주문번호가 다를때
                 final_results.push(results[i]);
                 final_idx++;
+                temp_idx = final_idx;
                 temp_order_id = results[i].order_id;
                 item_array_length = 1;
                 results[i].item_array_length = item_array_length;
                 max_delivery_days = results[i].expected_delivery_days;
-                console.log(
-                  "max_delivery_days(order_id changed) : ",
-                  max_delivery_days
-                );
+                // console.log(
+                //   "max_delivery_days(order_id changed) : ",
+                //   max_delivery_days
+                // );
                 final_results[final_idx - 1].max_delivery_days =
                   max_delivery_days;
               } else {
+                // if (final_idx == temp_idx) {
+                //   total_price = total_price + results[i - 1].price;
+                //   temp_idx++;
+                // }
+                //총가격 계산
+                results[i].total_price = results[i].price * results[i].quantity;
+                //총 바나나지수 계산
+                results[i].total_banana_index =
+                  results[i].banana_index * results[i].quantity;
+
+                console.log(
+                  "results[" + (i - 1) + "].total_banana_index : ",
+                  results[i - 1].total_banana_index
+                );
+                // console.log(
+                //   "results[" + (i - 1) + "].total_price : ",
+                //   results[i - 1].total_price
+                // );
+                // console.log(
+                //   "results[" + i + "].total_price : ",
+                //   results[i].total_price
+                // );
+                console.log(
+                  "results[" + i + "].total_banana_index : ",
+                  results[i].total_banana_index
+                );
+                results[i].total_price =
+                  results[i].total_price + results[i - 1].total_price;
+                // console.log(
+                //   "results[" + i + "].total_price(누적연산후) : ",
+                //   results[i].total_price
+                // );
+                results[i].total_banana_index =
+                  results[i].total_banana_index +
+                  results[i - 1].total_banana_index;
+                console.log(
+                  "results[" + i + "].total_banana_index(누적연산후) : ",
+                  results[i].total_banana_index
+                );
+                final_results[final_idx - 1].total_price =
+                  results[i].total_price;
+                final_results[final_idx - 1].total_banana_index =
+                  results[i].total_banana_index;
                 //주문번호가 같을때
                 item_array_length++;
                 results[i].item_array_length = item_array_length;
@@ -90,6 +155,9 @@ class Order {
               final_results[j].expected_delivery =
                 final_results[j].expected_delivery_date;
               delete final_results[j]["expected_delivery_date"];
+              delete final_results[j]["quantity"];
+              delete final_results[j]["price"];
+              //delete final_results[j]["banana_index"];
             }
 
             console.log("getOrders final_results 확인 == ", final_results);
@@ -107,7 +175,9 @@ class Order {
   // 주문내역 상세조회
   static async getOrderDetail(userId, order_id) {
     return new Promise((resolve, reject) => {
-      const query = `SELECT ${table_name}.*,item.banana_index,item.item_name,order_item.item_id,order_item.quantity,date_format(date_add(now(), interval item.expected_delivery day), '%Y-%m-%d') as expected_delivery
+      const query = `SELECT ${table_name}.*,item.banana_index,item.item_name,item.price
+      ,order_item.item_id,order_item.quantity
+      ,date_format(date_add(now(), interval item.expected_delivery day), '%Y-%m-%d') as expected_delivery
         FROM ${table_name} inner join order_item 
         on ${table_name}.order_id = order_item.order_id
         inner join item
@@ -125,13 +195,15 @@ class Order {
             let test_arr = [];
             //const test_result = { items: test_arr };
             //let test_result = [];
+            let total_price = 0;
             for (var i = 0; i < results.length; i++) {
               const test_dic = {};
+              total_price += results[i].price * results[i].quantity;
               //console.log("results[" + i + "].item_name",results[i].item_name)
               // console.log("results[" + i + "].item_id : ", results[i].item_id);
               // console.log("results[" + i + "].quantity : ", results[i].quantity);
               test_dic["item_name"] = results[i].item_name;
-              //test_dic["item_id"] = results[i].item_id;
+              test_dic["item_id"] = results[i].item_id;
               test_dic["quantity"] = results[i].quantity;
               //console.log("test_dic : ", test_dic);
               test_dic["banana_index"] = results[i].banana_index;
@@ -140,6 +212,9 @@ class Order {
               //console.log("for loop test_arr 확인 == ", test_arr);
               //console.log("test_arr[" + i + "] : ", test_arr[i]);
             }
+            results[0].delivery_fee = 2500;
+            results[0].total_price = total_price;
+            //console.log(" total_price값 확인 == ", total_price);
             console.log("results[0]값 확인 == ", results[0]);
             results[0]["items"] = test_arr;
             delete results[0]["order_id"];
@@ -152,6 +227,7 @@ class Order {
             delete results[0]["item_name"];
             delete results[0]["quantity"];
             delete results[0]["banana_index"];
+            delete results[0]["price"];
             const final_result = results[0];
 
             console.log("getOrderDetail final_result값 확인 == ", final_result);
