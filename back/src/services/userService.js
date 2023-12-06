@@ -73,12 +73,11 @@ class userService {
       // access token, refresh token 발급
       const accessToken = await createAccessToken(user_data, secretKey);
       const refreshToken = await createRefreshToken(secretKey);
-
       // 반환할 loginuser 객체
       const loginUser = {
         accessToken,
         refreshToken,
-        email,
+        user_id: findUser[0]["user_id"],
         errorMessage: null,
       };
 
