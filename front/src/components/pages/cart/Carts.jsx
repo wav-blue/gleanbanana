@@ -12,6 +12,11 @@ const Carts = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
   const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
+
+  useEffect(() => {
+    //addToCheckedList로인해 cartcheckedList가 변경되는것을 확인
+    console.log("==========", cartCheckedList);
+  }, [cartCheckedList]);
   const userId = useSelector((state) => state.user.userId);
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",

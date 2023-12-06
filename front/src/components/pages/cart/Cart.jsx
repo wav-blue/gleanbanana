@@ -65,6 +65,7 @@ const Cart = ({ cart }) => {
       setChangedQuantity(newValue);
       console.log("number 변경!!!");
       console.log(newValue);
+      console.log("is First?", isFirst);
       !isFirst && dispatch(cartActions.updateCartQuantity(updatedQuantityData));
     },
     [setChangedQuantity, setIsFirst, dispatch, isFirst]
