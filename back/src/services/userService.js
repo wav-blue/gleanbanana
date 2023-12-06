@@ -90,39 +90,31 @@ class userService {
 
   // 중복 이메일이 있는지 체크
   static async getEmail({ email }) {
-    const query = "SELECT COUNT(email) FROM user WHERE email = ? ;";
-    return new Promise((resolve, reject) => {
-      db.query(query, email, function (error, results, fields) {
-        if (error) {
-          reject();
-        } else {
-          resolve(results);
-        }
-      });
-    });
+    const result = await User.checkEmail({ email });
+    return result;
   }
 
   // 유저 정보 조회
   static async getUser({ user_id }) {
-    return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM user WHERE user_id = ?`;
-      db.query(query, user_id, function (error, results, fields) {
-        if (error) {
-          reject();
-        } else {
-          if (results?.length === 0) {
-            // id에 해당되는 유저가 없는 경우
-            reject(new NotFoundError("해당하는 유저를 찾을 수 없습니다."));
-          }
-          if (results[0]?.deletedAt) {
-            // 탈퇴한 유저인 경우
-            // 보안을 위해 같은 메시지 출력
-            reject(new NotFoundError("해당하는 유저를 찾을 수 없습니다."));
-          }
-          resolve(results);
-        }
-      });
-    });
+    const findUser = await User.findUser({ user_id });
+
+    if (findUser?.length === 0) {
+      // id에 해당되는 유저가 없는 경우
+      return {
+        errorType: "NotFoundError",
+        errorMessage: "해당하는 유저를 찾을 수 없습니다.",
+      };
+    }
+    if (findUser[0]?.deletedAt) {
+      // 탈퇴한 유저인 경우
+      // 보안을 위해 같은 메시지 출력
+      return {
+        errorType: "NotFoundError",
+        errorMessage: "해당하는 유저를 찾을 수 없습니다.",
+      };
+    }
+
+    return findUser;
   }
 
   // 유저 정보 수정
@@ -163,7 +155,6 @@ class userService {
   // 회원 탈퇴
   static async deleteUser({ user_id }) {
     const results = await User.updateDeletedAt({ user_id });
-    console.log("deleteUser: ", results.affectedRows);
     return results;
   }
 }

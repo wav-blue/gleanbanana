@@ -48,14 +48,28 @@ class User {
     });
   }
 
-  static async checkDeletedAt({ user_id }) {
+  // 이미 가입된 이메일인지 확인
+  static async checkEmail({ email }) {
+    const query = "SELECT COUNT(email) FROM user WHERE email = ? ;";
     return new Promise((resolve, reject) => {
-      const query = `SELECT deletedAt FROM user WHERE user_id = ? ;`;
+      db.query(query, email, function (error, results, fields) {
+        if (error) {
+          reject();
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
+
+  // 탈퇴한 유저인지 확인
+  static async checkDeletedAt({ user_id }) {
+    const query = `SELECT deletedAt FROM user WHERE user_id = ? ;`;
+    return new Promise((resolve, reject) => {
       db.query(query, user_id, function (error, results, fields) {
         if (error) {
           reject(error);
         } else {
-          console.log("check result ", results);
           resolve(results);
         }
       });
@@ -75,5 +89,4 @@ class User {
     });
   }
 }
-
 export { User };
