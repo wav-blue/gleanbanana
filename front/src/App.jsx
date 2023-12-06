@@ -5,8 +5,10 @@ import NotFound from "./components/pages/error/NotFound";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import OrderedDetail from "./components/pages/order/OrderedDetail";
-import Loading from "./components/pages/loading/load";
+const OrderedDetail = lazy(() =>
+  import("./components/pages/order/OrderedDetail")
+);
+const Loading = lazy(() => import("./components/pages/loading/load"));
 const Layout = lazy(() => import("./components/layout/Layout"));
 const Home = lazy(() => import("./components/pages/home/Home"));
 const Login = lazy(() => import("./components/pages/login/Login"));
@@ -26,6 +28,9 @@ function App() {
     console.log("user Login status changed!!!!", userId);
     if (!userId) navigate("/");
   }, [userId]);
+  //로그인 인증 로직
+  //리프레시 토큰이 있으면 요청 url을 통해
+  //유저정보 id 를 받아옴!
 
   return (
     <div className="app">

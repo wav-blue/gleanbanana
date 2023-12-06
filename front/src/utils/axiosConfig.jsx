@@ -4,7 +4,6 @@ const config = {
   baseURL: "/api",
   headers: {
     "Content-Type": "application/json",
-    // Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
   },
   timeout: 5000,
 };
@@ -12,12 +11,12 @@ const config = {
 export const api = axios.create(config); // 인스턴스
 
 // //refresh token api
-// export async function postRefreshToken() {
-//   const response = await api.post("/refresh", {
-//     user_id: localStorage.getItem("refreshToken"),
-//   });
-//   return response;
-// }
+export async function postRefreshToken() {
+  const response = await api.post("/accessToken", {
+    user_id: localStorage.getItem("refreshToken"),
+  });
+  return response;
+}
 
 // [Client] ------[ Interceptor ] -----> [Server]
 api.interceptors.request.use(
@@ -40,12 +39,15 @@ api.interceptors.request.use(
   }
 );
 
+// Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
+
 // [Client] <------[ Interceptor ] ----- [Server]
 
 api.interceptors.response.use(
   (res) => {
     // console.log("응답이 도착했음", res);
     // alert("요청에 성공했습니다!");
+    console.log(res);
     return res;
   },
   async (err) => {
@@ -54,6 +56,7 @@ api.interceptors.response.use(
       config,
       response: { status },
     } = err;
+    console.log(status);
     if (status === 401) {
       if (err.response.data.message === "Unauthorized") {
         const originRequest = config;
@@ -61,9 +64,8 @@ api.interceptors.response.use(
         const response = await postRefreshToken();
         //리프레시 토큰 요청이 성공할 때
         if (response.status === 200) {
-          const newAccessToken = response.data.token;
-          localStorage.setItem("accessToken", response.data.token);
-          localStorage.setItem("refreshToken", response.data.refreshToken);
+          const newAccessToken = response.data.Authorization;
+          localStorage.setItem("refreshToken", response.data.Authorization);
           axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
           //진행중이던 요청 이어서하기
           originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
