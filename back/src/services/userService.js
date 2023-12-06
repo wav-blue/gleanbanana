@@ -76,7 +76,7 @@ class userService {
       // 반환할 loginuser 객체
       const loginUser = {
         accessToken,
-        refreshToken,
+        refreshToken: "Bearer " + refreshToken,
         user_id: findUser[0]["user_id"],
         errorMessage: null,
       };
