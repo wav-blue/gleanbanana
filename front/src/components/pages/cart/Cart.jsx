@@ -47,26 +47,27 @@ const Cart = ({ cart }) => {
   }, [debouncedQuantity, debouncedCheck, isFirst]);
 
   useEffect(() => {
+    console.log("quantity가 변경되어 updateTotal");
     dispatch(cartActions.updateTotal());
   }, [changedQuantity, isChecked, dispatch]);
 
   //==========Change NUMBER ============
   //quantity변경시 id와 quantity
-  const updatedQuantityData = useMemo(
-    () => ({
-      item_id: item_id,
-      quantity: changedQuantity,
-    }),
-    [changedQuantity, item_id]
-  );
+
   const onChangeNumHandler = useCallback(
     (newValue) => {
-      console.log("number 변경!!!");
+      const updatedQuantityData = {
+        item_id: item_id,
+        quantity: newValue,
+      };
+
       setIsFirst(false);
       setChangedQuantity(newValue);
+      console.log("number 변경!!!");
+      console.log(newValue);
       !isFirst && dispatch(cartActions.updateCartQuantity(updatedQuantityData));
     },
-    [setChangedQuantity, setIsFirst, dispatch, isFirst, updatedQuantityData]
+    [setChangedQuantity, setIsFirst, dispatch, isFirst]
   );
 
   //==========CHECKBOX 변경===============

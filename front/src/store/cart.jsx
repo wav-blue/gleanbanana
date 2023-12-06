@@ -80,10 +80,12 @@ const cartSlice = createSlice({
     //cartCheckedList에서 price와 deleveryFee,bananaindex를 줘야함!
     updateTotal(state) {
       console.log("update Total");
+      console.log(state.cartCheckedList);
 
       if (state?.cartCheckedList) {
         let updatedTotal = state?.cartCheckedList.reduce(
           (acc, cur) => {
+            console.log("quantity", cur.quantity, "price", cur.price);
             return {
               totalPrice: acc.totalPrice + cur.price * cur.quantity,
               totalDeliveryFee: acc.totalDeliveryFee + 2500,
