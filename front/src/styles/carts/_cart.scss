@@ -1,0 +1,120 @@
+.cart {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  &__wrapper {
+    width: 1020px;
+    margin-bottom: 25px;
+  }
+
+  &__check {
+    margin-left: 10px;
+  }
+  &__img {
+    width: 92px;
+    height: 92px;
+  }
+
+  &__description {
+    display: flex;
+    padding-left: 10px;
+    flex-direction: column;
+    justify-content: center;
+    font-size: $big-font-size;
+    gap: 12px;
+    &__wrapper {
+      width: 610px;
+      display: flex;
+      justify-content: space-between;
+    }
+    &__val {
+      width: 120px;
+      text-align: center;
+    }
+    &__name {
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+    &-delivery {
+      font-size: $basic-font-size;
+    }
+  }
+
+  &__bananaIndex {
+    display: flex;
+    position: relative;
+    left: 10px;
+    & > img {
+      width: 37px;
+      height: 42px;
+    }
+  }
+
+  &__bananaIndexNum {
+    position: relative;
+    left: -15px;
+    top: 5px;
+  }
+
+  @include tablet {
+    &__wrapper {
+      width: 100%;
+    }
+    &__description {
+      padding-left: 5px;
+      &__wrapper {
+        width: 395px;
+      }
+      &__val {
+        width: 105px;
+      }
+    }
+  }
+
+  @include mobile-l {
+    gap: 7px;
+    &__wrapper {
+      width: 100%;
+      margin-bottom: 7px;
+    }
+    &__check {
+      margin-left: 5px;
+    }
+    &__img {
+      width: 45px;
+      height: 45px;
+    }
+    &__description {
+      padding-left: 5px;
+      gap: 7px;
+      &__wrapper {
+        width: 165px;
+      }
+      &-name {
+        font-size: 12px;
+      }
+      &-delivery {
+        font-size: 10px;
+      }
+      &__val {
+        width: 80px;
+        font-size: 11px;
+      }
+    }
+    &__bananaIndex {
+      font-size: 10px;
+      left: 0;
+      & > img {
+        width: 25px;
+        height: auto;
+      }
+    }
+    &__bananaIndexNum {
+      position: relative;
+      top: 2px;
+      left: -10px;
+    }
+  }
+}

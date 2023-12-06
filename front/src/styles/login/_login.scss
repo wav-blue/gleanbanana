@@ -1,0 +1,73 @@
+.login {
+  display: flex;
+  flex-direction: column;
+
+  &__head {
+    font-size: 18px;
+  }
+
+  & > hr {
+    margin-top: 18px;
+    margin-bottom: 18px;
+    width: 100%;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 40px;
+    width: 360px;
+  }
+
+  &__input {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    &-check {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      & > p {
+        font-size: $small-font-size;
+        margin-left: 8px;
+        color: $required-color;
+      }
+    }
+  }
+  &__find {
+    display: flex;
+    justify-content: flex-end;
+    text-decoration: underline;
+  }
+  &__button {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+    gap: 15px;
+  }
+  @include mobile-l {
+    width: 90%;
+    &__head {
+      font-size: 15px;
+    }
+    &__wrapper {
+      margin-top: 20px;
+      width: $breakpoint-mobile-l;
+      align-items: center;
+    }
+    &__input {
+      gap: 13px;
+    }
+    &__find {
+      font-size: 12px;
+    }
+    &__button {
+      button {
+        height: 50px;
+        width: 100%;
+        font-size: 15px;
+      }
+    }
+  }
+}

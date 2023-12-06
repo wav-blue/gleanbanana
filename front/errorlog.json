@@ -1,0 +1,33 @@
+{
+  "message": "Network Error",
+  "name": "AxiosError",
+  "stack": "AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/static/js/vendors-node_modules_axios_lib_axios_js.chunk.js:244:14)",
+  "config": {
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true
+    },
+    "adapter": ["xhr", "http"],
+    "transformRequest": [null],
+    "transformResponse": [null],
+    "timeout": 5000,
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+    "maxContentLength": -1,
+    "maxBodyLength": -1,
+    "env": {},
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": null
+    },
+    "baseURL": "http://localhost:5001/api",
+    "withCredentials": false,
+    "url": "/items/2",
+    "method": "get"
+  },
+  "code": "ERR_NETWORK",
+  "status": null
+}
