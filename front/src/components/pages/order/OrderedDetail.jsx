@@ -2,8 +2,18 @@ import ConsumerInfo from "../order/ConsumerInfo";
 import DeleveryInfo from "../order/DeleveryInfo";
 import OrderedProduct from "../order/OrderedProduct";
 import OrderedInfo from "../order/OrderedInfo";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import useApi from "../../../hooks/useApi";
+import { useSelector } from "react-redux";
 
 const OrderedDetail = () => {
+  const { orderId } = useParams();
+  const userId = useSelector((state) => state.user.userId);
+  const { trigger, result } = useApi({ method: "get", path: "" });
+
+  useEffect(() => {}, []);
+
   return (
     <div className="ordered__wrapper">
       <div className="ordered__info">

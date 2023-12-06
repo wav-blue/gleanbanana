@@ -1,21 +1,14 @@
-const consumerInfo = [
-  { name: "이름", value: "김유저" },
-  { name: "이메일", value: "user@banana.com" },
-  { name: "연락처", value: "010-1111-2222" },
-];
-
-//올 데이터.... 이렇게 될지?
-// const tableName = ["이름", "이메일", "연락처"];
+import { useSelector } from "react-redux";
 
 const ConsumerInfo = () => {
+  const consumerInfo = useSelector((state) => state.user.userInfo);
+
   return (
     <div className="title title__element">
-      {consumerInfo.map((cons) => (
-        <div className="flex flex__element-left">
-          <div>{cons.name}</div>
-          <div>{cons.value}</div>
-        </div>
-      ))}
+      <div className="flex flex__element-left">
+        <div>{consumerInfo.name}</div>
+        <div>{consumerInfo.value}</div>
+      </div>
     </div>
   );
 };

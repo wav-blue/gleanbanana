@@ -9,7 +9,7 @@ const PurchaseButtons = () => {
   //결제하기 버튼 눌렀을 때???
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.user.userInfo);
+  const userId = useSelector((state) => state.user.userId);
   const toPurchaseList = useSelector((state) => state.purchase.toPurchaseList);
 
   const { trigger, result } = useApi({

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import useConfirm from "../../../hooks/useConfirm";
 
 const MyPage = () => {
-  const loggedInUser = useSelector((state) => state.user.userInfo);
+  const loggedInUser = useSelector((state) => state.user.userId);
   const navigate = useNavigate();
   const toLogin = () => {
     navigate("/login");

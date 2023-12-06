@@ -7,7 +7,7 @@ import { purchaseActions } from "../../../store/purchase";
 
 const CartsButton = () => {
   const checkedList = useSelector((state) => state.cart.cartCheckedList);
-  const userId = useSelector((state) => state.user.userInfo);
+  const userId = useSelector((state) => state.user.userId);
   const { trigger } = useApi({
     method: "post",
     path: `/${userId}/orders`,
@@ -23,15 +23,15 @@ const CartsButton = () => {
   }, [checkedList]);
   const onClickPurchase = async () => {
     if (checkedList.length === 0) return alert("선택된 제품이 없습니다.");
-    await trigger({
-      method: "post",
-      path: `/${userId}/orders`,
-      data: checkedList,
-      applyResult: true,
-      isShowBoundary: true,
-    });
+    // await trigger({
+    //   method: "post",
+    //   path: `/${userId}/orders`,
+    //   data: checkedList,
+    //   applyResult: true,
+    //   isShowBoundary: true,
+    // });
     dispatch(purchaseActions.storeToPurchase(checkedList));
-    navigate("/");
+    navigate("/purchase");
   };
 
   return (

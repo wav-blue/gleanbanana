@@ -7,7 +7,7 @@ import { likeActions } from "../../../store/like";
 const LikeProducts = () => {
   const dispatch = useDispatch();
   const likeLists = useSelector((state) => state.like.likeLists);
-  const userId = useSelector((state) => state.user.userInfo);
+  const userId = useSelector((state) => state.user.userId);
   // id 가져오기
 
   const { trigger, result, reqIdentifier, loading, error } = useApi({

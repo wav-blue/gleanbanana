@@ -11,7 +11,7 @@ import { useCallback, useEffect } from "react";
 const LikeProduct = ({ like }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userId = useSelector((state) => state.user.userInfo);
+  const userId = useSelector((state) => state.user.userId);
 
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "delete",

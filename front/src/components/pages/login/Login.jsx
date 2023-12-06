@@ -8,7 +8,7 @@ import { useEffect } from "react";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userInfo = useSelector((state) => state.user.userInfo);
+  const userInfo = useSelector((state) => state.user.userId);
 
   const onClickTest = () => {
     dispatch(userLoginActions.loginUser("01HGB9HKEM19XHHB180VF2N8XT"));

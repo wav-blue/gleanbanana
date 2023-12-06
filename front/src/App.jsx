@@ -20,7 +20,7 @@ const Carts = lazy(() => import("./components/pages/cart/Carts"));
 const Purchase = lazy(() => import("./components/pages/purchase/Purchase"));
 
 function App() {
-  const userId = useSelector((state) => state.user.userInfo);
+  const userId = useSelector((state) => state.user.userId);
   const navigate = useNavigate();
   useEffect(() => {
     console.log("user Login status changed!!!!", userId);
@@ -46,7 +46,7 @@ function App() {
               <Route path="/cart" element={<Carts />} />
               <Route path="/myPage" element={<MyPage />} />
               <Route path="/order" element={<Order />} />
-              <Route path="/order/:id" element={<OrderedDetail />} />
+              <Route path="/order/:orderId" element={<OrderedDetail />} />
               <Route path="/purchase" element={<Purchase />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

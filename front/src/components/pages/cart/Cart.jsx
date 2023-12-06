@@ -18,7 +18,7 @@ const Cart = ({ cart }) => {
     price,
     quantity,
   } = cart;
-  const userId = useSelector((state) => state.user.userInfo);
+  const userId = useSelector((state) => state.user.userId);
   const [isFirst, setIsFirst] = useState(true);
   const [isChanged, setIsChanged] = useState(false);
   const [isChecked, setIsChecked] = useState(checked);

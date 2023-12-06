@@ -12,7 +12,7 @@ const Carts = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
   const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
-  const userId = useSelector((state) => state.user.userInfo);
+  const userId = useSelector((state) => state.user.userId);
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",
     path: `/${userId}/carts`,

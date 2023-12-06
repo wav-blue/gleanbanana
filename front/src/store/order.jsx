@@ -11,7 +11,7 @@ const orderSlice = createSlice({
     //cart api에서 가져와서 store에 저장하는 리듀서
     storeToOrdered(state, action) {
       console.log("store to cart!");
-      state.cartItems = action.payload;
+      state.orderedItems = action.payload;
     },
   },
 });

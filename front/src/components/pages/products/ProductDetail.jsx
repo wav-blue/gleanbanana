@@ -16,7 +16,7 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [bananaIndexes, setBananaIndexes] = useState(product.banana_index);
   const [itemPrice, setItemPrice] = useState(product.price);
-  const userId = useSelector((state) => state.user.userInfo);
+  const userId = useSelector((state) => state.user.userId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

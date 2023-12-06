@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useApi from "../../../hooks/useApi";
 import { useSelector } from "react-redux";
 
@@ -12,21 +12,22 @@ const consumerInfo = [
 // const tableName = ["이름", "이메일", "연락처"];
 
 const ConsumerInfo = () => {
-  const userId = useSelector((state) => state.user.userInfo);
+  const [consumerInfo, setConsumerInfo] = useState([]);
+  const userId = useSelector((state) => state.user.userId);
   const { trigger, result } = useApi({ method: "get", path: `/${userId}` });
-  // useEffect(() => {
-  //   trigger({ data: { currentUserId: userId } });
-  // }, []);
+  useEffect(() => {
+    trigger({ data: { currentUserId: userId } });
+  }, []);
 
-  // useEffect(() => {
-  //   console.log(result?.data);
-  // }, [result?.data]);
+  useEffect(() => {
+    setConsumerInfo(result?.data);
+  }, [result?.data]);
   return (
     <div className="title title__element">
       {consumerInfo.map((cons) => (
         <div className="flex flex__element-left">
-          <div>{cons.name}</div>
-          <div>{cons.value}</div>
+          <div>{cons.username}</div>
+          <div>{cons.address}</div>
         </div>
       ))}
     </div>
