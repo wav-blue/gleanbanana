@@ -14,7 +14,7 @@ const userLoginSlice = createSlice({
       state.userInfo = {};
       state.userId = "";
     },
-    getUserInfo(state, action) {
+    storeUserInfo(state, action) {
       state.userInfo = action.payload;
     },
   },

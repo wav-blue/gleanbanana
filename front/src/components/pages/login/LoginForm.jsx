@@ -39,7 +39,7 @@ const LoginForm = () => {
   //성공시 home으로
   useEffect(() => {
     if (reqIdentifier === "postData" && result.status === 201) {
-      dispatch(userLoginActions.loginUser(loginData.email));
+      dispatch(userLoginActions.loginUser(result.data));
       navigate("/");
     }
   }, [result.status, reqIdentifier]);

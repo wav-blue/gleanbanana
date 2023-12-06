@@ -1,19 +1,17 @@
-const deliveryList = [
-  { name: "배송주소", value: "서울시 마포구 홍대입구" },
-  { name: "이름", value: "김유저" },
-  { name: "연락처", value: "010-0000-0000" },
-  { name: "요청사항", value: "문 앞" },
-];
+import { useSelector } from "react-redux";
 
 const DeleveryInfo = () => {
+  const consumerInfo = useSelector((state) => state.user.userInfo);
+
   return (
     <div className="title title__element">
-      {deliveryList.map((del) => (
-        <div className="flex flex__element-left">
-          <div>{del.name}</div>
-          <div>{del.value}</div>
-        </div>
-      ))}
+      <div className="flex flex__element-left">
+        <div>{consumerInfo[0].username}</div>
+        <div>{consumerInfo[0].email}</div>
+        <div>{consumerInfo[0].address}</div>
+        <div>{consumerInfo[0].phone_number}</div>
+        <div>{consumerInfo[0].my_carbon}</div>
+      </div>
     </div>
   );
 };

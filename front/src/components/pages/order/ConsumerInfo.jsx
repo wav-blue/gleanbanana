@@ -6,8 +6,7 @@ const ConsumerInfo = () => {
   return (
     <div className="title title__element">
       <div className="flex flex__element-left">
-        <div>{consumerInfo.name}</div>
-        <div>{consumerInfo.value}</div>
+        <div>{consumerInfo[0].username}</div>
       </div>
     </div>
   );
