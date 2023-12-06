@@ -134,7 +134,7 @@ userRouter.post("/users/login", async function (req, res, next) {
 });
 
 // 유저 본인의 정보 조회
-userRouter.get("/:userId", loginRequired, async function (req, res, next) {
+userRouter.get("/:userId", async function (req, res, next) {
   try {
     //const user_id = req.currentUserId;
     const { userId } = req.params;
@@ -144,6 +144,22 @@ userRouter.get("/:userId", loginRequired, async function (req, res, next) {
     next(error);
   }
 });
+
+// 유저 본인의 정보 조회
+userRouter.get(
+  "/:userId/login",
+  loginRequired,
+  async function (req, res, next) {
+    try {
+      //const user_id = req.currentUserId;
+      const { userId } = req.params;
+      const user = await userService.getUser({ user_id: userId });
+      res.status(200).json(user);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 // 회원 정보 수정
 userRouter.post(

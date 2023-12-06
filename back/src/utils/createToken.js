@@ -1,7 +1,10 @@
 import jwt from "jsonwebtoken";
 
 async function createAccessToken(payload, secretKey) {
-  const accessToken = jwt.sign(payload, secretKey, { expiresIn: "30s" });
+  // 30초
+  //const accessToken = jwt.sign(payload, secretKey, { expiresIn: "30s" });
+  // 30분
+  const accessToken = jwt.sign(payload, secretKey, { expiresIn: "30m" });
   // 유효기간 1시간
   //const accessToken = jwt.sign(payload, secretKey, { expiresIn: "1h" });
   return accessToken;
