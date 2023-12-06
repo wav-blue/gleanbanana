@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { userInfo: "" };
+const initialState = { userId: "", userInfo: {} };
 
 const userLoginSlice = createSlice({
   name: "userLogin",
@@ -8,10 +8,14 @@ const userLoginSlice = createSlice({
   reducers: {
     loginUser(state, action) {
       console.log("userInfo 저장", action.payload);
-      state.userInfo = action.payload;
+      state.userId = action.payload;
     },
     logoutUser(state) {
-      state.userInfo = "";
+      state.userInfo = {};
+      state.userId = "";
+    },
+    storeUserInfo(state, action) {
+      state.userInfo = action.payload;
     },
   },
 });

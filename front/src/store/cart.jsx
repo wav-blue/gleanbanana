@@ -1,5 +1,7 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 
+//리듀서를 너무 많이 나눠놨다
+//updateCartQuantity의 목적을 체크 ...!
 const initialState = {
   cartItems: [],
   cartCheckedList: [],
@@ -30,18 +32,34 @@ const cartSlice = createSlice({
       const existedCartItemIndex = state.cartItems.findIndex(
         (cart) => cart.item_id === newItemId
       );
+      //체크해놓은 카트 아이템과 내가 수량을 조절하고 있는 아이템이
+      //포함되어있는지 체크하는 로직
       const existedCheckedItemIndex = state.cartCheckedList.findIndex(
         (cart) => cart.item_id === newItemId
       );
-      if (existedCartItemIndex > 0) {
+
+      console.log("existedCartItemIndex", existedCartItemIndex);
+
+      //카트 quantity가 변경이 안되는듯!
+      if (existedCartItemIndex >= 0) {
         //있다면 수량변경
         const updatedCartQuantity = action.payload.quantity;
-        state.cartItems[existedCartItemIndex].quantity = updatedCartQuantity;
+        const updatedCart = state.cartItems[existedCartItemIndex];
+        console.log("beforeupdatedCart", updatedCart);
+        updatedCart.quantity = updatedCartQuantity;
+        console.log("afterupdatedCart", updatedCart);
+
+        return updatedCart;
       }
-      if (existedCheckedItemIndex > 0) {
-        const updatedCheckQuantity = action.payload.quantity;
-        state.cartCheckedList[existedCartItemIndex].quantity =
-          updatedCheckQuantity;
+      if (existedCheckedItemIndex >= 0) {
+        //다시짜...
+        //과연 이 슬라이스가 필요?
+        const updatedCartQuantity = action.payload.quantity;
+        const updatedCart = state.cartCheckedList[existedCartItemIndex];
+        console.log("beforeupdatedCart", updatedCart);
+        updatedCart.quantity = updatedCartQuantity;
+        console.log("afterupdatedCart", updatedCart);
+        return updatedCart;
       }
     },
     removeFromCart(state, action) {
@@ -64,6 +82,9 @@ const cartSlice = createSlice({
       if (!existCartItem) {
         state.cartCheckedList.push(newCartCheckedList);
       }
+      //중복된 아이템이 없으면? push
+      //76번 체크됐을때만 코드가 해당
+      //해제
     },
     //장바구니에서 check 해제했을 때
     removeFromCheckedList(state, action) {
@@ -80,10 +101,12 @@ const cartSlice = createSlice({
     //cartCheckedList에서 price와 deleveryFee,bananaindex를 줘야함!
     updateTotal(state) {
       console.log("update Total");
+      console.log(state.cartCheckedList);
 
       if (state?.cartCheckedList) {
         let updatedTotal = state?.cartCheckedList.reduce(
           (acc, cur) => {
+            console.log("quantity", cur.quantity, "price", cur.price);
             return {
               totalPrice: acc.totalPrice + cur.price * cur.quantity,
               totalDeliveryFee: acc.totalDeliveryFee + 2500,

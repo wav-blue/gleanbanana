@@ -6,7 +6,7 @@ import useApi from "../../hooks/useApi";
 import { useEffect } from "react";
 
 const NavBar = () => {
-  const loggedInUserId = useSelector((state) => state.user.userInfo);
+  const loggedInUserId = useSelector((state) => state.user.userId);
   const dispatch = useDispatch();
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "post",

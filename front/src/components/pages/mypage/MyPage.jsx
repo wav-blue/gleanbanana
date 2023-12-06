@@ -1,14 +1,34 @@
 import Side from "../../layout/SideLayout";
 import MyChart from "./MyChart";
 import MonthlyChart from "./MonthlyChart";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../../hooks/useConfirm";
+import { userLoginActions } from "../../../store/userLogin";
+import useApi from "../../../hooks/useApi";
 
 const MyPage = () => {
-  const loggedInUser = useSelector((state) => state.user.userInfo);
+  const userId = useSelector((state) => state.user.userId);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { trigger, result, reqIdentifier, loading, error } = useApi({
+    method: "get",
+    path: `/${userId}`,
+    shouldInitFetch: false,
+  });
+
+  useEffect(() => {
+    trigger({
+      applyResult: true,
+      isShowBoundary: true,
+    });
+  }, []);
+
+  useEffect(() => {
+    dispatch(userLoginActions.storeUserInfo(result.data));
+  }, [result.data]);
+
   const toLogin = () => {
     navigate("/login");
   };
@@ -22,11 +42,11 @@ const MyPage = () => {
   );
 
   useEffect(() => {
-    console.log(loggedInUser);
-    if (!loggedInUser) {
+    console.log(userId);
+    if (!userId) {
       onConfirm();
     }
-  }, [loggedInUser, navigate]);
+  }, [userId, navigate]);
 
   return (
     <div className="mypage">

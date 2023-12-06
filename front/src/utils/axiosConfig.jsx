@@ -14,7 +14,7 @@ export const api = axios.create(config); // 인스턴스
 // //refresh token api
 // export async function postRefreshToken() {
 //   const response = await api.post("/refresh", {
-//     refreshToken: localStorage.getItem("refreshToken"),
+//     user_id: localStorage.getItem("refreshToken"),
 //   });
 //   return response;
 // }

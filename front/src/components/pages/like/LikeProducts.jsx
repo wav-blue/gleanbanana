@@ -8,7 +8,7 @@ import SkeletonProductCard from "../products/SkeletonProductCard";
 const LikeProducts = () => {
   const dispatch = useDispatch();
   const likeLists = useSelector((state) => state.like.likeLists);
-  const userId = useSelector((state) => state.user.userInfo);
+  const userId = useSelector((state) => state.user.userId);
   // id 가져오기
 
   const { trigger, result, reqIdentifier, loading, error } = useApi({

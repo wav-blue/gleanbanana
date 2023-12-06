@@ -30,8 +30,6 @@ export default Charts;
 //   Legend,
 // } from "chart.js";
 // import { Line } from "react-chartjs-2";
-// import { useRecoilState } from "recoil";
-// import { urlState } from "../../src/recoilState";
 
 // ChartJS.register(
 //   CategoryScale,

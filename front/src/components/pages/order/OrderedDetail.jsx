@@ -2,6 +2,10 @@ import ConsumerInfo from "../order/ConsumerInfo";
 import DeleveryInfo from "../order/DeleveryInfo";
 import OrderedProduct from "../order/OrderedProduct";
 import OrderedInfo from "../order/OrderedInfo";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import useApi from "../../../hooks/useApi";
+import { useSelector } from "react-redux";
 
 const OrderedDetail = () => {
   return (

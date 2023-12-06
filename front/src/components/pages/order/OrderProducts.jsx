@@ -1,37 +1,36 @@
 import OrderProduct from "./OrderProduct";
-
-import tomato from "../../../assets/tomato.png";
-import salad from "../../../assets/salad.png";
-import peanut from "../../../assets/peanut.png";
-
-const OrderProductList = [
-  {
-    img: tomato,
-    id: 1,
-    orderStaus: "배송중",
-    orderDate: "오늘 오후 4시 도착 예정",
-    orderPrice: "20020",
-    bananaIdx: 2.59,
-  },
-  {
-    img: salad,
-    id: 2,
-    orderStaus: "배송시작",
-    orderDate: "내일 오전 도착 예정",
-    orderPrice: "21560",
-    bananaIdx: 2.38,
-  },
-  {
-    img: peanut,
-    id: 3,
-    orderStaus: "결제완료",
-    orderDate: "금요일 오전 도착 예정",
-    orderPrice: "9600",
-    bananaIdx: 3.6,
-  },
-];
+import useApi from "../../../hooks/useApi";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { orderActions } from "../../../store/order";
 
 const OrderProducts = () => {
+  const userId = useSelector((state) => state.user.userId);
+  const orderProductList = useSelector((state) => state.order.orderedItems);
+  const dispatch = useDispatch();
+
+  const { trigger, result, reqIdentifier } = useApi({
+    method: "get",
+    path: `/${userId}/orders`,
+    data: {},
+    shouldInitFetch: false,
+  });
+
+  useEffect(() => {
+    trigger({ applyResult: true, isShowBoundary: true });
+  }, []);
+
+  useEffect(() => {
+    if (reqIdentifier === "getData") {
+      console.log("orderProductList를 세팅", result?.data);
+      dispatch(orderActions.storeToOrdered(result?.data));
+    }
+  }, [reqIdentifier, result.data, dispatch]);
+
+  useEffect(() => {
+    console.log(orderProductList);
+  }, [orderProductList]);
+
   return (
     <div className="order__wrapper">
       <div className="order__head">
@@ -39,7 +38,7 @@ const OrderProducts = () => {
       </div>
       <div className="order__wrapper">
         <div className="order">
-          {OrderProductList.map((order, idx) => (
+          {orderProductList?.map((order, idx) => (
             <OrderProduct key={`order-${idx}`} order={order} />
           ))}
         </div>
