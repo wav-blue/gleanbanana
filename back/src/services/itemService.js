@@ -1,4 +1,7 @@
 import { Item } from "../db/DAO/Item";
+import db from "../db";
+
+const table_name = "item";
 
 class itemService {
   // 전체 조회

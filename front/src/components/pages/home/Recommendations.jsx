@@ -2,7 +2,6 @@ import tomato from "../../../assets/tomato.png";
 import salad from "../../../assets/salad.png";
 import peanut from "../../../assets/peanut.png";
 import oats from "../../../assets/oats.png";
-import banana from "../../../assets/banana.png";
 import ProductCard from "../products/ProductCard";
 
 const recommendations = [

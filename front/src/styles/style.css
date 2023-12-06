@@ -1134,13 +1134,117 @@ body {
   }
 }
 
+@-webkit-keyframes loading {
+  0% {
+    opacity: 20%;
+  }
+  50% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 20%;
+  }
+}
+
+@keyframes loading {
+  0% {
+    opacity: 20%;
+  }
+  50% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 20%;
+  }
+}
+.skeletonCard__wrapper {
+  width: 240px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.skeletonCard__img {
+  width: 240px;
+  height: 240px;
+  background-color: #f2f2f2;
+}
+.skeletonCard__img::before {
+  content: "";
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  background-color: #e2e2e2;
+  -webkit-animation: loading 2s infinite linear;
+          animation: loading 2s infinite linear;
+}
+.skeletonCard__description {
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+}
+.skeletonCard__description__wrapper {
+  padding: 0 10px 0 5px;
+}
+.skeletonCard__description-detail {
+  display: flex;
+  width: 75%;
+  flex-direction: column;
+  gap: 11px;
+}
+.skeletonCard__description-index {
+  width: 60px;
+  height: 45px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}
+.skeletonCard__description-index::before {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 45px;
+  background-color: #e2e2e2;
+  -webkit-animation: loading 2s infinite linear;
+          animation: loading 2s infinite linear;
+}
+.skeletonCard__name {
+  width: 150px;
+  height: 20px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}
+.skeletonCard__name::before {
+  content: "";
+  position: absolute;
+  width: 150px;
+  height: 20px;
+  background-color: #e2e2e2;
+  -webkit-animation: loading 2s infinite linear;
+          animation: loading 2s infinite linear;
+}
+.skeletonCard__price {
+  width: 80px;
+  height: 15px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}
+.skeletonCard__price::before {
+  content: "";
+  position: absolute;
+  width: 80px;
+  height: 15px;
+  background-color: #e2e2e2;
+  -webkit-animation: loading 2s infinite linear;
+          animation: loading 2s infinite linear;
+}
+
 .products {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   grid-row-gap: 25px;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 }
 .products__wrapper {
   display: flex;
