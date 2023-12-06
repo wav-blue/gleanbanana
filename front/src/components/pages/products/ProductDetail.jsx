@@ -17,7 +17,6 @@ const ProductDetail = () => {
   const [itemPrice, setItemPrice] = useState(product.price);
   const userId = useSelector((state) => state.user.userInfo);
 
-  const dispatch = useDispatch();
   const param = useParams();
   const { trigger, result, reqIdentifier } = useApi({
     method: "post",
@@ -40,10 +39,6 @@ const ProductDetail = () => {
   useEffect(() => {
     setIsLike(!!wasLike);
   }, [wasLike]);
-
-  console.log("likeState1: ", likeState);
-  console.log("wasLike1: ", wasLike);
-  console.log("isLike1: ", isLike);
 
   const navigate = useNavigate();
 

@@ -7,40 +7,32 @@ import ProductCard from "../products/ProductCard";
 
 const recommendations = [
   {
-    id: 1,
-    img: tomato,
-    itemName: "대추방울토마토",
-    itemPrice: "20020",
-    bananaIdx: 2.59,
-    deliveryDate: "2023-11-25",
-    deliveryFee: 0,
+    item_id: 1,
+    image_url: tomato,
+    item_name: "대추방울토마토",
+    price: "20020",
+    banana_index: 2.59,
   },
   {
-    id: 2,
-    img: salad,
-    itemName: "팜에이트 무농약 유러피안 샐러드 꾸러미",
-    itemPrice: "21560",
-    bananaIdx: 2.38,
-    deliveryDate: "2023-11-25",
-    deliveryFee: 0,
+    item_id: 2,
+    image_url: salad,
+    item_name: "팜에이트 무농약 유러피안 샐러드 꾸러미",
+    price: "21560",
+    banana_index: 2.38,
   },
   {
-    id: 3,
-    img: peanut,
-    itemName: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
-    itemPrice: "9600",
-    bananaIdx: 3.6,
-    deliveryDate: "2023-11-25",
-    deliveryFee: 0,
+    item_id: 3,
+    image_url: peanut,
+    item_name: "맛을 그리다 볶음 땅콩 알땅콩 1kg 23년 햇땅콩",
+    price: "9600",
+    banana_index: 3.6,
   },
   {
-    id: 4,
-    img: oats,
-    itemName: "바른곡물 국산 유기농 귀리쌀",
-    itemPrice: "37900",
-    bananaIdx: 1.78,
-    deliveryDate: "2023-11-25",
-    deliveryFee: 0,
+    item_id: 4,
+    image_url: oats,
+    item_name: "바른곡물 국산 유기농 귀리쌀",
+    price: "37900",
+    banana_index: 1.78,
   },
 ];
 
@@ -53,15 +45,7 @@ const Recommendations = () => {
       <div className="recommendation__card__wrapper">
         <div className="recommendation">
           {recommendations.map((recom, idx) => (
-            <ProductCard
-              key={`productCard-${idx}`}
-              src={recom.img}
-              itemName={recom.itemName}
-              itemPrice={recom.itemPrice}
-              bananaImg={banana}
-              bananaIdx={recom.bananaIdx}
-              id={recom.id}
-            />
+            <ProductCard key={`productCard-${idx}`} product={recom} />
           ))}
         </div>
       </div>
