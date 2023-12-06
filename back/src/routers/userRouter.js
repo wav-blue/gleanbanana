@@ -3,6 +3,10 @@ import { NotFoundError, UnauthorizedError } from "../../libraries/custom-error";
 import { userService } from "../services/userService";
 import { loginRequired } from "../middlewares/loginRequired";
 import { checkPermission } from "../middlewares/checkPermission";
+import { createAccessToken } from "../utils/createToken";
+import { validateRefreshToken } from "../utils/validateToken";
+
+import jwt from "jsonwebtoken";
 
 const userRouter = Router();
 
@@ -37,6 +41,7 @@ userRouter.post("/users/register", async function (req, res, next) {
   }
 });
 
+// Email 중복 확인
 userRouter.get("/users/email", async function (req, res, next) {
   try {
     const { email } = req.body;
@@ -44,6 +49,53 @@ userRouter.get("/users/email", async function (req, res, next) {
     res.status(200).json(findEmail[0]["COUNT(email)"]);
   } catch (error) {
     next(error);
+  }
+});
+
+// 시험용 : 엑세스 토큰만 파기
+userRouter.delete("/accessToken", async function (req, res, next) {
+  try {
+    res.cookie("accessToken", null, {
+      maxAge: 0,
+    });
+    res.send("완료");
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Access Token 재발급
+userRouter.get("/accessToken", async function (req, res, next) {
+  try {
+    const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
+
+    const accessToken = req.signedCookies.accessToken ?? null;
+    const refreshToken = req.signedCookies.refreshToken ?? null;
+
+    // cookie가 만료된 경우 => 로그인부터 다시
+    if (!accessToken || !refreshToken) {
+      throw new UnauthorizedError("Token이 존재하지 않습니다.");
+    }
+    // token 유효기간 검증
+    const isRefreshTokenValidate = validateRefreshToken(refreshToken);
+
+    const accessTokenId = jwt.decode(accessToken, secretKey);
+    const user_data = { user_id: accessTokenId.user_id };
+
+    // Refresh Token 만료 => 로그인부터 다시
+    if (!isRefreshTokenValidate) {
+      throw new UnauthorizedError("Refresh Token이 만료되었습니다");
+    }
+    const newAccessToken = await createAccessToken(user_data, secretKey);
+    res.cookie("accessToken", newAccessToken, {
+      httpOnly: true,
+      signed: true,
+      maxAge: 1 * 60 * 60 * 1000,
+    });
+
+    res.status(201).json("Token 재발급이 완료되었습니다");
+  } catch (err) {
+    next(err);
   }
 });
 
@@ -79,10 +131,11 @@ userRouter.post("/users/login", async function (req, res, next) {
 });
 
 // 유저 본인의 정보 조회
-userRouter.get("/:userId", loginRequired, async function (req, res, next) {
+userRouter.get("/:userId", async function (req, res, next) {
   try {
-    const user_id = req.currentUserId;
-    const user = await userService.getUser({ user_id });
+    //const user_id = req.currentUserId;
+    const { userId } = req.params;
+    const user = await userService.getUser({ user_id: userId });
     res.status(200).json(user);
   } catch (error) {
     next(error);
