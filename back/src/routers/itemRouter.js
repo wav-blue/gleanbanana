@@ -36,7 +36,6 @@ itemRouter.get("/items", async function (req, res, next) {
 itemRouter.get("/items/:itemId", async function (req, res, next) {
   const { itemId } = req.params;
   try {
-    console.log("1");
     const items = await itemService.getItem({
       itemId,
     });
