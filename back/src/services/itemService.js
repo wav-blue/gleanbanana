@@ -2,9 +2,22 @@ import { Item } from "../db/DAO/Item";
 
 class itemService {
   // 전체 조회
-  static async getItems() {
-    const items = await readAllItems();
-    return items;
+  static async getItems({ contentSize, skipSize }) {
+    return new Promise((resolve, reject) => {
+      const query = `SELECT * FROM ${table_name} order by item_id desc LIMIT ${skipSize},${contentSize}`;
+      db.query(query, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          if (results.length > 0) {
+            console.log("getItems results값 확인 == ", results);
+            resolve(results);
+          } else {
+            reject(new Error("상품이 없습니다."));
+          }
+        }
+      });
+    });
   }
   // 개별 조회
   static async getItem({ itemId }) {

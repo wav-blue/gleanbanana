@@ -17,8 +17,14 @@ itemRouter.get("/items", async function (req, res, next) {
       const items = await itemService.getItemsByCategory({ category });
       res.status(200).json(items);
     } else {
+      const pageNum = Number(req.query.pageNum) || 1; // NOTE: 쿼리스트링으로 받을 페이지 번호 값, 기본값은 1
+      const contentSize = Number(req.query.countPerPage) || 10; // NOTE: 페이지에서 보여줄 컨텐츠 수.
+      const skipSize = (pageNum - 1) * contentSize; // NOTE: 다음 페이지 갈 때 건너뛸 리스트 개수.
       // 검색어와 카테고리가 모두 제공되지 않은 경우 전체 상품 조회
-      const items = await itemService.getItems();
+      const items = await itemService.getItems({
+        contentSize,
+        skipSize,
+      });
       res.status(200).json(items);
     }
   } catch (error) {
