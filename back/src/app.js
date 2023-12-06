@@ -23,9 +23,9 @@ app.use(cookieParser("sercret"));
 app.get("/", (req, res) => {
   res.send("기본 페이지");
 });
-
-app.use("/api", userRouter);
+// 순서 그대로 유지
 app.use("/api", itemRouter);
+app.use("/api", userRouter);
 app.use("/api", cartRouter);
 app.use("/api", orderRouter);
 app.use("/api", wishRouter);
