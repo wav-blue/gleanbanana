@@ -2,12 +2,13 @@ import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
 import banana from "../../../assets/banana.png";
 import { useState, useEffect, useCallback, Suspense } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { likeActions } from "../../../store/like";
 import Likes from "../../icons/Likes";
 import LikesFilled from "../../icons/LikesFilled";
 import { useNavigate, useParams } from "react-router-dom";
 import useApi from "../../../hooks/useApi";
+import { purchaseActions } from "../../../store/purchase";
 
 //장바구니에 추가하면 바로 장바구니 페이지로 가게 함
 const ProductDetail = () => {
@@ -16,8 +17,9 @@ const ProductDetail = () => {
   const [bananaIndexes, setBananaIndexes] = useState(product.banana_index);
   const [itemPrice, setItemPrice] = useState(product.price);
   const userId = useSelector((state) => state.user.userInfo);
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const param = useParams();
   const { trigger, result, reqIdentifier } = useApi({
     method: "post",
@@ -31,7 +33,6 @@ const ProductDetail = () => {
   // useEffect(() => {
   //   console.log(likeState);
   // }, [likeState]);
-  const navigate = useNavigate();
 
   //ProductDetail GET
   useEffect(() => {
@@ -53,7 +54,7 @@ const ProductDetail = () => {
   const addToCartHandler = useCallback(async () => {
     const addCartData = {
       ...product,
-      itemId: product.item_id,
+      item_id: product.item_id,
       price: itemPrice,
       banana_index: bananaIndexes,
       quantity: quantity,
@@ -103,6 +104,11 @@ const ProductDetail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
 
+  const onClickPurchase = async () => {
+    dispatch(purchaseActions.storeToPurchase({ ...product, quantity }));
+    navigate(`/purchase`);
+  };
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <article className="product__article1">
@@ -135,7 +141,9 @@ const ProductDetail = () => {
             <ButtonCommon design="medium" onClick={addToCartHandler}>
               장바구니 담기
             </ButtonCommon>
-            <ButtonCommon design="medium">바로 구매하기</ButtonCommon>
+            <ButtonCommon design="medium" onClick={onClickPurchase}>
+              바로 구매하기
+            </ButtonCommon>
           </section>
         </section>
       </article>

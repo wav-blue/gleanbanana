@@ -4,8 +4,19 @@ import DeleveryInfo from "../purchase/DeleveryInfo";
 import PurchasedProduct from "../purchase/PurchasedProduct";
 import PurchasedInfo from "../purchase/PurchasedInfo";
 import PurchaseButtons from "../purchase/PurchaseButtons";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
+//구매하기 전 페이지
 const Purchase = () => {
+  const toPurchaseList = useSelector((state) => state.purchase.toPurchaseList);
+  const toPurchaseListLength = useSelector(
+    (state) => state.purchase.toPurchaseListLength
+  );
+
+  useEffect(() => {
+    console.log(toPurchaseList);
+  }, []);
   return (
     <div className="purchase__wrapper">
       <div className="purchase__info">
@@ -19,13 +30,19 @@ const Purchase = () => {
         <div className="line line__in" />
         <DeleveryInfo />
         <div className="line line__out" />
-        <div className="title title__element">배송 물품 내역 (3)</div>
+        <div className="title title__element">
+          {`배송 물품 내역 (${toPurchaseListLength})`}
+        </div>
         <div className="line line__in" />
-        <PurchasedProduct />
+        {toPurchaseList.map((list) => (
+          <PurchasedProduct item_name={list.item_name} />
+        ))}
         <div className="line line__out" />
         <div className="title title__element">결제정보</div>
         <div className="line line__in" />
-        <PurchasedInfo />
+        {toPurchaseList.map((list) => (
+          <PurchasedInfo list={list} />
+        ))}
       </div>
       <PurchaseButtons />
     </div>

@@ -83,12 +83,10 @@ const Cart = ({ cart }) => {
   //check상태 포함 각state 변경이 될 때마다 변경.
   const checkedCartData = useMemo(() => {
     return {
-      banana_index,
-      item_id,
-      price,
+      ...cart,
       quantity: changedQuantity,
     };
-  }, [banana_index, item_id, price, changedQuantity]);
+  }, [cart, changedQuantity]);
 
   useEffect(() => {
     if (isChecked) {

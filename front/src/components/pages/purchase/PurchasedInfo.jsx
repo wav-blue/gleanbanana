@@ -1,17 +1,32 @@
-const PurchasedInfo = () => {
+import { useSelector } from "react-redux";
+
+const PurchasedInfo = ({ list }) => {
+  const purchaseTotal = useSelector((state) => state.purchase.purchaseTotal);
+
+  console.log(purchaseTotal);
+
   return (
     <div className="title title__element">
       <div className="flex flex__element-left">
         <div>총 상품 가격</div>
-        <div>27,500원</div>
+        <div>{purchaseTotal.totalPrice.toLocaleString()} 원</div>
       </div>
       <div className="flex flex__element-left">
         <div>배송비</div>
-        <div>5,000원</div>
+        <div>{purchaseTotal.totalDeliveryFee.toLocaleString()} 원</div>
       </div>
       <div className="flex flex__element-left">
-        <div>총 결재금액</div>
-        <div>32,500원</div>
+        <div>총 결제금액</div>
+        <div>
+          {(
+            purchaseTotal.totalPrice + purchaseTotal.totalDeliveryFee
+          ).toLocaleString()}
+          원
+        </div>
+      </div>
+      <div className="flex flex__element-left">
+        <div>총 바나나인덱스</div>
+        <div>{purchaseTotal.totalBananaIndex} </div>
       </div>
       <div className="flex flex__element-up">
         <div>결제 방법</div>

@@ -6,7 +6,7 @@ import bananaImg from "../../../assets/banana.png";
 const OrderProduct = ({ order }) => {
   return (
     <List type="rowcard">
-      <img src={order.src} alt={order.id} />
+      <img src={order.src} alt={order.item_id} />
       <Link className="order__description__wrapper">
         <div className="order__description">
           <div className="order__description__delivery">

@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+import useApi from "../../../hooks/useApi";
+import { useSelector } from "react-redux";
+
 const consumerInfo = [
   { name: "이름", value: "김유저" },
   { name: "이메일", value: "user@banana.com" },
@@ -8,6 +12,15 @@ const consumerInfo = [
 // const tableName = ["이름", "이메일", "연락처"];
 
 const ConsumerInfo = () => {
+  const userId = useSelector((state) => state.user.userInfo);
+  const { trigger, result } = useApi({ method: "get", path: `/${userId}` });
+  // useEffect(() => {
+  //   trigger({ data: { currentUserId: userId } });
+  // }, []);
+
+  // useEffect(() => {
+  //   console.log(result?.data);
+  // }, [result?.data]);
   return (
     <div className="title title__element">
       {consumerInfo.map((cons) => (
