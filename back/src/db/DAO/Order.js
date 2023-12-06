@@ -175,7 +175,7 @@ class Order {
   // 주문내역 상세조회
   static async getOrderDetail(userId, order_id) {
     return new Promise((resolve, reject) => {
-      const query = `SELECT ${table_name}.*,item.banana_index,item.item_name
+      const query = `SELECT ${table_name}.*,item.banana_index,item.item_name,item.price
       ,order_item.item_id,order_item.quantity
       ,date_format(date_add(now(), interval item.expected_delivery day), '%Y-%m-%d') as expected_delivery
         FROM ${table_name} inner join order_item 
@@ -195,13 +195,15 @@ class Order {
             let test_arr = [];
             //const test_result = { items: test_arr };
             //let test_result = [];
+            let total_price = 0;
             for (var i = 0; i < results.length; i++) {
               const test_dic = {};
+              total_price += results[i].price * results[i].quantity;
               //console.log("results[" + i + "].item_name",results[i].item_name)
               // console.log("results[" + i + "].item_id : ", results[i].item_id);
               // console.log("results[" + i + "].quantity : ", results[i].quantity);
               test_dic["item_name"] = results[i].item_name;
-              //test_dic["item_id"] = results[i].item_id;
+              test_dic["item_id"] = results[i].item_id;
               test_dic["quantity"] = results[i].quantity;
               //console.log("test_dic : ", test_dic);
               test_dic["banana_index"] = results[i].banana_index;
@@ -210,6 +212,9 @@ class Order {
               //console.log("for loop test_arr 확인 == ", test_arr);
               //console.log("test_arr[" + i + "] : ", test_arr[i]);
             }
+            results[0].delivery_fee = 2500;
+            results[0].total_price = total_price;
+            //console.log(" total_price값 확인 == ", total_price);
             console.log("results[0]값 확인 == ", results[0]);
             results[0]["items"] = test_arr;
             delete results[0]["order_id"];
@@ -222,6 +227,7 @@ class Order {
             delete results[0]["item_name"];
             delete results[0]["quantity"];
             delete results[0]["banana_index"];
+            delete results[0]["price"];
             const final_result = results[0];
 
             console.log("getOrderDetail final_result값 확인 == ", final_result);
