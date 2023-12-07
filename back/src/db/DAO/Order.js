@@ -2,7 +2,10 @@ import db from "..";
 import { ulid } from "ulidx";
 import mysql from "mysql2";
 import moment from "moment";
-import { NotFoundError } from "../../../libraries/custom-error";
+import {
+  BadRequestError,
+  NotFoundError,
+} from "../../../libraries/custom-error";
 
 class Order {
   //주문내역 전체 조회
@@ -101,7 +104,8 @@ class Order {
             }
             resolve(final_results);
           } else {
-            reject(new Error(null));
+            resolve(null);
+            //reject(new Error(null));
           }
         }
       });
@@ -113,8 +117,23 @@ class Order {
     return new Promise((resolve, reject) => {
       // select order_id 없는 주문아이디면 바로 에러 반환시켜라????????
       // if => throw new NotFoundError
+      const selectquery = `SELECT orders.order_id from orders where order_id=?`;
+      console.log("selectquery : ", selectquery);
+      db.query(selectquery, order_id, function (error, results) {
+        if (error) {
+          reject(error);
+        } else {
+          if (results.length <= 0) {
+            console.log("BadRequestError : ", results.length);
+            // const err_result = BadRequestError();
+            // resolve(err_result.BadRequestError);
+            throw new BadRequestError();
+          }
+        }
+      });
 
-      const query = `SELECT orders.*,item.banana_index,item.item_name,item.price
+      const query = `SELECT orders.order_id,orders.user_id,orders.order_date_createdAt,orders.pay_method,orders.delivery_fee,
+      item.banana_index,item.item_name,item.price
       ,order_item.item_id,order_item.quantity
       ,date_format(date_add(now(), interval item.expected_delivery day), '%Y-%m-%d') as expected_delivery
         FROM orders inner join order_item 
@@ -227,6 +246,21 @@ class Order {
   //삭제
   static async deleteOrder(order_id) {
     return new Promise((resolve, reject) => {
+      const selectquery = `SELECT orders.order_id from orders where order_id=?`;
+      console.log("selectquery : ", selectquery);
+      db.query(selectquery, order_id, function (error, results) {
+        if (error) {
+          reject(error);
+        } else {
+          if (results.length <= 0) {
+            console.log("BadRequestError : ", results.length);
+            // const err_result = BadRequestError();
+            // resolve(err_result.BadRequestError);
+            throw new BadRequestError();
+          }
+        }
+      });
+
       const deletequery1 = `DELETE FROM orders WHERE order_id = ?`; // orders 데이터삭제
       const deletequery2 = "DELETE FROM order_item WHERE order_id = ? "; // 주문내역물품정보
 
