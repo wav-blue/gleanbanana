@@ -55,6 +55,16 @@ itemRouter.get("/recommend", async function (req, res, next) {
   }
 });
 
+// 그래프를 위한 조회
+itemRouter.get("/graph", async function (req, res, next) {
+  try {
+    const items = await itemService.graphItems();
+    res.status(200).json(items);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // 추가
 itemRouter.post("/items", async function (req, res, next) {
   try {
@@ -83,16 +93,6 @@ itemRouter.post("/items", async function (req, res, next) {
       throw new Error(newItems.errorMessage);
     }
     res.status(201).json(newItems);
-  } catch (error) {
-    next(error);
-  }
-});
-
-// 그래프를 위한 조회
-itemRouter.get("/graph", async function (req, res, next) {
-  try {
-    const items = await itemService.graphItems();
-    res.status(200).json(items);
   } catch (error) {
     next(error);
   }
