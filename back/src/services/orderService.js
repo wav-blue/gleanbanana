@@ -1,9 +1,4 @@
-// import db from "../db";
-// import { ulid } from "ulidx";
-// import mysql from "mysql2";
-// import moment from "moment";
 import { Order } from "../db/DAO/Order";
-const table_name = "orders";
 
 class orderService {
   //주문내역 전체 조회

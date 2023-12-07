@@ -1,0 +1,162 @@
+.join {
+  display: flex;
+  flex-direction: column;
+
+  & > hr {
+    margin-top: 18px;
+    margin-bottom: 18px;
+    width: 100%;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 40px;
+    width: 625px;
+  }
+
+  &__head {
+    font-size: 18px;
+    font-weight: lighter;
+  }
+
+  &__input {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    &--button {
+      display: flex;
+      gap: 12px;
+    }
+    &--check {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      & > p {
+        margin-left: 147px;
+        margin-bottom: 5px;
+        color: $required-color;
+        font-size: $small-font-size;
+      }
+    }
+    &--password {
+      display: flex;
+      flex-direction: column;
+      gap: 17px;
+      & > p {
+        margin: -5px 0 5px 147px;
+        color: $required-color;
+        font-size: $small-font-size;
+      }
+    }
+    & > hr {
+      margin-top: 10px;
+      margin-bottom: 7px;
+      width: 100%;
+    }
+  }
+
+  &__button {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__approval {
+    display: flex;
+    margin-bottom: 20px;
+    input {
+      position: relative;
+      top: -4px;
+    }
+    &__label {
+      width: 135px;
+      display: flex;
+      gap: 5px;
+      font-size: $basic-font-size;
+      font-weight: lighter;
+      & > p {
+        color: $required-color;
+      }
+    }
+    &__content {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    &--check {
+      display: flex;
+      align-items: flex-start;
+      font-weight: lighter;
+      gap: 7px;
+      & > div {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        & > p {
+          font-size: $ssmall-font-size;
+        }
+      }
+    }
+  }
+  @include mobile-l {
+    width: 90%;
+    &__wrapper {
+      width: $breakpoint-mobile-l;
+      align-items: center;
+      margin-top: 20px;
+    }
+    &__head {
+      font-size: 15px;
+    }
+    &__input {
+      gap: 13px;
+      &--button {
+        flex-direction: column;
+        button {
+          height: 40px;
+          margin-left: 108px;
+          width: 278px;
+        }
+      }
+      &--check {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .input__wrapper {
+        label {
+          font-size: 14px;
+        }
+      }
+    }
+    &__find {
+      font-size: 12px;
+    }
+    &__button {
+      button {
+        height: 50px;
+        font-size: 15px;
+      }
+      margin-bottom: 50px;
+    }
+    &__approval {
+      display: flex;
+      margin-bottom: 20px;
+      input {
+        position: relative;
+        top: -4px;
+      }
+      &__label {
+        font-size: 10px;
+      }
+      &--check {
+        & > div {
+          & > p {
+            line-height: 1.4;
+          }
+        }
+      }
+    }
+  }
+}

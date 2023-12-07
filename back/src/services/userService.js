@@ -67,13 +67,11 @@ class userService {
     // access token, refresh token 발급
     const accessToken = await createAccessToken(user_data, secretKey);
     const refreshToken = await createRefreshToken(secretKey);
-
     // 반환할 loginuser 객체
     const loginUser = {
-      accessToken,
-      refreshToken,
+      accessToken: `Bearer ${accessToken}`,
+      refreshToken: `Bearer ${refreshToken}`,
       user_id: findUser[0]["user_id"],
-      errorMessage: null,
     };
 
     return loginUser;
@@ -88,7 +86,17 @@ class userService {
   // 유저 정보 조회
   static async getUser({ user_id }) {
     const findUser = await User.findUser({ user_id });
-    console.log("findUser >> ", findUser);
+
+    if (findUser?.length === 0) {
+      // id에 해당되는 유저가 없는 경우
+      throw new NotFoundError("해당하는 유저를 찾을 수 없습니다.");
+    }
+    if (findUser[0]?.deletedAt) {
+      // 탈퇴한 유저인 경우
+      // 보안을 위해 같은 메시지 출력
+      throw new NotFoundError("해당하는 유저를 찾을 수 없습니다.");
+    }
+
     return findUser;
   }
 

@@ -50,7 +50,7 @@ userRouter.post("/users/register", async function (req, res, next) {
 // Email 중복 확인
 userRouter.get("/users/email", async function (req, res, next) {
   try {
-    const { email } = req.body;
+    const { email } = req.query;
     const findEmail = await userService.getEmail({ email });
     res.status(200).json(findEmail[0]["COUNT(email)"]);
   } catch (error) {
@@ -71,16 +71,16 @@ userRouter.delete("/accessToken", async function (req, res, next) {
 });
 
 // Access Token 재발급
-userRouter.get("/accessToken", async function (req, res, next) {
+userRouter.post("/accessToken", async function (req, res, next) {
   try {
     const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
 
-    const accessToken = req.signedCookies.accessToken ?? null;
-    const refreshToken = req.signedCookies.refreshToken ?? null;
-
+    const accessToken = req.signedCookies.accessToken.split(" ")[1] ?? null;
+    const refreshToken = req.body.Authorization.split(" ")[1] ?? null;
+    console.log("Access: ", accessToken, "refresh: ", refreshToken);
     // cookie가 만료된 경우 => 로그인부터 다시
     if (!accessToken || !refreshToken) {
-      throw new UnauthorizedError("Token이 존재하지 않습니다.");
+      throw new NotFoundError("로그인 필요");
     }
     // token 유효기간 검증
     const isRefreshTokenValidate = validateRefreshToken(refreshToken);
@@ -90,7 +90,7 @@ userRouter.get("/accessToken", async function (req, res, next) {
 
     // Refresh Token 만료 => 로그인부터 다시
     if (!isRefreshTokenValidate) {
-      throw new UnauthorizedError("Refresh Token이 만료되었습니다");
+      throw new UnauthorizedError("로그인 필요");
     }
     const newAccessToken = await createAccessToken(user_data, secretKey);
     res.cookie("accessToken", newAccessToken, {
@@ -99,7 +99,7 @@ userRouter.get("/accessToken", async function (req, res, next) {
       maxAge: 1 * 60 * 60 * 1000,
     });
 
-    res.status(201).json("Token 재발급이 완료되었습니다");
+    res.status(201).json("Access Token 재발급이 완료되었습니다");
   } catch (err) {
     next(err);
   }
@@ -120,17 +120,32 @@ userRouter.post("/users/login", async function (req, res, next) {
       throw new Error(user.errorMessage);
     }
 
+    console.log("/users/login 발급된 accessToken >> ", user.accessToken);
+    console.log("/users/login 발급된 refreshToken >> ", user.refreshToken);
+
     res.cookie("accessToken", user.accessToken, {
       httpOnly: true,
       signed: true,
       maxAge: 1 * 60 * 60 * 1000,
     });
-    res.cookie("refreshToken", user.refreshToken, {
-      httpOnly: true,
-      signed: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-    res.status(200).send(user);
+
+    const response = {
+      user_id: user.user_id,
+      Authorization: user.refreshToken,
+    };
+    res.status(200).send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 유저 본인의 정보 조회
+userRouter.get("/current", loginRequired, async function (req, res, next) {
+  try {
+    const user_id = req.currentUserId;
+    //const { userId } = req.params;
+    const user = await userService.getUser({ user_id });
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
@@ -155,6 +170,22 @@ userRouter.get("/:userId", async function (req, res, next) {
     next(error);
   }
 });
+
+// 유저 본인의 정보 조회
+userRouter.get(
+  "/:userId/login",
+  loginRequired,
+  async function (req, res, next) {
+    try {
+      const user_id = req.currentUserId;
+      //const { userId } = req.params;
+      const user = await userService.getUser({ user_id });
+      res.status(200).json(user);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 // 회원 정보 수정
 userRouter.post("/users/:userId", async function (req, res, next) {
