@@ -23,9 +23,7 @@ async function loginRequired(req, res, next) {
 
     // Access Token 만료 => 재발급 요청
     if (!isAccessTokenValidate) {
-      throw new UnauthorizedError(
-        "Access Token의 정보가 서버에 존재하지 않습니다."
-      );
+      throw new UnauthorizedError("Access Token의 기한이 만료되었습니다.");
     }
 
     // user_id 추출
