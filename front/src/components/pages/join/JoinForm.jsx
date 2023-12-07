@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import useApi from "../../../hooks/useApi";
 import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
@@ -13,6 +14,7 @@ const JoinForm = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [phone_number, setPhone_number] = useState(0);
+  const navigate = useNavigate();
 
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "post",
@@ -59,12 +61,11 @@ const JoinForm = () => {
   const onClickJoinHandler = async (e) => {
     e.preventDefault();
     const joinResult = await trigger({ data: joinData, applyResult: false });
-    console.log(joinResult);
+    if (joinResult.data === "회원가입 완료") {
+      alert("회원가입 완료!");
+      navigate("/login");
+    }
   };
-
-  useEffect(() => {
-    console.log(result.data);
-  }, [result]);
 
   return (
     <div className="join__input">

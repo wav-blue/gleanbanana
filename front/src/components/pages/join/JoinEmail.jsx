@@ -16,7 +16,6 @@ const JoinEmail = ({ email, setEmail }) => {
   });
 
   const isEmailValid = useMemo(() => validateEmail(email), [email]);
-  console.log("isEmailValid : ", isEmailValid);
   const handleClick = async () => {
     if (!email) return;
     const result = await trigger({ applyResult: true, data: { email: email } });
@@ -24,14 +23,14 @@ const JoinEmail = ({ email, setEmail }) => {
   };
 
   useEffect(() => {
-    if (isFocusEmail && result.data === 1) {
+    if (isFocusEmail && result?.data?.isDuplicated === true) {
       //응답이 1이면 중복
       setIsEmailDuplicated(true);
-    } else if (isFocusEmail && result.data === 0) {
+    } else if (isFocusEmail && result?.data?.isDuplicated === false) {
       //응답이 0이면 중복안됨
       setIsEmailDuplicated(false);
     }
-  }, [result.data, isFocusEmail]);
+  }, [result, isFocusEmail]);
 
   return (
     <div className="join__input--button">

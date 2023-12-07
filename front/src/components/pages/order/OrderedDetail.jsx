@@ -3,7 +3,7 @@ import DeliveryInfo from "../purchase/DeliveryInfo";
 import OrderedProduct from "../order/OrderedProduct";
 import OrderedInfo from "../order/OrderedInfo";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useApi from "../../../hooks/useApi";
 
@@ -12,6 +12,11 @@ const OrderedDetail = () => {
   const { orderId } = useParams();
   const [itemList, setItemList] = useState([]);
   const [orderInfo, setOrderInfo] = useState({});
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userId) navigate("/");
+  }, [userId]);
 
   const { trigger, result } = useApi({
     method: "get",

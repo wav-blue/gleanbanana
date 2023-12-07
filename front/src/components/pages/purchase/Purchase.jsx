@@ -6,6 +6,7 @@ import PurchasedInfo from "../purchase/PurchasedInfo";
 import PurchaseButtons from "../purchase/PurchaseButtons";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 //구매하기 전 페이지
 const Purchase = () => {
@@ -13,6 +14,12 @@ const Purchase = () => {
   const toPurchaseListLength = useSelector(
     (state) => state.purchase.toPurchaseListLength
   );
+  const navigate = useNavigate();
+  const userId = useSelector((state) => state.user.userId);
+
+  useEffect(() => {
+    if (!userId) navigate("/");
+  }, [userId]);
 
   useEffect(() => {
     console.log(toPurchaseList);
