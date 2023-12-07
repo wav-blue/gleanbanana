@@ -70,21 +70,29 @@ userRouter.get("/accessToken", async function (req, res, next) {
     const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
 
     const accessToken = req.signedCookies.accessToken ?? null;
-    const refreshToken = req.signedCookies.refreshToken ?? null;
+    const refreshToken = req.body.Authorization ?? null;
+
+    console.log("/accessToken accessToken >> ", accessToken);
+    console.log("/accessToken refreshToken >> ", refreshToken);
 
     // cookie가 만료된 경우 => 로그인부터 다시
     if (!accessToken || !refreshToken) {
-      throw new NotFoundError("Token이 존재하지 않습니다.");
+      throw new NotFoundError("필요한 토큰이 존재하지 않습니다.");
     }
     // token 유효기간 검증
     const isRefreshTokenValidate = validateRefreshToken(refreshToken);
+
+    console.log(
+      "/accessToken라우터  Refresh Token 만료 여부 >> ",
+      isRefreshTokenValidate
+    );
 
     const accessTokenId = jwt.decode(accessToken, secretKey);
     const user_data = { user_id: accessTokenId.user_id };
 
     // Refresh Token 만료 => 로그인부터 다시
     if (!isRefreshTokenValidate) {
-      throw new UnauthorizedError("Refresh Token이 만료되었습니다");
+      throw new UnauthorizedError("Refresh Token의 기한이 만료되었습니다.");
     }
     const newAccessToken = await createAccessToken(user_data, secretKey);
     res.cookie("accessToken", newAccessToken, {
@@ -93,7 +101,7 @@ userRouter.get("/accessToken", async function (req, res, next) {
       maxAge: 1 * 60 * 60 * 1000,
     });
 
-    res.status(201).json("Token 재발급이 완료되었습니다");
+    res.status(201).json("Access Token 재발급이 완료되었습니다");
   } catch (err) {
     next(err);
   }
@@ -114,6 +122,9 @@ userRouter.post("/users/login", async function (req, res, next) {
       throw new Error(user.errorMessage);
     }
 
+    console.log("/users/login 발급된 accessToken >> ", user.accessToken);
+    console.log("/users/login 발급된 refreshToken >> ", user.refreshToken);
+
     res.cookie("accessToken", user.accessToken, {
       httpOnly: true,
       signed: true,
@@ -125,6 +136,7 @@ userRouter.post("/users/login", async function (req, res, next) {
     //   maxAge: 24 * 60 * 60 * 1000,
     // });
     const response = {
+      user_id: user.user_id,
       Authorization: user.refreshToken,
     };
     res.status(200).send(response);

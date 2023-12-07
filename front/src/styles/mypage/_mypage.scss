@@ -1,0 +1,47 @@
+@import "./mychart";
+@import "./monthlychart";
+
+.mypage {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 30px;
+  gap: 30px;
+
+  &__sidebar {
+    width: 180px;
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    gap: 45px;
+  }
+
+  @include tablet {
+    width: $breakpoint-tablet;
+    gap: 20px;
+    &__sidebar {
+      width: 18%;
+    }
+    &__content {
+      width: 75%;
+    }
+  }
+
+  @include mobile-l {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: $breakpoint-mobile-l;
+    margin-top: 20px;
+    gap: 20px;
+    &__sidebar {
+      width: 90%;
+    }
+    &__content {
+      width: 90%;
+      gap: 25px;
+    }
+  }
+}

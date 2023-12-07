@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { NotFoundError, UnauthorizedError } from "../../libraries/custom-error";
+import { UnauthorizedError } from "../../libraries/custom-error";
 
 // Access Token을 검증
 function validateAccessToken(accessToken) {
@@ -15,14 +15,16 @@ function validateAccessToken(accessToken) {
 async function loginRequired(req, res, next) {
   try {
     const accessToken = req.signedCookies.accessToken ?? null;
-    if (!accessToken)
-      throw new NotFoundError("Access Token이 존재하지 않습니다.");
+    console.log("login_required에서의 access token 여부>> ", accessToken);
+
+    if (!accessToken) console.log("accessToken이 존재하지 않습니다");
 
     // token 유효기간 검증
     const isAccessTokenValidate = validateAccessToken(accessToken);
 
     // Access Token 만료 => 재발급 요청
     if (!isAccessTokenValidate) {
+      console.log("lAccess Token 만료 =>  ", isAccessTokenValidate);
       throw new UnauthorizedError(
         "Access Token의 정보가 서버에 존재하지 않습니다."
       );
