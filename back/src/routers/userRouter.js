@@ -125,6 +125,7 @@ userRouter.post("/users/login", async function (req, res, next) {
     //   maxAge: 24 * 60 * 60 * 1000,
     // });
     const response = {
+      user_id: user.user_id,
       Authorization: user.refreshToken,
     };
     res.status(200).send(response);
