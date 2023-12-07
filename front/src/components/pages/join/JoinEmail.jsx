@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
 import Check from "../../icons/CheckMini";
@@ -9,27 +9,41 @@ const JoinEmail = ({ email, setEmail }) => {
   const [isFocusEmail, setIsFocusEmail] = useState(false);
   const [isEmailDuplicated, setIsEmailDuplicated] = useState(false);
   const { trigger, result, reqIdentifier, loading, error } = useApi({
-    method: "post",
+    method: "get",
     path: `/users/email`,
-    data: {},
     shouldInitFetch: false,
   });
 
+  //중복된 값에 focus!!!!!
   const isEmailValid = useMemo(() => validateEmail(email), [email]);
 
+  useEffect(() => {
+    console.log(email);
+  }, [email]);
+
+  useEffect(() => {
+    console.log(isEmailValid);
+  }, [isEmailValid]);
+
+  useEffect(() => {
+    console.log({ isEmailValid, isFocusEmail, isEmailDuplicated });
+  }, [isEmailValid, isFocusEmail, isEmailDuplicated]);
+
   const handleClick = () => {
-    trigger({ data: { email: email } });
+    trigger({ applyResult: true, data: { email: email } });
   };
 
   useEffect(() => {
-    if (isFocusEmail && result.data === false) {
-      //응답이 잘 오면 //이메일 포커스 안했을 때는 뜨지 않게. //응답이 false
-      setIsEmailDuplicated(false);
-    } else {
-      //중복된 이메일 에러!
+    if (isFocusEmail && result.data === 1) {
+      console.log("중복됨", result.data);
+      //응답이 1이면 중복
       setIsEmailDuplicated(true);
+    } else if (isFocusEmail && result.data === 0) {
+      console.log("중복 안됨!", result.data);
+      //응답이 0이면 중복안됨
+      setIsEmailDuplicated(false);
     }
-  }, [result.data]);
+  }, [result.data, isFocusEmail]);
 
   return (
     <div className="join__input--button">
@@ -51,9 +65,7 @@ const JoinEmail = ({ email, setEmail }) => {
         {!isEmailValid && isFocusEmail && (
           <p>아이디는 이메일 형식으로 입력해주세요</p>
         )}
-        {!isEmailValid && isFocusEmail && isEmailDuplicated && (
-          <p>중복된 이메일 주소입니다.</p>
-        )}
+        {isFocusEmail && isEmailDuplicated && <p>중복된 이메일 주소입니다.</p>}
       </div>
       <ButtonCommon
         design="check"

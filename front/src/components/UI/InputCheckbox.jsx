@@ -1,8 +1,8 @@
 import { useId } from "react";
 
 const InputCheckbox = ({
-  type = "text",
-  className = "",
+  type = "checkbox",
+  className = "checkInput",
   disabled = false,
   checked,
   onChangeCheckhandler,
@@ -12,18 +12,16 @@ const InputCheckbox = ({
 
   return (
     <>
-      {type === "checkbox" && (
-        <>
-          <input
-            type={type}
-            id={`check_btn${uniqueId}`}
-            className={`input ${className}`}
-            checked={checked}
-            onChange={onChangeCheckhandler}
-          />
-          <label htmlFor={`check_btn${uniqueId}`}></label>
-        </>
-      )}
+      <>
+        <input
+          type={type}
+          id={`check_btn${uniqueId}`}
+          className={`input ${className}`}
+          checked={checked}
+          onChange={onChangeCheckhandler}
+        />
+        <label htmlFor={`check_btn${uniqueId}`}></label>
+      </>
     </>
   );
 };
