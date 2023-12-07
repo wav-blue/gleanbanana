@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { wishService } from "../services/wishService";
-import { NotFoundError } from "../../libraries/custom-error";
 import { confirm_userId } from "../middlewares/confirm_userId";
 
 const wishRouter = Router();
@@ -12,44 +11,23 @@ wishRouter.get(
   async function (req, res, next) {
     try {
       const { userId } = req.params;
-      const items = await wishService.getWishlist({ user_id: userId });
-
-      if (items?.errorMessage) {
-        if (items.errorType === "NotFoundError") {
-          throw new NotFoundError(items.errorMessage);
-        } else {
-          throw new Error(items.errorMessage);
-        }
-      }
-
-      res.status(200).json(items);
+      const wishlists = await wishService.getWishlist({ user_id: userId });
+      res.status(200).json(wishlists.length > 0 ? wishlists : null);
     } catch (error) {
       next(error);
     }
   }
 );
 
+// 찜한 목록 조회 : 상품 아이디만
 wishRouter.get(
   "/:userId/wishlist/id",
   confirm_userId,
   async function (req, res, next) {
     try {
       const { userId } = req.params;
-      const items = await wishService.getWishlistId({ user_id: userId });
-
-      if (items?.errorMessage) {
-        if (items.errorType === "NotFoundError") {
-          throw new NotFoundError(items.errorMessage);
-        } else {
-          throw new Error(items.errorMessage);
-        }
-      }
-      const id_list = [];
-      for (let i = 0; i < items?.length; i++) {
-        id_list.push(items[i].item_id);
-      }
-
-      res.status(200).json(id_list);
+      const wish_id_list = await wishService.getWishlistId({ user_id: userId });
+      res.status(200).json(wish_id_list.length > 0 ? wish_id_list : null);
     } catch (error) {
       next(error);
     }
@@ -82,17 +60,11 @@ wishRouter.delete(
   async function (req, res, next) {
     try {
       const { userId, itemId } = req.params;
-      const results = await wishService.deleteWishlist({
+      await wishService.deleteWishlist({
         user_id: userId,
         item_id: itemId,
       });
-      if (results?.errorMessage) {
-        if (results?.errorType === "NotFoundError") {
-          throw new NotFoundError(results.errorMessage);
-        }
-        throw new Error(results.errorMessage);
-      }
-      res.status(204).json();
+      res.status(200).json("찜한 내역을 성공적으로 삭제했습니다.");
     } catch (error) {
       next(error);
     }
@@ -107,7 +79,7 @@ wishRouter.delete(
     try {
       const { userId } = req.params;
       await wishService.deleteAllWishlist({ user_id: userId });
-      res.status(200).json("성공적으로 삭제했습니다.");
+      res.status(200).json("유저의 찜 목록을 성공적으로 삭제했습니다.");
     } catch (error) {
       next(error);
     }
