@@ -36,7 +36,6 @@ itemRouter.get("/items", async function (req, res, next) {
 itemRouter.get("/items/:itemId", async function (req, res, next) {
   const { itemId } = req.params;
   try {
-    console.log("1");
     const items = await itemService.getItem({
       itemId,
     });
@@ -50,6 +49,16 @@ itemRouter.get("/items/:itemId", async function (req, res, next) {
 itemRouter.get("/recommend", async function (req, res, next) {
   try {
     const items = await itemService.getRandomItem();
+    res.status(200).json(items);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 그래프를 위한 조회
+itemRouter.get("/graph", async function (req, res, next) {
+  try {
+    const items = await itemService.graphItems();
     res.status(200).json(items);
   } catch (error) {
     next(error);
@@ -84,16 +93,6 @@ itemRouter.post("/items", async function (req, res, next) {
       throw new Error(newItems.errorMessage);
     }
     res.status(201).json(newItems);
-  } catch (error) {
-    next(error);
-  }
-});
-
-// 그래프를 위한 조회
-itemRouter.get("/graph", async function (req, res, next) {
-  try {
-    const items = await itemService.graphItems();
-    res.status(200).json(items);
   } catch (error) {
     next(error);
   }

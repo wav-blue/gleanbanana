@@ -3,26 +3,40 @@ import db from "..";
 class Item {
   // Read All Items
   static async readAllItems() {
-    const sql = `SELECT * FROM item LIMIT 20`;
+    const query = `SELECT * FROM item;`;
     return new Promise((resolve, reject) => {
-      db.query(sql, function (error, results, fields) {
+      db.query(query, function (error, results, fields) {
         if (error) {
           reject(error);
         } else {
-          if (results.length > 0) {
-            resolve(results);
-          } else {
-            reject("상품 조회에 실패했습니다.");
-          }
+          resolve(results);
         }
       });
     });
   }
+  // Read All Items With Pagination
+  static async readAllItemsByPage({ contentSize, skipSize }) {
+    return new Promise((resolve, reject) => {
+      const query = `SELECT * FROM item order by item_id DESC LIMIT ?, ?`;
+      db.query(
+        query,
+        [skipSize, contentSize],
+        function (error, results, fields) {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
+  }
+
   // Read Item Detail
   static async readItemDetail({ itemId }) {
-    const sql = `SELECT * FROM item WHERE item_id = ${itemId}`;
+    const query = `SELECT * FROM item WHERE item_id = ${itemId}`;
     return new Promise((resolve, reject) => {
-      db.query(sql, function (error, results, fields) {
+      db.query(query, function (error, results, fields) {
         if (error) {
           reject(error);
         } else {
@@ -36,7 +50,7 @@ class Item {
     });
   }
 
-  // 바나나 지수가 1 이하인 값중에서 랜덤으로 불러옴
+  // Read Random Items 바나나 지수가 1 이하인 값중에서 랜덤으로 불러옴
   static async readItemsRandom() {
     const sql = `SELECT item_id, item_name, price, banana_index, image_url FROM item WHERE banana_index <= 100 ORDER BY RAND() LIMIT 4; `;
     return new Promise((resolve, reject) => {
@@ -80,8 +94,7 @@ class Item {
     });
   }
 
-  // Read For Graph
-  // item_id, banana_index
+  // Read For Graph : banana_index
   static async readItemsforGraph() {
     const sql = `SELECT GROUP_CONCAT(banana_index) AS 'y' FROM item;`;
 

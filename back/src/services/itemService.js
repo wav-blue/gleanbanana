@@ -3,21 +3,8 @@ import { Item } from "../db/DAO/Item";
 class itemService {
   // 전체 조회
   static async getItems({ contentSize, skipSize }) {
-    return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM ${table_name} order by item_id desc LIMIT ${skipSize},${contentSize}`;
-      db.query(query, function (error, results, fields) {
-        if (error) {
-          reject(error);
-        } else {
-          if (results.length > 0) {
-            console.log("getItems results값 확인 == ", results);
-            resolve(results);
-          } else {
-            reject(new Error("상품이 없습니다."));
-          }
-        }
-      });
-    });
+    const items = await Item.readAllItemsByPage({ contentSize, skipSize });
+    return items;
   }
   // 개별 조회
   static async getItem({ itemId }) {
@@ -26,13 +13,13 @@ class itemService {
   }
   // 추천 상품 조회
   static async getRandomItem() {
-    const results = await Item.readItemsRandom();
-    return results;
+    const items = await Item.readItemsRandom();
+    return items;
   }
   // 카테고리별 상품 조회
   static async getItemsByCategory({ category }) {
-    const results = await Item.readItemsByCategory({ category });
-    return results;
+    const items = await Item.readItemsByCategory({ category });
+    return items;
   }
 
   // 검색 조회
