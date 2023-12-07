@@ -26,13 +26,13 @@ class itemService {
   }
   // 추천 상품 조회
   static async getRandomItem() {
-    const results = await Item.readItemsRandom();
-    return results;
+    const items = await Item.readItemsRandom();
+    return items;
   }
   // 카테고리별 상품 조회
   static async getItemsByCategory({ category }) {
-    const results = await Item.readItemsByCategory({ category });
-    return results;
+    const items = await Item.readItemsByCategory({ category });
+    return items;
   }
 
   // 검색 조회
