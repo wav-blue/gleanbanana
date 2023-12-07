@@ -9,6 +9,7 @@ import LikesFilled from "../../icons/LikesFilled";
 import { useNavigate, useParams } from "react-router-dom";
 import useApi from "../../../hooks/useApi";
 import { purchaseActions } from "../../../store/purchase";
+import InputNumber from "../../UI/InputNumber";
 
 //장바구니에 추가하면 바로 장바구니 페이지로 가게 함
 const ProductDetail = () => {
@@ -146,11 +147,7 @@ const ProductDetail = () => {
             <img src={banana} alt="bananaIndex" />
           </section>
           <section className="product__section2">
-            <InputCommon
-              type="number"
-              className="gray-square"
-              onValueChange={onChangeNumHandler}
-            />
+            <InputNumber onValueChange={onChangeNumHandler} />
             <div className="product__section2--totalVal">
               <div className="product__section2--total">총 상품 금액</div>
               <div className="product__section2--val">

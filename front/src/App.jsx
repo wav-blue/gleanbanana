@@ -1,9 +1,11 @@
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "../src/styles/style.css";
 import NotFound from "./components/pages/error/NotFound";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import useApi from "./hooks/useApi";
+import { userLoginActions } from "./store/userLogin";
 
 const OrderedDetail = lazy(() =>
   import("./components/pages/order/OrderedDetail")
@@ -22,15 +24,22 @@ const Carts = lazy(() => import("./components/pages/cart/Carts"));
 const Purchase = lazy(() => import("./components/pages/purchase/Purchase"));
 
 function App() {
-  const userId = useSelector((state) => state.user.userId);
-  const navigate = useNavigate();
+  const { trigger, result } = useApi({
+    method: "get",
+    path: "/current",
+    shouldInitFetch: false,
+  });
+  const dispatch = useDispatch();
   useEffect(() => {
-    console.log("user Login status changed!!!!", userId);
-    if (!userId) navigate("/");
-  }, [userId]);
-  //로그인 인증 로직
-  //리프레시 토큰이 있으면 요청 url을 통해
-  //유저정보 id 를 받아옴!
+    trigger({ isShowBoundary: false });
+  }, []);
+
+  //shouldInitFetch 404에러 처리
+
+  useEffect(() => {
+    dispatch(userLoginActions.storeUserInfo(result.data));
+    dispatch(userLoginActions.loginUser(result.data?.user_id));
+  }, [result]);
 
   return (
     <div className="app">

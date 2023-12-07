@@ -12,8 +12,9 @@ export const api = axios.create(config); // 인스턴스
 
 // //refresh token api
 export async function postRefreshToken() {
+  const autorizationData = `bearer ${localStorage.getItem("refreshToken")}`;
   const response = await api.post("/accessToken", {
-    user_id: localStorage.getItem("refreshToken"),
+    Authorization: autorizationData,
   });
   return response;
 }
@@ -52,33 +53,50 @@ api.interceptors.response.use(
   },
   async (err) => {
     console.log("인터셉터에서 응답에러", err);
-    const {
-      config,
-      response: { status },
-    } = err;
-    console.log(status);
-    if (status === 401) {
-      if (err.response.data.message === "Unauthorized") {
+    const { status, data } = err.response;
+    //토큰 만료시 재발급 로직
+    if (err.response && status === 401) {
+      //엑세스 토큰 없을 때 (만료로 삭제 )
+      console.log("에러응답. 상태는 401입니다.");
+      console.log(data, "message");
+      if (data === "Access Token의 기한이 만료되었습니다.") {
         const originRequest = config;
-        //리프레시 토큰 api
-        const response = await postRefreshToken();
-        //리프레시 토큰 요청이 성공할 때
-        if (response.status === 200) {
-          const newAccessToken = response.data.Authorization;
-          localStorage.setItem("refreshToken", response.data.Authorization);
-          axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-          //진행중이던 요청 이어서하기
-          originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-          return axios(originRequest);
-          //리프레시 토큰 요청이 실패할때(리프레시 토큰도 만료되었을때 = 재로그인 안내)
-        } else if (response.status === 404) {
-          alert("로그인이 만료되었습니다. 다시 로그인해주세요");
-          window.location.replace("/login");
-        } else {
-          alert("????");
+        try {
+          //리프레시 토큰 api
+          const response = await postRefreshToken();
+          //리프레시 토큰 요청이 성공할 때
+          if (response.status === 200) {
+            //응답이 {Authorization : Bearer 토큰}
+            const newAccessToken = response.data.Authorization.split(" ")[1];
+            console.log(newAccessToken, "newAccessTokens");
+            //refreshToken 만료시간에 동일한 localStorage 만료시간
+            localStorage.setItem("refreshToken", response.data.Authorization);
+            axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
+            //진행중이던 요청 이어서하기???
+            originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+            return axios(originRequest);
+            //리프레시 토큰 요청이 실패할때(리프레시 토큰도 만료되었을때 = 재로그인 안내)
+          }
+        } catch (refreshError) {
+          console.log(refreshError.response.status);
+          if (
+            refreshError.response.status === 404 &&
+            data === "Access Token의 정보가 서버에 존재하지 않습니다."
+          ) {
+            //엑세스 토큰 만료(쿠키 없을 때) => 쿠키만료시간확인
+            alert("로그인 정보가 없습니다.");
+            window.location.replace("/");
+            return;
+          }
         }
       }
     }
+
+    if (err.response && status === 404) {
+      console.log(status, "404에러!");
+      console.log(err.response.data);
+    }
+
     throw new Error("잘못된 요청입니다");
   }
 );

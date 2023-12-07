@@ -61,10 +61,8 @@ const JoinForm = () => {
     trigger({ data: joinData });
   };
   useEffect(() => {
-    if (result.status === 201) {
-    } else {
-    }
-  }, []);
+    console.log(result.data);
+  }, [result]);
   return (
     <form className="join__input">
       <JoinEmail email={email} setEmail={setEmail} />

@@ -1,4 +1,4 @@
-const InputBase = {
+const InputBaseProps = {
   label: "",
   type: "text",
   id: "",
@@ -11,4 +11,4 @@ const InputBase = {
   onValueChange: () => {},
   checkAll: false,
 };
-export default InputBase;
+export default InputBaseProps;
