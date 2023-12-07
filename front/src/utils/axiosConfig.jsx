@@ -12,7 +12,7 @@ export const api = axios.create(config); // 인스턴스
 
 // //refresh token api
 export async function postRefreshToken() {
-  const autorizationData = `bearer ${localStorage.getItem("refreshToken")}`;
+  const autorizationData = `Bearer ${localStorage.getItem("refreshToken")}`;
   const response = await api.post("/accessToken", {
     Authorization: autorizationData,
   });
@@ -69,7 +69,7 @@ api.interceptors.response.use(
             //응답이 {Authorization : Bearer 토큰}
             const newAccessToken = response.data.Authorization.split(" ")[1];
             console.log(newAccessToken, "newAccessTokens");
-            //refreshToken 만료시간에 동일한 localStorage 만료시간
+            //refreshToken 만료시간에 동일한 localStorage 만료시간??
             localStorage.setItem("refreshToken", response.data.Authorization);
             axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
             //진행중이던 요청 이어서하기???
@@ -85,7 +85,7 @@ api.interceptors.response.use(
           ) {
             //엑세스 토큰 만료(쿠키 없을 때) => 쿠키만료시간확인
             alert("로그인 정보가 없습니다.");
-            window.location.replace("/");
+            window.location.replace("/login");
             return;
           }
         }
