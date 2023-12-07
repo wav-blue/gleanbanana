@@ -74,7 +74,7 @@ userRouter.get("/accessToken", async function (req, res, next) {
 
     // cookie가 만료된 경우 => 로그인부터 다시
     if (!accessToken || !refreshToken) {
-      throw new NotFoundError("Token이 존재하지 않습니다.");
+      throw new NotFoundError("필요한 토큰이 존재하지 않습니다.");
     }
     // token 유효기간 검증
     const isRefreshTokenValidate = validateRefreshToken(refreshToken);
@@ -84,7 +84,7 @@ userRouter.get("/accessToken", async function (req, res, next) {
 
     // Refresh Token 만료 => 로그인부터 다시
     if (!isRefreshTokenValidate) {
-      throw new UnauthorizedError("Refresh Token이 만료되었습니다");
+      throw new UnauthorizedError("Refresh Token의 기한이 만료되었습니다.");
     }
     const newAccessToken = await createAccessToken(user_data, secretKey);
     res.cookie("accessToken", newAccessToken, {
