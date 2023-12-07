@@ -38,6 +38,7 @@ const LoginForm = () => {
   //result.status 성공시 201? 확인
   //성공시 home으로
   useEffect(() => {
+    console.log(result);
     if (reqIdentifier === "postData" && result.status === 201) {
       dispatch(userLoginActions.loginUser(result.data));
       navigate("/");
