@@ -70,7 +70,9 @@ userRouter.get("/accessToken", async function (req, res, next) {
     const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
 
     const accessToken = req.signedCookies.accessToken ?? null;
-    const refreshToken = req.signedCookies.refreshToken ?? null;
+    const refreshToken = req.body.Authorization ?? null;
+
+    console.log(refreshToken);
 
     // cookie가 만료된 경우 => 로그인부터 다시
     if (!accessToken || !refreshToken) {
@@ -93,7 +95,7 @@ userRouter.get("/accessToken", async function (req, res, next) {
       maxAge: 1 * 60 * 60 * 1000,
     });
 
-    res.status(201).json("Token 재발급이 완료되었습니다");
+    res.status(201).json("Access Token 재발급이 완료되었습니다");
   } catch (err) {
     next(err);
   }
@@ -125,6 +127,7 @@ userRouter.post("/users/login", async function (req, res, next) {
     //   maxAge: 24 * 60 * 60 * 1000,
     // });
     const response = {
+      user_id: user.user_id,
       Authorization: user.refreshToken,
     };
     res.status(200).send(response);

@@ -6,6 +6,7 @@ import { cartActions } from "../../../store/cart";
 import InputCheckbox from "../../UI/InputCheckbox";
 import useDebouncing from "../../../hooks/useDebouncing";
 import useApi from "../../../hooks/useApi";
+import InputNumber from "../../UI/InputNumber";
 const Cart = ({ cart }) => {
   const dispatch = useDispatch();
   const {
@@ -130,8 +131,6 @@ const Cart = ({ cart }) => {
       <div className="cart">
         <div className="cart__check">
           <InputCheckbox
-            type="checkbox"
-            className="checkInput"
             id={item_id}
             checked={isChecked}
             onChangeCheckhandler={onChangeCheckhandler}
@@ -145,9 +144,7 @@ const Cart = ({ cart }) => {
               {expected_delivery}에 도착예정
             </div>
           </div>
-          <InputCommon
-            type="number"
-            className="gray-square"
+          <InputNumber
             value={changedQuantity}
             onValueChange={onChangeNumHandler}
           />
