@@ -44,7 +44,7 @@ userRouter.post("/users/register", async function (req, res, next) {
 // Email 중복 확인
 userRouter.get("/users/email", async function (req, res, next) {
   try {
-    const { email } = req.body;
+    const { email } = req.query;
     const findEmail = await userService.getEmail({ email });
     res.status(200).json(findEmail[0]["COUNT(email)"]);
   } catch (error) {
