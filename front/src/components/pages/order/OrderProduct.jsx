@@ -28,7 +28,7 @@ const OrderProduct = ({ order }) => {
       </Link>
       <div className="order__button__wrapper">
         <ButtonCommon design="bigsmall" link={`/order/${order.order_id}`}>
-          배송조회
+          주문내역 조회
         </ButtonCommon>
         <ButtonCommon design="bigsmall">주문 및 배송취소</ButtonCommon>
       </div>

@@ -1,4 +1,3 @@
-import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
 
 const deliveryList = [
@@ -8,17 +7,21 @@ const deliveryList = [
   { name: "요청사항", value: "문 앞" },
 ];
 
-const DeleveryInfo = () => {
+const DeliveryInfo = ({ disabled }) => {
   return (
     <div className="title title__element">
       {deliveryList.map((del) => (
         <div className="flex flex__element-left">
           <div>{del.name}</div>
-          <InputCommon className="white-square" defaultValue={del.value} />
+          <InputCommon
+            className="white-square"
+            defaultValue={del.value}
+            disabled={disabled}
+          />
         </div>
       ))}
     </div>
   );
 };
 
-export default DeleveryInfo;
+export default DeliveryInfo;
