@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useApi from "../../../hooks/useApi";
+import useConfirm from "../../../hooks/useConfirm";
 
 const OrderedDetail = () => {
   const userId = useSelector((state) => state.user.userId);
@@ -13,9 +14,21 @@ const OrderedDetail = () => {
   const [itemList, setItemList] = useState([]);
   const [orderInfo, setOrderInfo] = useState({});
   const navigate = useNavigate();
-
+  const toLogin = () => {
+    navigate("/login");
+  };
+  const toHome = () => {
+    navigate("/home");
+  };
+  const onConfirm = useConfirm(
+    "로그인된 유저만 사용가능합니다!",
+    toLogin,
+    toHome
+  );
   useEffect(() => {
-    if (!userId) navigate("/");
+    if (!userId) {
+      onConfirm();
+    }
   }, [userId]);
 
   const { trigger, result } = useApi({

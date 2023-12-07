@@ -8,6 +8,7 @@ import useApi from "../../../hooks/useApi";
 import { cartActions } from "../../../store/cart";
 import ButtonCommon from "../../UI/ButtonCommon";
 import { useNavigate } from "react-router-dom";
+import useConfirm from "../../../hooks/useConfirm";
 
 const Carts = () => {
   const dispatch = useDispatch();
@@ -16,14 +17,29 @@ const Carts = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
 
+  const toLogin = () => {
+    navigate("/login");
+  };
+  const toHome = () => {
+    navigate("/home");
+  };
+  const onConfirm = useConfirm(
+    "로그인된 유저만 사용가능합니다!",
+    toLogin,
+    toHome
+  );
+
   useEffect(() => {
-    if (!userId) navigate("/");
+    if (!userId) {
+      onConfirm();
+    }
   }, [userId]);
 
   useEffect(() => {
     //addToCheckedList로인해 cartcheckedList가 변경되는것을 확인
     console.log("==========", cartCheckedList);
   }, [cartCheckedList]);
+
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",
     path: `/${userId}/carts`,
