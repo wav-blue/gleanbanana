@@ -25,6 +25,17 @@ itemRouter.get("/items", async function (req, res, next) {
   }
 });
 
+// 검색 자동완성
+itemRouter.get("/autocomplete", async function (req, res, next) {
+  const { search } = req.query;
+  try {
+    const items = await itemService.Autocomplete({ search });
+    res.status(200).json(items);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // 개별 조회
 itemRouter.get("/items/:itemId", async function (req, res, next) {
   const { itemId } = req.params;

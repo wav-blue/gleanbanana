@@ -18,11 +18,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cookieParser("sercret"));
-
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs') 
 // 기본 페이지
 app.get("/", (req, res) => {
   res.send("기본 페이지");
 });
+
+app.get('/search', async (req, res) => {
+  //let result = await db.collection('post').find().toArray()
+  const searchTerm = req.query.search;
+  res.render('autocomplete.ejs', { searchTerm });
+})
 
 app.use("/api", userRouter);
 app.use("/api", itemRouter);

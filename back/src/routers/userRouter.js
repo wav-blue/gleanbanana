@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { NotFoundError, UnauthorizedError } from "../../libraries/custom-error";
 import { userService } from "../services/userService";
-import { loginRequired } from "../middlewares/loginRequired";
 import { checkPermission } from "../middlewares/checkPermission";
 
 const userRouter = Router();
@@ -79,7 +78,7 @@ userRouter.post("/users/login", async function (req, res, next) {
 });
 
 // 유저 본인의 정보 조회
-userRouter.get("/:userId", loginRequired, async function (req, res, next) {
+userRouter.get("/:userId",  async function (req, res, next) {
   try {
     const user_id = req.currentUserId;
     const user = await userService.getUser({ user_id });
@@ -92,7 +91,7 @@ userRouter.get("/:userId", loginRequired, async function (req, res, next) {
 // 회원 정보 수정
 userRouter.post(
   "/users/:userId",
-  loginRequired,
+  
   checkPermission,
   async function (req, res, next) {
     try {
@@ -131,7 +130,7 @@ userRouter.get("/:userId/logout", async function (req, res, next) {
 // 회원탈퇴
 userRouter.delete(
   "/users/:userId",
-  loginRequired,
+  
   checkPermission,
   async function (req, res, next) {
     try {
