@@ -44,7 +44,7 @@ userRouter.post("/users/register", async function (req, res, next) {
 // Email 중복 확인
 userRouter.get("/users/email", async function (req, res, next) {
   try {
-    const { email } = req.body;
+    const { email } = req.query;
     const findEmail = await userService.getEmail({ email });
     res.status(200).json(findEmail[0]["COUNT(email)"]);
   } catch (error) {
@@ -74,7 +74,7 @@ userRouter.get("/accessToken", async function (req, res, next) {
 
     // cookie가 만료된 경우 => 로그인부터 다시
     if (!accessToken || !refreshToken) {
-      throw new UnauthorizedError("Token이 존재하지 않습니다.");
+      throw new NotFoundError("필요한 토큰이 존재하지 않습니다.");
     }
     // token 유효기간 검증
     const isRefreshTokenValidate = validateRefreshToken(refreshToken);
@@ -84,7 +84,7 @@ userRouter.get("/accessToken", async function (req, res, next) {
 
     // Refresh Token 만료 => 로그인부터 다시
     if (!isRefreshTokenValidate) {
-      throw new UnauthorizedError("Refresh Token이 만료되었습니다");
+      throw new UnauthorizedError("Refresh Token의 기한이 만료되었습니다.");
     }
     const newAccessToken = await createAccessToken(user_data, secretKey);
     res.cookie("accessToken", newAccessToken, {
@@ -119,12 +119,27 @@ userRouter.post("/users/login", async function (req, res, next) {
       signed: true,
       maxAge: 1 * 60 * 60 * 1000,
     });
-    res.cookie("refreshToken", user.refreshToken, {
-      httpOnly: true,
-      signed: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-    res.status(200).send(user);
+    // res.cookie("refreshToken", user.refreshToken, {
+    //   httpOnly: true,
+    //   signed: true,
+    //   maxAge: 24 * 60 * 60 * 1000,
+    // });
+    const response = {
+      Authorization: user.refreshToken,
+    };
+    res.status(200).send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 유저 본인의 정보 조회
+userRouter.get("/current", loginRequired, async function (req, res, next) {
+  try {
+    const user_id = req.currentUserId;
+    //const { userId } = req.params;
+    const user = await userService.getUser({ user_id });
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
@@ -141,6 +156,22 @@ userRouter.get("/:userId", async function (req, res, next) {
     next(error);
   }
 });
+
+// 유저 본인의 정보 조회
+userRouter.get(
+  "/:userId/login",
+  loginRequired,
+  async function (req, res, next) {
+    try {
+      const user_id = req.currentUserId;
+      //const { userId } = req.params;
+      const user = await userService.getUser({ user_id });
+      res.status(200).json(user);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 // 회원 정보 수정
 userRouter.post(
