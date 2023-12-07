@@ -2,8 +2,46 @@ import ConsumerInfo from "../purchase/ConsumerInfo";
 import DeliveryInfo from "../purchase/DeliveryInfo";
 import OrderedProduct from "../order/OrderedProduct";
 import OrderedInfo from "../order/OrderedInfo";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import useApi from "../../../hooks/useApi";
 
 const OrderedDetail = () => {
+  const userId = useSelector((state) => state.user.userId);
+  const { orderId } = useParams();
+  const [itemList, setItemList] = useState([]);
+  const [orderInfo, setOrderInfo] = useState({});
+
+  const { trigger, result } = useApi({
+    method: "get",
+    path: `/${userId}/orders/${orderId}`,
+    shouldInitFetch: false,
+  });
+
+  // const getOrderInfo = async () => {
+  //   await trigger({
+  //   method: "get",
+  //   path: `/${userId}/orders/${orderId}`,
+  //   applyResult: true,
+  //   isShowBoundary: true,
+  // });
+  // };
+
+  useEffect(() => {
+    trigger({
+      method: "get",
+      path: `/${userId}/orders/${orderId}`,
+      applyResult: true,
+      isShowBoundary: true,
+    });
+    console.log(result?.data);
+  }, []);
+
+  useEffect(() => {
+    setOrderInfo(result?.data);
+  }, [result?.data]);
+
   return (
     <div className="ordered__wrapper">
       <div className="ordered__info">
@@ -19,11 +57,11 @@ const OrderedDetail = () => {
         <div className="line line__out" />
         <div className="title title__element">배송 물품 내역 (3)</div>
         <div className="line line__in" />
-        <OrderedProduct />
+        <OrderedProduct itemList={itemList} />
         <div className="line line__out" />
         <div className="title title__element">결제정보</div>
         <div className="line line__in" />
-        <OrderedInfo />
+        <OrderedInfo orderInfo={orderInfo} />
       </div>
     </div>
   );

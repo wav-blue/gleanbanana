@@ -4,6 +4,7 @@ import List from "../../UI/List";
 import bananaImg from "../../../assets/banana.png";
 
 const OrderProduct = ({ order }) => {
+  console.log(order.order_id);
   return (
     <List type="rowcard">
       <img src={order.image_url} alt={order.item_id} />

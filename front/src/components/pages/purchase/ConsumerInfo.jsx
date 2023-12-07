@@ -22,15 +22,16 @@ const ConsumerInfo = () => {
   const { trigger, result } = useApi({
     method: "get",
     path: `/${userId}`,
-    shouldInitFetch: true,
+    shouldInitFetch: false,
   });
 
   // const getConsumerInfo = async () => {
-  //   const fetchResult = await trigger({
+  //   await trigger({
+  //     method: "get",
+  //     path: `/${userId}`,
   //     applyResult: true,
+  //     isShowBoundary: true,
   //   });
-  //   setConsumerInfo(fetchResult);
-  //   console.log(fetchResult);
   // };
 
   useEffect(() => {
@@ -40,8 +41,15 @@ const ConsumerInfo = () => {
       applyResult: true,
       isShowBoundary: true,
     });
-    console.log(result?.data);
   }, []);
+
+  useEffect(() => {
+    console.log("data: ", result?.data);
+    setConsumerInfo(result?.data);
+  }, [result?.data]);
+  useEffect(() => {
+    console.log("consumerInfo: ", consumerInfo);
+  }, [consumerInfo]);
 
   const keyList = [
     { name: "이름", search: "username" },
