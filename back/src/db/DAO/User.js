@@ -1,5 +1,4 @@
 import db from "..";
-import { ConflictError } from "../../../libraries/custom-error";
 
 class User {
   // Create
@@ -9,9 +8,6 @@ class User {
     return new Promise((resolve, reject) => {
       db.query(sql, newUser, function (error, results) {
         if (error) {
-          if (error.errno === 1062) {
-            reject(new ConflictError("이미 가입된 이메일입니다."));
-          }
           reject(error);
         } else {
           resolve(results);
@@ -67,6 +63,18 @@ class User {
     const query = `SELECT deletedAt FROM user WHERE user_id = ? ;`;
     return new Promise((resolve, reject) => {
       db.query(query, user_id, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
+  static async updateUserInfo({ user_id, newData }) {
+    var query = `UPDATE user SET ? WHERE user_id = ?;`;
+    return new Promise((resolve, reject) => {
+      db.query(query, [newData, user_id], function (error, results, fields) {
         if (error) {
           reject(error);
         } else {
