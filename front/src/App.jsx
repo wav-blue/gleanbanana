@@ -1,5 +1,5 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { lazy, Suspense, useState } from "react";
 import "../src/styles/style.css";
 import NotFound from "./components/pages/error/NotFound";
 import { useEffect } from "react";
@@ -24,16 +24,35 @@ const Carts = lazy(() => import("./components/pages/cart/Carts"));
 const Purchase = lazy(() => import("./components/pages/purchase/Purchase"));
 const About = lazy(() => import("./components/pages/about/About"));
 
+const publicPathList = ["/login", "/join"];
+
 function App() {
+  //새로고침할 때마다 호출이 됨
+  //페이지 이동할 때도 호출이 되어야함
+
   const { trigger, result } = useApi({
     method: "get",
     path: "/current",
     shouldInitFetch: false,
   });
-  const dispatch = useDispatch();
+  const location = useLocation();
   useEffect(() => {
-    trigger({ isShowBoundary: false });
-  }, []);
+    if (!publicPathList.includes(location.pathname)) {
+      trigger({ isShowBoundary: false });
+    }
+  }, [location.pathname]);
+
+  const dispatch = useDispatch();
+  const isAccessToken = localStorage.getItem("refreshToken");
+
+  if (isAccessToken) {
+    //is? ????
+  }
+  // useEffect(() => {
+  //   trigger({ isShowBoundary: false });
+  // }, []);
+
+  //로컬스토리지에 refresh토큰이 있는 경우 ???
 
   //shouldInitFetch 404에러 처리
 

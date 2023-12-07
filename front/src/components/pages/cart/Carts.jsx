@@ -7,17 +7,23 @@ import { useSelector, useDispatch } from "react-redux";
 import useApi from "../../../hooks/useApi";
 import { cartActions } from "../../../store/cart";
 import ButtonCommon from "../../UI/ButtonCommon";
+import { useNavigate } from "react-router-dom";
 
 const Carts = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userId = useSelector((state) => state.user.userId);
   const cartItems = useSelector((state) => state.cart.cartItems);
   const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
+
+  useEffect(() => {
+    if (!userId) navigate("/");
+  }, [userId]);
 
   useEffect(() => {
     //addToCheckedList로인해 cartcheckedList가 변경되는것을 확인
     console.log("==========", cartCheckedList);
   }, [cartCheckedList]);
-  const userId = useSelector((state) => state.user.userId);
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",
     path: `/${userId}/carts`,

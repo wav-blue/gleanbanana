@@ -23,7 +23,7 @@ const NavBar = () => {
   //    path: `/${loggedInUserId}/logout`로 변경 예정!!!
   const onClickLogout = () => {
     dispatch(userLoginActions.logoutUser());
-    // trigger({});
+    trigger({});
   };
   return (
     <div className="navBar">

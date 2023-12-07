@@ -1,3 +1,4 @@
+//401에러 엑세스x ->> 리프레시토큰으로 엑세스 토큰 발급
 import axios from "axios";
 
 const config = {
@@ -59,13 +60,15 @@ api.interceptors.response.use(
       //엑세스 토큰 없을 때 (만료로 삭제 )
       console.log("에러응답. 상태는 401입니다.");
       console.log(data, "message");
-      if (data === "Access Token의 기한이 만료되었습니다.") {
+      if (data === "Access Token의 정보가 서버에 존재하지 않습니다.") {
         const originRequest = config;
         try {
           //리프레시 토큰 api
           const response = await postRefreshToken();
           //리프레시 토큰 요청이 성공할 때
-          if (response.status === 200) {
+          console.log(response);
+          if (response.status === 201) {
+            console.log(response.status);
             //응답이 {Authorization : Bearer 토큰}
             const newAccessToken = response.data.Authorization.split(" ")[1];
             console.log(newAccessToken, "newAccessTokens");
@@ -78,6 +81,7 @@ api.interceptors.response.use(
             //리프레시 토큰 요청이 실패할때(리프레시 토큰도 만료되었을때 = 재로그인 안내)
           }
         } catch (refreshError) {
+          console.log(refreshError); //어떤 키값이 있는지 // response가 없다 ...?
           console.log(refreshError.response.status);
           if (
             refreshError.response.status === 404 &&
@@ -94,6 +98,11 @@ api.interceptors.response.use(
 
     if (err.response && status === 404) {
       console.log(status, "404에러!");
+      console.log(err.response.data);
+    }
+
+    if (err.response && status === 419) {
+      console.log(status, "419에러!");
       console.log(err.response.data);
     }
 

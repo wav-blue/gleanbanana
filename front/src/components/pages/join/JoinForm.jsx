@@ -45,6 +45,7 @@ const JoinForm = () => {
     ],
     []
   );
+
   const joinData = useMemo(() => {
     return {
       email,
@@ -54,17 +55,19 @@ const JoinForm = () => {
       phone_number,
     };
   }, [email, password, username, address, phone_number]);
-  useEffect(() => {
-    console.log(joinData);
-  }, [joinData]);
-  const onClickJoinHandler = () => {
-    trigger({ data: joinData });
+
+  const onClickJoinHandler = async (e) => {
+    e.preventDefault();
+    const joinResult = await trigger({ data: joinData, applyResult: false });
+    console.log(joinResult);
   };
+
   useEffect(() => {
     console.log(result.data);
   }, [result]);
+
   return (
-    <form className="join__input">
+    <div className="join__input">
       <JoinEmail email={email} setEmail={setEmail} />
       <JoinPassword password={password} setPassword={setPassword} />
       {JoinInputNoCheck.map((input, idx) => (
@@ -74,11 +77,11 @@ const JoinForm = () => {
       <hr />
       <JoinApproval />
       <div className="join__button">
-        <ButtonCommon design="form" onSubmit={onClickJoinHandler}>
+        <ButtonCommon design="form" onClick={onClickJoinHandler}>
           가입하기
         </ButtonCommon>
       </div>
-    </form>
+    </div>
   );
 };
 
