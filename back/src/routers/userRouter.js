@@ -72,7 +72,8 @@ userRouter.get("/accessToken", async function (req, res, next) {
     const accessToken = req.signedCookies.accessToken ?? null;
     const refreshToken = req.body.Authorization ?? null;
 
-    console.log(refreshToken);
+    console.log("/accessToken accessToken >> ", accessToken);
+    console.log("/accessToken refreshToken >> ", refreshToken);
 
     // cookie가 만료된 경우 => 로그인부터 다시
     if (!accessToken || !refreshToken) {
@@ -80,6 +81,11 @@ userRouter.get("/accessToken", async function (req, res, next) {
     }
     // token 유효기간 검증
     const isRefreshTokenValidate = validateRefreshToken(refreshToken);
+
+    console.log(
+      "/accessToken라우터  Refresh Token 만료 여부 >> ",
+      isRefreshTokenValidate
+    );
 
     const accessTokenId = jwt.decode(accessToken, secretKey);
     const user_data = { user_id: accessTokenId.user_id };
@@ -115,6 +121,9 @@ userRouter.post("/users/login", async function (req, res, next) {
       }
       throw new Error(user.errorMessage);
     }
+
+    console.log("/users/login 발급된 accessToken >> ", user.accessToken);
+    console.log("/users/login 발급된 refreshToken >> ", user.refreshToken);
 
     res.cookie("accessToken", user.accessToken, {
       httpOnly: true,
