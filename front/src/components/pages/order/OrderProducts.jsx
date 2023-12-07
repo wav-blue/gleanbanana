@@ -41,6 +41,7 @@ const OrderProducts = () => {
             orderProductList?.map((order, idx) => (
               <OrderProduct key={`order-${idx}`} order={order} />
             ))}
+          {!orderProductList && "아직 주문한 상품이 없습니다."}
         </div>
       </div>
     </div>
