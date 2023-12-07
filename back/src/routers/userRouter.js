@@ -65,34 +65,26 @@ userRouter.delete("/accessToken", async function (req, res, next) {
 });
 
 // Access Token 재발급
-userRouter.get("/accessToken", async function (req, res, next) {
+userRouter.post("/accessToken", async function (req, res, next) {
   try {
     const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
 
-    const accessToken = req.signedCookies.accessToken ?? null;
-    const refreshToken = req.body.Authorization ?? null;
-
-    console.log("/accessToken accessToken >> ", accessToken);
-    console.log("/accessToken refreshToken >> ", refreshToken);
-
+    const accessToken = req.signedCookies.accessToken.split(" ")[1] ?? null;
+    const refreshToken = req.body.Authorization.split(" ")[1] ?? null;
+    console.log("Access: ", accessToken, "refresh: ", refreshToken);
     // cookie가 만료된 경우 => 로그인부터 다시
     if (!accessToken || !refreshToken) {
-      throw new NotFoundError("필요한 토큰이 존재하지 않습니다.");
+      throw new NotFoundError("로그인 필요");
     }
     // token 유효기간 검증
     const isRefreshTokenValidate = validateRefreshToken(refreshToken);
-
-    console.log(
-      "/accessToken라우터  Refresh Token 만료 여부 >> ",
-      isRefreshTokenValidate
-    );
 
     const accessTokenId = jwt.decode(accessToken, secretKey);
     const user_data = { user_id: accessTokenId.user_id };
 
     // Refresh Token 만료 => 로그인부터 다시
     if (!isRefreshTokenValidate) {
-      throw new UnauthorizedError("Refresh Token의 기한이 만료되었습니다.");
+      throw new UnauthorizedError("로그인 필요");
     }
     const newAccessToken = await createAccessToken(user_data, secretKey);
     res.cookie("accessToken", newAccessToken, {
@@ -130,11 +122,7 @@ userRouter.post("/users/login", async function (req, res, next) {
       signed: true,
       maxAge: 1 * 60 * 60 * 1000,
     });
-    // res.cookie("refreshToken", user.refreshToken, {
-    //   httpOnly: true,
-    //   signed: true,
-    //   maxAge: 24 * 60 * 60 * 1000,
-    // });
+
     const response = {
       user_id: user.user_id,
       Authorization: user.refreshToken,
