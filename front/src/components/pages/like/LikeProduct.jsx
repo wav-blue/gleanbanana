@@ -36,7 +36,7 @@ const LikeProduct = ({ like }) => {
       applyResult: true,
       isShowBoundary: true,
     });
-  }, [userId]);
+  }, [userId, like.item_id]);
 
   const addToCartHandler = useCallback(async () => {
     await trigger({

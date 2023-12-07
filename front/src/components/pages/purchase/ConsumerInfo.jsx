@@ -12,27 +12,20 @@ const consumerInfo = [
 // const tableName = ["이름", "이메일", "연락처"];
 
 const ConsumerInfo = () => {
-  const [consumerInfo, setConsumerInfo] = useState([]);
+  const [consumerInfo, setConsumerInfo] = useState([
+    {
+      username: "",
+      email: "",
+      phone_number: "",
+    },
+  ]);
   const userId = useSelector((state) => state.user.userId);
-  // const getKey = (dict, value) => {
-  //   const key = Object.keys(dict).find((key) => dict[key] === value);
-  //   return key;
-  // };
 
   const { trigger, result } = useApi({
     method: "get",
     path: `/${userId}`,
     shouldInitFetch: false,
   });
-
-  // const getConsumerInfo = async () => {
-  //   await trigger({
-  //     method: "get",
-  //     path: `/${userId}`,
-  //     applyResult: true,
-  //     isShowBoundary: true,
-  //   });
-  // };
 
   useEffect(() => {
     trigger({
@@ -41,12 +34,15 @@ const ConsumerInfo = () => {
       applyResult: true,
       isShowBoundary: true,
     });
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     console.log("data: ", result?.data);
-    setConsumerInfo(result?.data);
+    if (result.data !== undefined) {
+      setConsumerInfo(result.data[0]);
+    }
   }, [result?.data]);
+
   useEffect(() => {
     console.log("consumerInfo: ", consumerInfo);
   }, [consumerInfo]);
@@ -59,8 +55,8 @@ const ConsumerInfo = () => {
 
   return (
     <div className="title title__element">
-      {keyList.map((key) => (
-        <div className="flex flex__element-left">
+      {keyList.map((key, idx) => (
+        <div className="flex flex__element-left" key={`consumer-${idx}`}>
           <div>{key.name}</div>
           <div>{consumerInfo[key.search]}</div>
         </div>

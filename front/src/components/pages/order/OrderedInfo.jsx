@@ -4,15 +4,15 @@ const OrderedInfo = ({ orderInfo }) => {
     <div className="title title__element">
       <div className="flex flex__element-left">
         <div>총 상품 가격</div>
-        <div>{orderInfo.total_price}</div>
+        <div>{orderInfo.total_price.toLocaleString()}</div>
       </div>
       <div className="flex flex__element-left">
         <div>배송비</div>
-        <div>{orderInfo.delivery_fee}</div>
+        <div>{orderInfo.delivery_fee.toLocaleString()}</div>
       </div>
       <div className="flex flex__element-left">
-        <div>총 결재금액</div>
-        <div>{total_purchase}</div>
+        <div>총 결제 금액</div>
+        <div>{total_purchase.toLocaleString()}</div>
       </div>
       <div className="flex flex__element-up">
         <div>결제 방법</div>

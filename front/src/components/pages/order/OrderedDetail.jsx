@@ -11,7 +11,7 @@ const OrderedDetail = () => {
   const userId = useSelector((state) => state.user.userId);
   const { orderId } = useParams();
   const [itemList, setItemList] = useState([]);
-  const [orderInfo, setOrderInfo] = useState({});
+  const [orderInfo, setOrderInfo] = useState([]);
 
   const { trigger, result } = useApi({
     method: "get",
@@ -35,12 +35,15 @@ const OrderedDetail = () => {
       applyResult: true,
       isShowBoundary: true,
     });
-    console.log(result?.data);
-  }, []);
+  }, [userId, orderId]);
 
   useEffect(() => {
-    setOrderInfo(result?.data);
-  }, [result?.data]);
+    console.log("data? ", result?.data);
+    if (result.data !== undefined) {
+      setItemList(result.data.items);
+      setOrderInfo(result.data);
+    }
+  }, [result.data]);
 
   return (
     <div className="ordered__wrapper">

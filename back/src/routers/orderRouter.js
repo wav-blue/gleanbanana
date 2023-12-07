@@ -12,6 +12,7 @@ orderRouter.get("/:userId/orders", async function (req, res, next) {
     const orders = await orderService.getOrders({
       userId,
     });
+
     res.status(200).json(orders);
   } catch (error) {
     next(error);

@@ -44,7 +44,6 @@ const LikeProducts = () => {
             likeLists?.map((like, idx) => (
               <LikeProduct key={`like-${idx}`} like={like} />
             ))}
-          {!likeLists && "아직 찜한 상품이 없습니다."}
         </div>
       </div>
     </div>

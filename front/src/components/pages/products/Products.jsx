@@ -1,62 +1,63 @@
 import ProductCard from "./ProductCard";
 import Categories from "../home/Categories";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import useApi from "../../../hooks/useApi";
-import { useRef } from "react";
 import SkeletonProductCard from "./SkeletonProductCard";
+import { useLocation } from "react-router-dom";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
-  const [page, setPage] = useState(1);
-  const [load, setLoad] = useState(false);
+  const [page, setPage] = useState(0);
+  const [load, setLoad] = useState(true);
   const pageEnd = useRef();
+
+  const location = useLocation();
+  const category = new URLSearchParams(location.search).get("category");
+
+  // Skeleton UI
   const imgRef = useRef(null);
   const observerRef = useRef();
 
   //api통신 useApi훅
-  const { trigger, result, reqIdentifier, loading, error } = useApi({
+  const { trigger, reqIdentifier, loading, error } = useApi({
     method: "get",
     path: "/items",
     data: {},
     shouldInitFetch: false,
   });
 
-  // GET요청 / products;
-  useEffect(() => {
-    // 기준 이거 말고 어떻게 잡으면 좋을지 고민해보기
-    if (page < 14) {
-      trigger({
-        method: "get",
-        path: `/items?pageNum=${page}`,
-        applyResult: true,
-        isShowBoundary: true,
-      });
-      setLoad(true);
-    }
-  }, [page]);
+  const getMoreData = async (page) => {
+    setLoad(false);
+    const moreData = await trigger({
+      method: "get",
+      path: `/items?pageNum=${page}`,
+      applyResult: false,
+      isShowBoundary: true,
+    });
+    console.log(moreData);
+    setProducts((prev) => [...prev, ...moreData.data]);
+    setLoad(true);
+  };
 
   useEffect(() => {
-    if (load) {
-      //로딩되었을 때만 실행
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            setPage((prev) => prev + 1);
-          }
-        },
-        { threshold: 1 }
-      );
-      //옵져버 탐색 시작
-      observer.observe(pageEnd.current);
-    }
-  }, [load]);
-
-  useEffect(() => {
-    if (reqIdentifier === "getData") {
-      console.log(result);
-      setProducts((prev) => [...prev, ...result.data]);
-    }
-  }, [result.data]);
+    // if (load) {
+    //로딩되었을 때만 실행
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        if (load) {
+          const nextPage = page + 1;
+          setPage(nextPage);
+          getMoreData(nextPage);
+        }
+      }
+    });
+    //옵져버 탐색 시작
+    observer.observe(pageEnd.current);
+    // }
+    return () => {
+      observer.disconnect();
+    };
+  }, [page, load]);
 
   //경로가 ?category=dairy일떄 요청?
 
