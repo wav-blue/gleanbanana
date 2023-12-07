@@ -1,7 +1,6 @@
 import { Router } from "express";
 import {
   BadRequestError,
-  ConflictError,
   NotFoundError,
   UnauthorizedError,
 } from "../../libraries/custom-error";
@@ -23,7 +22,7 @@ userRouter.post("/users/register", async function (req, res, next) {
       throw new BadRequestError("필수 정보가 입력되지 않았습니다");
     }
     // db에 데이터 추가
-    const results = await userService.addUser({
+    await userService.addUser({
       email,
       password,
       username,
@@ -31,18 +30,8 @@ userRouter.post("/users/register", async function (req, res, next) {
       phone_number,
     });
 
-    if (results?.errorMessage) {
-      if (results?.errorType === "UnauthorizedError") {
-        throw new UnauthorizedError(results.errorMessage);
-      } else if (results?.errorType === "NotFoundError") {
-        throw new NotFoundError(results.errorMessage);
-      }
-      throw new Error(results.errorMessage);
-    }
-
-    res.status(201).json(results);
+    res.status(201).json("회원가입 완료");
   } catch (error) {
-    console.log("catch 단 ", error);
     next(error);
   }
 });
@@ -52,19 +41,40 @@ userRouter.get("/users/email", async function (req, res, next) {
   try {
     const { email } = req.query;
     const findEmail = await userService.getEmail({ email });
-    res.status(200).json(findEmail[0]["COUNT(email)"]);
+    // "isDuplicated": false, "text": "중복되지 않은 이메일 주소
+    const result = findEmail[0]["COUNT(email)"] ? true : false;
+    const result_text = findEmail[0]["COUNT(email)"]
+      ? "중복 된 이메일 주소"
+      : "중복되지 않은 이메일 주소";
+    res.status(200).json({
+      isDuplicated: result,
+      text: result_text,
+    });
   } catch (error) {
     next(error);
   }
 });
 
-// 시험용 : 엑세스 토큰만 파기
-userRouter.delete("/accessToken", async function (req, res, next) {
+// 로그인
+userRouter.post("/users/login", async function (req, res, next) {
   try {
-    res.cookie("accessToken", null, {
-      maxAge: 0,
+    const { email, password } = req.body;
+    const user = await userService.loginUser({ email, password });
+
+    console.log("/users/login 발급된 accessToken >> ", user.accessToken);
+    console.log("/users/login 발급된 refreshToken >> ", user.refreshToken);
+
+    res.cookie("accessToken", user.accessToken, {
+      httpOnly: true,
+      signed: true,
+      maxAge: 1 * 60 * 60 * 1000,
     });
-    res.send("완료");
+
+    const user_data = {
+      user_id: user.user_id,
+      Authorization: user.refreshToken,
+    };
+    res.status(200).send(user_data);
   } catch (error) {
     next(error);
   }
@@ -75,13 +85,16 @@ userRouter.post("/accessToken", async function (req, res, next) {
   try {
     const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
 
-    const accessToken = req.signedCookies.accessToken.split(" ")[1] ?? null;
-    const refreshToken = req.body.Authorization.split(" ")[1] ?? null;
+    const accessToken = req.signedCookies.accessToken?.split(" ")[1] ?? null;
+    const refreshToken = req.body.Authorization?.split(" ")[1] ?? null;
+    console.log("/access token 재요청");
     console.log("Access: ", accessToken, "refresh: ", refreshToken);
+
     // cookie가 만료된 경우 => 로그인부터 다시
     if (!accessToken || !refreshToken) {
-      throw new NotFoundError("로그인 필요");
+      throw new NotFoundError("필요한 Token이 존재하지 않음");
     }
+
     // token 유효기간 검증
     const isRefreshTokenValidate = validateRefreshToken(refreshToken);
 
@@ -90,7 +103,7 @@ userRouter.post("/accessToken", async function (req, res, next) {
 
     // Refresh Token 만료 => 로그인부터 다시
     if (!isRefreshTokenValidate) {
-      throw new UnauthorizedError("로그인 필요");
+      throw new UnauthorizedError("Refresh Token 만료");
     }
     const newAccessToken = await createAccessToken(user_data, secretKey);
     res.cookie("accessToken", newAccessToken, {
@@ -105,45 +118,10 @@ userRouter.post("/accessToken", async function (req, res, next) {
   }
 });
 
-// 로그인
-userRouter.post("/users/login", async function (req, res, next) {
-  try {
-    const { email, password } = req.body;
-    const user = await userService.loginUser({ email, password });
-
-    if (user?.errorMessage) {
-      if (user?.errorType === "UnauthorizedError") {
-        throw new UnauthorizedError(user.errorMessage);
-      } else if (user?.errorType === "NotFoundError") {
-        throw new NotFoundError(user.errorMessage);
-      }
-      throw new Error(user.errorMessage);
-    }
-
-    console.log("/users/login 발급된 accessToken >> ", user.accessToken);
-    console.log("/users/login 발급된 refreshToken >> ", user.refreshToken);
-
-    res.cookie("accessToken", user.accessToken, {
-      httpOnly: true,
-      signed: true,
-      maxAge: 1 * 60 * 60 * 1000,
-    });
-
-    const response = {
-      user_id: user.user_id,
-      Authorization: user.refreshToken,
-    };
-    res.status(200).send(response);
-  } catch (error) {
-    next(error);
-  }
-});
-
 // 유저 본인의 정보 조회
 userRouter.get("/current", loginRequired, async function (req, res, next) {
   try {
     const user_id = req.currentUserId;
-    //const { userId } = req.params;
     const user = await userService.getUser({ user_id });
     res.status(200).json(user);
   } catch (error) {
@@ -188,25 +166,25 @@ userRouter.get(
 );
 
 // 회원 정보 수정
-userRouter.post("/users/:userId", async function (req, res, next) {
-  try {
-    const { userId } = req.params;
-    const { password, username, address, phone_number } = req.body;
-    const result = await userService.updateUser({
-      user_id: userId,
-      password,
-      username,
-      address,
-      phone_number,
-    });
-    if (result.affectedRows === 0) {
-      throw new NotFoundError("해당하는 유저를 찾을 수 없습니다.");
-    }
-    res.status(200).json("회원 정보 수정에 성공했습니다.");
-  } catch (error) {
-    next(error);
-  }
-});
+// userRouter.post("/users/:userId", async function (req, res, next) {
+//   try {
+//     const { userId } = req.params;
+//     const { password, username, address, phone_number } = req.body;
+//     const result = await userService.updateUser({
+//       user_id: userId,
+//       password,
+//       username,
+//       address,
+//       phone_number,
+//     });
+//     if (result.affectedRows === 0) {
+//       throw new NotFoundError("해당하는 유저를 찾을 수 없습니다.");
+//     }
+//     res.status(200).json("회원 정보 수정에 성공했습니다.");
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 // 로그아웃
 userRouter.get("/:userId/logout", async function (req, res, next) {
