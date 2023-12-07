@@ -108,6 +108,20 @@ class Item {
       });
     });
   }
+
+  // Check Item Id : 해당 번호의 상품이 존재하는지 확인
+  static async checkItem({ item_id }) {
+    const sql = `SELECT EXISTS ( SELECT 1 FROM item WHERE item_id = ? ) AS 'check';`;
+    return new Promise((resolve, reject) => {
+      db.query(sql, item_id, function (error, results) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
   // Create
   static async createItem({
     item_id,
