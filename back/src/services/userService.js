@@ -8,13 +8,15 @@ import { bcryptPassword } from "../utils/bcryptPassword";
 class userService {
   static async addUser({ email, password, ...userInfo }) {
     const user_id = ulid();
+    console.log(" addUser : ", userInfo);
     const today = new Date();
 
     // Email이 중복되는 경우
     const conflict = await User.checkEmail({ email });
-    if (conflict) {
+    if (conflict[0]["COUNT(email)"]) {
       throw new ConflictError("이미 가입된 이메일입니다.");
     }
+
     // password 암호화
     const encryptPassword = await bcryptPassword(password, 10);
 
@@ -31,10 +33,6 @@ class userService {
 
     const results = await User.createUser({ newUser });
 
-    // 데이터베이스에 데이터 추가가 발생하지 않은 경우
-    if (results.affectedRows === 0) {
-      throw new Error("회원가입이 정상적으로 수행되지 않았습니다.");
-    }
     return results;
   }
 
@@ -43,7 +41,6 @@ class userService {
   static async loginUser({ email, password }) {
     // 이메일로 유저 정보 조회
     const findUser = await User.findUserByEmail({ email });
-
     if (findUser.length === 0) {
       throw new NotFoundError("가입 이력이 없습니다.");
     }
@@ -67,10 +64,11 @@ class userService {
     // access token, refresh token 발급
     const accessToken = await createAccessToken(user_data, secretKey);
     const refreshToken = await createRefreshToken(secretKey);
+
     // 반환할 loginuser 객체
     const loginUser = {
-      accessToken: `Bearer ${accessToken}`,
-      refreshToken: `Bearer ${refreshToken}`,
+      accessToken,
+      refreshToken,
       user_id: findUser[0]["user_id"],
     };
 
@@ -80,6 +78,7 @@ class userService {
   // 중복 이메일이 있는지 체크
   static async getEmail({ email }) {
     const result = await User.checkEmail({ email });
+    // {"isDuplicated": true /false}
     return result;
   }
 
