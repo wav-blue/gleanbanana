@@ -12,8 +12,9 @@ export const api = axios.create(config); // 인스턴스
 
 // //refresh token api
 export async function postRefreshToken() {
+  const autorizationData = `bearer ${localStorage.getItem("refreshToken")}`;
   const response = await api.post("/accessToken", {
-    user_id: localStorage.getItem("refreshToken"),
+    Authorization: autorizationData,
   });
   return response;
 }
@@ -52,11 +53,13 @@ api.interceptors.response.use(
   },
   async (err) => {
     console.log("인터셉터에서 응답에러", err);
-    const { config, status, message } = err.response;
+    const { status, data } = err.response;
     //토큰 만료시 재발급 로직
     if (err.response && status === 401) {
       //엑세스 토큰 없을 때 (만료로 삭제 )
-      if (message === "Access Token의 기한이 만료되었습니다.") {
+      console.log("에러응답. 상태는 401입니다.");
+      console.log(data, "message");
+      if (data === "Access Token의 기한이 만료되었습니다.") {
         const originRequest = config;
         try {
           //리프레시 토큰 api
@@ -75,9 +78,10 @@ api.interceptors.response.use(
             //리프레시 토큰 요청이 실패할때(리프레시 토큰도 만료되었을때 = 재로그인 안내)
           }
         } catch (refreshError) {
+          console.log(refreshError.response.status);
           if (
-            refreshError.status === 404 &&
-            message === "Access Token의 정보가 서버에 존재하지 않습니다."
+            refreshError.response.status === 404 &&
+            data === "Access Token의 정보가 서버에 존재하지 않습니다."
           ) {
             //엑세스 토큰 만료(쿠키 없을 때) => 쿠키만료시간확인
             alert("로그인 정보가 없습니다.");
@@ -86,6 +90,11 @@ api.interceptors.response.use(
           }
         }
       }
+    }
+
+    if (err.response && status === 404) {
+      console.log(status, "404에러!");
+      console.log(err.response.data);
     }
 
     throw new Error("잘못된 요청입니다");

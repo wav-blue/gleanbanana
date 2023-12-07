@@ -38,7 +38,7 @@ function App() {
 
   useEffect(() => {
     dispatch(userLoginActions.storeUserInfo(result.data));
-    dispatch(userLoginActions.loginUser(result.data[0].user_id));
+    dispatch(userLoginActions.loginUser(result.data?.user_id));
   }, [result]);
 
   return (
