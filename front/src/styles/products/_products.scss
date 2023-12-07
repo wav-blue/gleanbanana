@@ -1,4 +1,5 @@
 @import "./product";
+@import "./skeletonCard";
 
 .products {
   width: 100%;
@@ -6,7 +7,7 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   grid-row-gap: 25px;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
   &__wrapper {
     display: flex;
     flex-direction: column;

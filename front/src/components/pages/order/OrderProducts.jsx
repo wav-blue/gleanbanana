@@ -38,9 +38,10 @@ const OrderProducts = () => {
       </div>
       <div className="order__wrapper">
         <div className="order">
-          {orderProductList?.map((order, idx) => (
-            <OrderProduct key={`order-${idx}`} order={order} />
-          ))}
+          {orderProductList &&
+            orderProductList?.map((order, idx) => (
+              <OrderProduct key={`order-${idx}`} order={order} />
+            ))}
         </div>
       </div>
     </div>

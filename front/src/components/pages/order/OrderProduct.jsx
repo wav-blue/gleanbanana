@@ -4,6 +4,7 @@ import List from "../../UI/List";
 import bananaImg from "../../../assets/banana.png";
 
 const OrderProduct = ({ order }) => {
+  console.log(order.order_id);
   return (
     <List type="rowcard">
       <img src={order.image_url} alt={order.item_id} />
@@ -28,7 +29,7 @@ const OrderProduct = ({ order }) => {
       </Link>
       <div className="order__button__wrapper">
         <ButtonCommon design="bigsmall" link={`/order/${order.order_id}`}>
-          배송조회
+          주문내역 조회
         </ButtonCommon>
         <ButtonCommon design="bigsmall">주문 및 배송취소</ButtonCommon>
       </div>

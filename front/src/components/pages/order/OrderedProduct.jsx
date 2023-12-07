@@ -1,9 +1,11 @@
-const OrderedProduct = () => {
+const OrderedProduct = ({ itemList }) => {
   return (
     <div className="title title__element">
-      <div className="flex flex__element-left">상품명</div>
-      {/* <div className="flex flex__element-left">상품명</div>
-      <div className="flex flex__element-left">상품명</div> */}
+      {itemList.map((item, idx) => (
+        <div key={`item-${idx}`} className="flex flex__element-left">
+          {item.item_name}
+        </div>
+      ))}
     </div>
   );
 };

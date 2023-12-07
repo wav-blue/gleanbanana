@@ -4,7 +4,6 @@ import ButtonCommon from "../../UI/ButtonCommon";
 import banana from "../../../assets/banana.png";
 import List from "../../UI/List";
 import { likeActions } from "../../../store/like";
-import { cartActions } from "../../../store/cart";
 import useApi from "../../../hooks/useApi";
 import { useCallback, useEffect } from "react";
 

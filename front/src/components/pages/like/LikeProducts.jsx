@@ -3,6 +3,7 @@ import useApi from "../../../hooks/useApi";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { likeActions } from "../../../store/like";
+import SkeletonProductCard from "../products/SkeletonProductCard";
 
 const LikeProducts = () => {
   const dispatch = useDispatch();

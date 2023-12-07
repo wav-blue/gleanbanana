@@ -44,10 +44,6 @@ const ProductDetail = () => {
     setIsLike(!!wasLike);
   }, [wasLike]);
 
-  console.log("likeState1: ", likeState);
-  console.log("wasLike1: ", wasLike);
-  console.log("isLike1: ", isLike);
-
   //ProductDetail GET
   useEffect(() => {
     //detail정보 가져오기

@@ -22,6 +22,7 @@ const Products = lazy(() => import("./components/pages/products/Products"));
 const Product = lazy(() => import("./components/pages/products/Product"));
 const Carts = lazy(() => import("./components/pages/cart/Carts"));
 const Purchase = lazy(() => import("./components/pages/purchase/Purchase"));
+const About = lazy(() => import("./components/pages/about/About"));
 
 function App() {
   const { trigger, result } = useApi({
@@ -62,6 +63,7 @@ function App() {
               <Route path="/order" element={<Order />} />
               <Route path="/order/:orderId" element={<OrderedDetail />} />
               <Route path="/purchase" element={<Purchase />} />
+              <Route path="/about" element={<About />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
