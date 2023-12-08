@@ -30,8 +30,12 @@ class itemService {
     return items;
   }
   // 카테고리별 상품 조회
-  static async getItemsByCategory({ category }) {
-    const items = await Item.readItemsByCategory({ category });
+  static async getItemsByCategory({ category, contentSize, skipSize }) {
+    const items = await Item.readItemsByCategory({
+      category,
+      contentSize,
+      skipSize,
+    });
     return items;
   }
 
