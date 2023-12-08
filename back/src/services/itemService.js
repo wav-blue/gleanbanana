@@ -44,10 +44,18 @@ class itemService {
   // 그래프를 위한 데이터 조회
   static async graphItems() {
     const items = await Item.readItemsforGraph();
-    const y_data = items[0]["y"].split(",").map(Number);
-    const x_data = Array.from(Array(y_data.length)).map((e, i) => i + 1);
-
-    return { x: x_data, y: y_data };
+    const graph_data = { x: [], y: [] };
+    for (let i = 0; i < 3; i++) {
+      graph_data["x"].push(items[0][i].item_name);
+      graph_data["y"].push(items[0][i].banana_index);
+    }
+    graph_data["x"].push("바나나");
+    graph_data["y"].push(100);
+    for (let i = 0; i < 3; i++) {
+      graph_data["x"].push(items[1][i].item_name);
+      graph_data["y"].push(items[1][i].banana_index);
+    }
+    return graph_data;
   }
   // 추가
   static async createItem({
