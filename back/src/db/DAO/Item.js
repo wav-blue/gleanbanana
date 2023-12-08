@@ -65,15 +65,21 @@ class Item {
   }
 
   // Read By Category
-  static async readItemsByCategory({ category }) {
+  static async readItemsByCategory({ category, contentSize, skipSize }) {
     return new Promise((resolve, reject) => {
-      const sql = `SELECT * FROM item WHERE category_id = (SELECT category_id FROM category WHERE category_name = ?);`;
+      const sql = `SELECT * FROM item WHERE category_id = (SELECT category_id FROM category WHERE category_name = ?) order by item_id desc LIMIT ${skipSize},${contentSize}`;
 
       db.query(sql, category, function (error, results, fields) {
         if (error) {
           reject(error);
         } else {
-          resolve(results);
+          if (results.length > 0) {
+            console.log("results(category) : ", results);
+            resolve(results);
+          } else {
+            resolve(null);
+            //reject(new Error("상품이 없습니다."));
+          }
         }
       });
     });
