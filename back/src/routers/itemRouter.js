@@ -43,7 +43,7 @@ itemRouter.get("/items", async function (req, res, next) {
 itemRouter.get("/autocomplete", async function (req, res, next) {
   const { search } = req.query;
   try {
-    const items = await itemService.Autocomplete({ search });
+    const items = await itemService.autocomplete({ search });
     res.status(200).json(items);
   } catch (error) {
     next(error);
