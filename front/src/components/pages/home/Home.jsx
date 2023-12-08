@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Categories from "./Categories";
 import Charts from "./Charts";
 import Recommendations from "./Recommendations";

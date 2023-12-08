@@ -1,9 +1,11 @@
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "../src/styles/style.css";
 import NotFound from "./components/pages/error/NotFound";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import useApi from "./hooks/useApi";
+import { userLoginActions } from "./store/userLogin";
 
 const OrderedDetail = lazy(() =>
   import("./components/pages/order/OrderedDetail")
@@ -20,17 +22,39 @@ const Products = lazy(() => import("./components/pages/products/Products"));
 const Product = lazy(() => import("./components/pages/products/Product"));
 const Carts = lazy(() => import("./components/pages/cart/Carts"));
 const Purchase = lazy(() => import("./components/pages/purchase/Purchase"));
+const About = lazy(() => import("./components/pages/about/About"));
+
+const publicPathList = ["/join"];
 
 function App() {
-  const userId = useSelector((state) => state.user.userId);
-  const navigate = useNavigate();
+  //새로고침할 때마다 호출이 됨
+  //페이지 이동할 때도 호출이 되어야함
+
+  const { trigger, result } = useApi({
+    method: "get",
+    path: "/current",
+    shouldInitFetch: false,
+  });
+  const location = useLocation();
+
+  const fetchUserInfo = async () => {
+    const fetchedUserInfo = await trigger({ isShowBoundary: false });
+    if (!fetchedUserInfo) console.log("비로그인 유저!!!!");
+    if (fetchedUserInfo) {
+      dispatch(userLoginActions.storeUserInfo(fetchedUserInfo?.data[0]));
+      dispatch(userLoginActions.loginUser(fetchedUserInfo?.data[0].user_id));
+    }
+  };
+
   useEffect(() => {
-    console.log("user Login status changed!!!!", userId);
-    if (!userId) navigate("/");
-  }, [userId]);
-  //로그인 인증 로직
-  //리프레시 토큰이 있으면 요청 url을 통해
-  //유저정보 id 를 받아옴!
+    if (!publicPathList.includes(location.pathname)) {
+      fetchUserInfo();
+    }
+  }, [location.pathname]);
+
+  const dispatch = useDispatch();
+
+  //shouldInitFetch 404에러 처리
 
   return (
     <div className="app">
@@ -53,6 +77,7 @@ function App() {
               <Route path="/order" element={<Order />} />
               <Route path="/order/:orderId" element={<OrderedDetail />} />
               <Route path="/purchase" element={<Purchase />} />
+              <Route path="/about" element={<About />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

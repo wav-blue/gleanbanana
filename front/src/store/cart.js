@@ -18,12 +18,8 @@ const cartSlice = createSlice({
       state.cartItems = action.payload;
     },
 
-    //고객이 productDetail 추가/ 장바구니에서수량변경때 사용
-    //에러 나오는 이유
-
-    //수량변경 트리거 되어야 하는 이유는
     //Cart에서 수량변경시!
-    //전제조건은 cartItems에 있다는것! 없으면 안됨... 에러분기(?)
+    //전제조건은 cartItems에 있다는것!
     //필요한것 item_id와 quantity만. quantity만 업뎃하면 됨.
     updateCartQuantity(state, action) {
       console.log("updateCartQuantity", action.payload);
@@ -45,31 +41,21 @@ const cartSlice = createSlice({
         //있다면 수량변경
         const updatedCartQuantity = action.payload.quantity;
         const updatedCart = state.cartItems[existedCartItemIndex];
-        console.log("beforeupdatedCart", updatedCart);
         updatedCart.quantity = updatedCartQuantity;
-        console.log("afterupdatedCart", updatedCart);
-
-        return updatedCart;
       }
       if (existedCheckedItemIndex >= 0) {
-        //다시짜...
-        //과연 이 슬라이스가 필요?
         const updatedCartQuantity = action.payload.quantity;
-        const updatedCart = state.cartCheckedList[existedCartItemIndex];
-        console.log("beforeupdatedCart", updatedCart);
+        const updatedCart = state.cartCheckedList[existedCheckedItemIndex];
         updatedCart.quantity = updatedCartQuantity;
-        console.log("afterupdatedCart", updatedCart);
-        return updatedCart;
       }
     },
     removeFromCart(state, action) {
       // action.payload의 형태는 숫자만있는 리스트
       //해당 아이디를 모두 cartList에서 제거하는 로직
       const toRemoveIdList = action.payload;
-      const removedCartList = state.cartItems.filter((items) =>
-        toRemoveIdList.includes(items.item_id)
+      state.cartItems = state.cartItems.filter(
+        (items) => !toRemoveIdList.includes(items.item_id)
       );
-      state.cartItems = removedCartList;
     },
 
     //장바구니에서 체크박스 선택했을 때

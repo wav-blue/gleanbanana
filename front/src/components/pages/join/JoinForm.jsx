@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import useApi from "../../../hooks/useApi";
 import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
@@ -13,6 +14,7 @@ const JoinForm = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [phone_number, setPhone_number] = useState(0);
+  const navigate = useNavigate();
 
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "post",
@@ -45,6 +47,7 @@ const JoinForm = () => {
     ],
     []
   );
+
   const joinData = useMemo(() => {
     return {
       email,
@@ -54,19 +57,18 @@ const JoinForm = () => {
       phone_number,
     };
   }, [email, password, username, address, phone_number]);
-  useEffect(() => {
-    console.log(joinData);
-  }, [joinData]);
-  const onClickJoinHandler = () => {
-    trigger({ data: joinData });
-  };
-  useEffect(() => {
-    if (result.status === 201) {
-    } else {
+
+  const onClickJoinHandler = async (e) => {
+    e.preventDefault();
+    const joinResult = await trigger({ data: joinData, applyResult: false });
+    if (joinResult.data === "회원가입 완료") {
+      alert("회원가입 완료!");
+      navigate("/login");
     }
-  }, []);
+  };
+
   return (
-    <form className="join__input">
+    <div className="join__input">
       <JoinEmail email={email} setEmail={setEmail} />
       <JoinPassword password={password} setPassword={setPassword} />
       {JoinInputNoCheck.map((input, idx) => (
@@ -76,11 +78,11 @@ const JoinForm = () => {
       <hr />
       <JoinApproval />
       <div className="join__button">
-        <ButtonCommon design="form" onSubmit={onClickJoinHandler}>
+        <ButtonCommon design="form" onClick={onClickJoinHandler}>
           가입하기
         </ButtonCommon>
       </div>
-    </form>
+    </div>
   );
 };
 

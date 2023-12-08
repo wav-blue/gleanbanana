@@ -4,7 +4,7 @@ import ButtonCommon from "../../UI/ButtonCommon";
 import InputCommon from "../../UI/InputCommon";
 import { validateEmail, validatePassword } from "../../../utils/validate";
 import useApi from "../../../hooks/useApi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userLoginActions } from "../../../store/userLogin";
 
 const LoginForm = () => {
@@ -20,15 +20,16 @@ const LoginForm = () => {
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const loginUserId = useSelector((state) => state.user.userId);
 
   const isEmailValid = useMemo(() => validateEmail(email), [email]);
   const isPasswordValid = useMemo(() => validatePassword(password), [password]);
 
   const loginData = { email, password };
 
-  const onClickLogin = () => {
+  const onClickLogin = (e) => {
+    e.preventDefault();
     trigger({
-      method: "post",
       data: loginData,
       applyResult: true,
       isShowBoundary: true,
@@ -36,14 +37,23 @@ const LoginForm = () => {
   };
 
   //result.status 성공시 201? 확인
-  //성공시 home으로
   useEffect(() => {
     console.log(result);
-    if (reqIdentifier === "postData" && result.status === 201) {
-      dispatch(userLoginActions.loginUser(result.data));
-      navigate("/");
+    if (reqIdentifier === "postData" && result.status === 200) {
+      dispatch(userLoginActions.loginUser(result.data.user_id));
+      const newAccessToken = result.data.Authorization.split(" ")[1];
+      console.log(result.data.Authorization);
+      console.log(newAccessToken, "newAccessTokens");
+      //refreshToken 만료시간에 동일한 localStorage 만료시간
+      localStorage.setItem("refreshToken", newAccessToken);
     }
   }, [result.status, reqIdentifier]);
+
+  useEffect(() => {
+    if (loginUserId) {
+      navigate("/");
+    }
+  }, [loginUserId]);
 
   return (
     <form className="login__input">
@@ -86,8 +96,7 @@ const LoginForm = () => {
       <div className="login__button">
         <ButtonCommon
           design="form"
-          type="submit"
-          onSubmit={onClickLogin}
+          onClick={onClickLogin}
           disabled={!isEmailValid | !isPasswordValid}
         >
           로그인

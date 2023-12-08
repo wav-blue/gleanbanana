@@ -12,7 +12,6 @@ const OrderProducts = () => {
   const { trigger, result, reqIdentifier } = useApi({
     method: "get",
     path: `/${userId}/orders`,
-    data: {},
     shouldInitFetch: false,
   });
 
@@ -21,7 +20,7 @@ const OrderProducts = () => {
   }, []);
 
   useEffect(() => {
-    if (reqIdentifier === "getData") {
+    if (reqIdentifier === "getData" && result.data !== undefined) {
       console.log("orderProductList를 세팅", result?.data);
       dispatch(orderActions.storeToOrdered(result?.data));
     }
@@ -38,9 +37,11 @@ const OrderProducts = () => {
       </div>
       <div className="order__wrapper">
         <div className="order">
-          {orderProductList?.map((order, idx) => (
-            <OrderProduct key={`order-${idx}`} order={order} />
-          ))}
+          {orderProductList &&
+            orderProductList?.map((order, idx) => (
+              <OrderProduct key={`order-${idx}`} order={order} />
+            ))}
+          {!orderProductList && "아직 주문한 상품이 없습니다."}
         </div>
       </div>
     </div>
