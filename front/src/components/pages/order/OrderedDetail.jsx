@@ -12,8 +12,13 @@ const OrderedDetail = () => {
   const userId = useSelector((state) => state.user.userId);
   const { orderId } = useParams();
   const [itemList, setItemList] = useState([]);
-  const [orderInfo, setOrderInfo] = useState([]);
+  const [orderInfo, setOrderInfo] = useState({});
   const navigate = useNavigate();
+  const { trigger, result } = useApi({
+    method: "get",
+    path: `/${userId}/orders/${orderId}`,
+    shouldInitFetch: false,
+  });
   const toLogin = () => {
     navigate("/login");
   };
@@ -31,21 +36,6 @@ const OrderedDetail = () => {
     }
   }, [userId]);
 
-  const { trigger, result } = useApi({
-    method: "get",
-    path: `/${userId}/orders/${orderId}`,
-    shouldInitFetch: false,
-  });
-
-  // const getOrderInfo = async () => {
-  //   await trigger({
-  //   method: "get",
-  //   path: `/${userId}/orders/${orderId}`,
-  //   applyResult: true,
-  //   isShowBoundary: true,
-  // });
-  // };
-
   useEffect(() => {
     trigger({
       method: "get",
@@ -53,13 +43,14 @@ const OrderedDetail = () => {
       applyResult: true,
       isShowBoundary: true,
     });
-  }, [userId, orderId]);
+  }, [orderId]);
 
   useEffect(() => {
     console.log("data? ", result?.data);
     if (result.data !== undefined) {
-      setItemList(result.data.items);
       setOrderInfo(result.data);
+      setItemList(result?.data?.items);
+      console.log(result.data);
     }
   }, [result.data]);
 
@@ -76,7 +67,9 @@ const OrderedDetail = () => {
         <div className="line line__in" />
         <DeliveryInfo disabled={true} />
         <div className="line line__out" />
-        <div className="title title__element">배송 물품 내역 (3)</div>
+        <div className="title title__element">
+          배송 물품 내역 ({itemList.length})
+        </div>
         <div className="line line__in" />
         <OrderedProduct itemList={itemList} />
         <div className="line line__out" />

@@ -9,7 +9,7 @@ const NavBar = () => {
   const loggedInUserId = useSelector((state) => state.user.userId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { trigger, result, reqIdentifier, loading, error } = useApi({
+  const { trigger } = useApi({
     method: "get",
     path: `/${loggedInUserId}/logout`,
     data: {},

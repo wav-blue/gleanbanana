@@ -26,7 +26,7 @@ const PurchasedInfo = ({ list }) => {
       </div>
       <div className="flex flex__element-left">
         <div>총 바나나인덱스</div>
-        <div>{purchaseTotal.totalBananaIndex} </div>
+        <div>{purchaseTotal.totalBananaIndex / 100} </div>
       </div>
       <div className="flex flex__element-up">
         <div>결제 방법</div>

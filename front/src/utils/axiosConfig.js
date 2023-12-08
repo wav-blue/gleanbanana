@@ -6,7 +6,6 @@ const config = {
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 5000,
 };
 
 export const api = axios.create(config); // 인스턴스

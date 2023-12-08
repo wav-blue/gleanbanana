@@ -4,27 +4,29 @@ import DeliveryInfo from "./DeliveryInfo";
 import PurchasedProduct from "../purchase/PurchasedProduct";
 import PurchasedInfo from "../purchase/PurchasedInfo";
 import PurchaseButtons from "../purchase/PurchaseButtons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { purchaseActions } from "../../../store/purchase";
 
 //구매하기 전 페이지
 const Purchase = () => {
   const toPurchaseList = useSelector((state) => state.purchase.toPurchaseList);
-  const toPurchaseListLength = useSelector(
-    (state) => state.purchase.toPurchaseListLength
-  );
+
   const navigate = useNavigate();
-  const userId = useSelector((state) => state.user.userId);
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   useEffect(() => {
-    if (!userId) {
+    if (!userInfo.user_id) {
       console.log("userId가 없어서 /home으로 보냄");
       return navigate("/");
     }
-  }, [userId]);
+  }, [userInfo]);
 
   useEffect(() => {
+    dispatch(purchaseActions.updateTotal());
+
     console.log(toPurchaseList);
   }, []);
   return (
@@ -41,18 +43,16 @@ const Purchase = () => {
         <DeliveryInfo />
         <div className="line line__out" />
         <div className="title title__element">
-          {`배송 물품 내역 (${toPurchaseListLength})`}
+          {`배송 물품 내역 (${toPurchaseList.length})`}
         </div>
         <div className="line line__in" />
         {toPurchaseList.map((list) => (
-          <PurchasedProduct item_name={list.item_name} />
+          <PurchasedProduct list={list} />
         ))}
         <div className="line line__out" />
         <div className="title title__element">결제정보</div>
-        <div className="line line__in" />
-        {toPurchaseList.map((list) => (
-          <PurchasedInfo list={list} />
-        ))}
+        <div className="line line__in" />{" "}
+        <PurchasedInfo list={toPurchaseList} />
       </div>
       <PurchaseButtons />
     </div>

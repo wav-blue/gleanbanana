@@ -14,7 +14,7 @@ const MyPage = () => {
   const dispatch = useDispatch();
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",
-    path: `/${userId}`,
+    path: `/current`,
     shouldInitFetch: false,
   });
 

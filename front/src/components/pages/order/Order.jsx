@@ -5,7 +5,6 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import useConfirm from "../../../hooks/useConfirm";
 
-//이 컴포넌트가 있을 필요? 없을듯한데
 const Order = () => {
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user.userId);
