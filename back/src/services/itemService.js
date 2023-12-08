@@ -4,21 +4,11 @@ import db from "../db";
 class itemService {
   // 전체 조회
   static async getItems({ contentSize, skipSize }) {
-    return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM item order by item_id desc LIMIT ${skipSize},${contentSize}`;
-      db.query(query, function (error, results, fields) {
-        if (error) {
-          reject(error);
-        } else {
-          if (results.length > 0) {
-            resolve(results);
-          } else {
-            resolve(null);
-            //reject(new Error("상품이 없습니다."));
-          }
-        }
-      });
-    });
+      return await Item.getItems({ contentSize, skipSize });
+  }
+  // 자동완성
+  static async autocomplete({ search }) {
+      return await Item.autocomplete({ search });
   }
   // 개별 조회
   static async getItem({ itemId }) {
@@ -102,29 +92,6 @@ class itemService {
   static async deleteItem({ item_id }) {
     const result = Item.deleteItem({ item_id });
     return result;
-  }
-
-  // 자동완성
-  static async Autocomplete({ search }) {
-    return new Promise((resolve, reject) => {
-    const query = `SELECT item_name , item_id
-    FROM item 
-    WHERE item_name LIKE '%${search}%'
-    ORDER BY banana_index 
-    LIMIT 7`;
-      db.query(query, function (error, results, fields) {
-        if (error) {
-          reject(error);
-        } else {
-          if (results.length > 0) {
-            console.log("searchItems 결과:", results);
-            resolve(results);
-          } else {
-            reject(new Error("검색 결과가 없습니다."));
-          }
-        }
-      });
-    });
   }
 }
 export { itemService };

@@ -3,6 +3,7 @@ import useApi from "../../../hooks/useApi";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { likeActions } from "../../../store/like";
+import SkeletonProductCard from "../products/SkeletonProductCard";
 
 const LikeProducts = () => {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const LikeProducts = () => {
   return (
     <div className="like__wrapper">
       <div className="like__head">
-        <div>찜 목록 ({likeLists && likeLists.length})</div>
+        <div>찜 목록 ({likeLists ? likeLists.length : 0})</div>
       </div>
       <hr />
       <div className="like__wrapper">

@@ -1,6 +1,50 @@
 import db from "..";
 
 class Item {
+  // Full view
+  static async getItems({ contentSize, skipSize }) {
+    return new Promise((resolve, reject) => {
+      const query = `SELECT * FROM item ORDER BY item_id DESC LIMIT ${skipSize},${contentSize}`;
+      db.query(query, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          if (results.length > 0) {
+            resolve(results);
+          } else {
+            resolve(null);
+            //reject(new Error("상품이 없습니다."));
+          }
+        }
+      });
+    });
+  }
+
+  // Auto complete
+  static async autocomplete({ search }) {
+    return new Promise((resolve, reject) => {
+      const query = `
+        SELECT item_name, item_id
+        FROM item 
+        WHERE item_name LIKE '%${search}%'
+        ORDER BY banana_index 
+        LIMIT 7
+      `;
+      db.query(query, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          if (results.length > 0) {
+            console.log("searchItems 결과:", results);
+            resolve(results);
+          } else {
+            reject(new Error("검색 결과가 없습니다."));
+          }
+        }
+      });
+    });
+  }
+
   // Read All Items
   static async readAllItems() {
     const query = `SELECT * FROM item;`;

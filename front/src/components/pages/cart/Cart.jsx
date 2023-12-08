@@ -6,6 +6,7 @@ import { cartActions } from "../../../store/cart";
 import InputCheckbox from "../../UI/InputCheckbox";
 import useDebouncing from "../../../hooks/useDebouncing";
 import useApi from "../../../hooks/useApi";
+import InputNumber from "../../UI/InputNumber";
 const Cart = ({ cart }) => {
   const dispatch = useDispatch();
   const {
@@ -40,6 +41,10 @@ const Cart = ({ cart }) => {
     delay: 2000,
   });
 
+  useEffect(() => {
+    setChangedQuantity(quantity);
+  }, [quantity]);
+
   //============STATE CHANGED================
   //debounced state -> trigger
   useEffect(() => {
@@ -47,7 +52,6 @@ const Cart = ({ cart }) => {
   }, [debouncedQuantity, debouncedCheck, isFirst]);
 
   useEffect(() => {
-    console.log("quantity가 변경되어 updateTotal");
     dispatch(cartActions.updateTotal());
   }, [changedQuantity, isChecked, dispatch]);
 
@@ -63,9 +67,6 @@ const Cart = ({ cart }) => {
 
       setIsFirst(false);
       setChangedQuantity(newValue);
-      console.log("number 변경!!!");
-      console.log(newValue);
-      console.log("is First?", isFirst);
       !isFirst && dispatch(cartActions.updateCartQuantity(updatedQuantityData));
     },
     [setChangedQuantity, setIsFirst, dispatch, isFirst]
@@ -130,8 +131,6 @@ const Cart = ({ cart }) => {
       <div className="cart">
         <div className="cart__check">
           <InputCheckbox
-            type="checkbox"
-            className="checkInput"
             id={item_id}
             checked={isChecked}
             onChangeCheckhandler={onChangeCheckhandler}
@@ -145,9 +144,7 @@ const Cart = ({ cart }) => {
               {expected_delivery}에 도착예정
             </div>
           </div>
-          <InputCommon
-            type="number"
-            className="gray-square"
+          <InputNumber
             value={changedQuantity}
             onValueChange={onChangeNumHandler}
           />
