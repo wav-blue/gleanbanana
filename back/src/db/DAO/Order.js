@@ -267,10 +267,10 @@ class Order {
       });
     });
   }
-  static async getRecentOrderCount({ lastMonth, user_id }) {
+  static async getRecentOrderCount({ last_month, user_id }) {
     const query = `SELECT COUNT(order_id) AS count_one_month FROM orders WHERE order_date_createdAt > ? && user_id = ? ;`;
     return new Promise((resolve, reject) => {
-      db.query(query, [lastMonth, user_id], function (error, results, fields) {
+      db.query(query, [last_month, user_id], function (error, results, fields) {
         if (error) {
           reject(error);
         } else {
