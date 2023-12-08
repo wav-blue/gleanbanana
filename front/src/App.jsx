@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense } from "react";
 import "../src/styles/style.css";
 import NotFound from "./components/pages/error/NotFound";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import useApi from "./hooks/useApi";
 import { userLoginActions } from "./store/userLogin";
 
@@ -24,12 +24,11 @@ const Carts = lazy(() => import("./components/pages/cart/Carts"));
 const Purchase = lazy(() => import("./components/pages/purchase/Purchase"));
 const About = lazy(() => import("./components/pages/about/About"));
 
-const publicPathList = ["/login", "/join"];
+const publicPathList = ["/join"];
 
 function App() {
   //새로고침할 때마다 호출이 됨
   //페이지 이동할 때도 호출이 되어야함
-  const userInfo = useSelector((state) => state.user.userInfo);
 
   const { trigger, result } = useApi({
     method: "get",
@@ -37,17 +36,11 @@ function App() {
     shouldInitFetch: false,
   });
   const location = useLocation();
-  console.log(userInfo);
 
   const fetchUserInfo = async () => {
-    if (!!userInfo) return;
     const fetchedUserInfo = await trigger({ isShowBoundary: false });
     if (!fetchedUserInfo) console.log("비로그인 유저!!!!");
     if (fetchedUserInfo) {
-      console.log(
-        "userInfo 저장하여 로그인상태로 변경!!!!!!!!!!!!!!!!!******",
-        fetchedUserInfo
-      );
       dispatch(userLoginActions.storeUserInfo(fetchedUserInfo?.data[0]));
       dispatch(userLoginActions.loginUser(fetchedUserInfo?.data[0].user_id));
     }

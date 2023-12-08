@@ -49,7 +49,6 @@ api.interceptors.response.use(
   (res) => {
     // console.log("응답이 도착했음", res);
     // alert("요청에 성공했습니다!");
-    console.log(res);
     return res;
   },
   async (err) => {
