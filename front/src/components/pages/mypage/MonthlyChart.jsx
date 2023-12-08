@@ -39,7 +39,7 @@ const MonthlyChart = () => {
     };
     getData();
   }, []);
-  console.log(result);
+  console.log("data: ", result);
 
   // useEffect(() => {
   //   if (result?.data !== undefined) {

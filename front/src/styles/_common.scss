@@ -234,6 +234,11 @@ input#numberInput::-webkit-outer-spin-button {
     font-size: $big-font-size;
     background-color: $gray-lev1;
   }
+  &--logout {
+    font-size: 11px;
+    background-color: $yellow-color;
+    margin-bottom: -3px;
+  }
 }
 
 // CARD

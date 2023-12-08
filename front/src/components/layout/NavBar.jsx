@@ -6,7 +6,7 @@ import useApi from "../../hooks/useApi";
 import { useEffect } from "react";
 
 const NavBar = () => {
-  const loggedInUserId = useSelector((state) => state.user.userInfo.user_id);
+  const loggedInUserId = useSelector((state) => state.user.userInfo?.user_id);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { trigger } = useApi({
@@ -36,7 +36,9 @@ const NavBar = () => {
         </>
       )}
       {loggedInUserId && (
-        <ButtonCommon onClick={onClickLogout}>로그아웃</ButtonCommon>
+        <ButtonCommon onClick={onClickLogout} design="logout">
+          로그아웃
+        </ButtonCommon>
       )}
     </div>
   );
