@@ -12,20 +12,11 @@
   height: 50px;
   font-size: $small-font-size;
   display: flex;
-  background-color: blueviolet;
-  width: 100%;
+  width: $breakpoint-desktop;
   flex: 1;
-  &__wrapper {
-    width: 90%;
-    margin: 0 auto;
-    justify-content: space-between;
-    align-items: center;
-    display: flex;
-    & p {
-      color: $gray-footer;
-      font-size: $ssmall-font-size;
-    }
-  }
+  margin-bottom: 70px;
+  padding-top: 20px;
+  border-top: #f6e173 2px solid;
 }
 
 .li {
@@ -42,6 +33,9 @@
   width: 100%;
   margin: 0 auto;
   background-color: $backGround-color;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   // flex: 2; //화면 크기만큼 늘어남 반응형
   // align-self: stretch;
 }
@@ -121,11 +115,11 @@
   }
 }
 .logo {
-  width: 150px;
+  width: 85%;
   margin-left: -14px;
   //로고 나오면 사이즈 넣기
   &__wrapper {
-    width: 220px;
+    width: 175px;
     @include tablet {
       width: 180px;
     }
@@ -155,14 +149,14 @@
     width: 250px;
     &__wrapper {
       width: 95%;
-      margin-top: 25px;
+      margin-top: 0px;
     }
   }
   @include mobile-l {
     width: 120px;
     &__wrapper {
       width: 90%;
-      margin-top: 28px;
+      margin-top: 24px;
     }
     svg {
       width: 18px;

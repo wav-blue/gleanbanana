@@ -82,7 +82,7 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
-          <footer className="footer">footer입니다</footer>
+          <footer className="footer">© 친환경에 반한 바나나</footer>
         </div>
       </Suspense>
     </div>

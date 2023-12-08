@@ -435,20 +435,11 @@ body {
   height: 50px;
   font-size: 12px;
   display: flex;
-  background-color: blueviolet;
-  width: 100%;
+  width: 1034px;
   flex: 1;
-}
-.footer__wrapper {
-  width: 90%;
-  margin: 0 auto;
-  justify-content: space-between;
-  align-items: center;
-  display: flex;
-}
-.footer__wrapper p {
-  color: #999;
-  font-size: 10px;
+  margin-bottom: 70px;
+  padding-top: 20px;
+  border-top: #f6e173 2px solid;
 }
 
 .li {
@@ -465,6 +456,9 @@ body {
   width: 100%;
   margin: 0 auto;
   background-color: #fbfbfb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .main {
@@ -546,11 +540,11 @@ body {
 }
 
 .logo {
-  width: 150px;
+  width: 85%;
   margin-left: -14px;
 }
 .logo__wrapper {
-  width: 220px;
+  width: 175px;
 }
 @media (min-width: 820px) and (max-width: 1033px) {
   .logo__wrapper {
@@ -587,7 +581,7 @@ body {
   }
   .navSearch__wrapper {
     width: 95%;
-    margin-top: 25px;
+    margin-top: 0px;
   }
 }
 @media (min-width: 430px) and (max-width: 819px) {
@@ -596,7 +590,7 @@ body {
   }
   .navSearch__wrapper {
     width: 90%;
-    margin-top: 28px;
+    margin-top: 24px;
   }
   .navSearch svg {
     width: 18px;
@@ -2527,6 +2521,11 @@ body {
   font-size: 16px;
   line-height: 24px;
 }
+.about__div > img {
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+}
 .about__div-ssmall {
   display: flex;
   flex-direction: column;
@@ -2562,6 +2561,10 @@ body {
   font-size: 18px;
   line-height: 30px;
 }
+.about__div-big > h3 {
+  font-size: 25px;
+  font-weight: bolder;
+}
 .about__div-row {
   display: flex;
   align-items: center;
@@ -2590,12 +2593,12 @@ body {
   width: 145px;
 }
 .about__div-left > article {
-  width: 600px;
+  width: 700px;
 }
 .about__div-right {
   display: flex;
   align-items: center;
-  gap: 180px;
+  gap: 20px;
   margin-top: 10px;
   height: 100px;
   width: 930px;
@@ -2608,15 +2611,21 @@ body {
   width: 145px;
 }
 .about__div-right > article {
-  width: 600px;
+  width: 750px;
 }
-.about__div-back {
+.about__div-graph {
   display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
-.about__div-back > img {
-  position: relative;
-  right: 0;
-  bottom: 0;
+.about__div-graph > h3 {
+  font-size: 20px;
+  font-weight: bolder;
+}
+.about__div-graph > p {
+  font-size: 18px;
+  line-height: 30px;
+  margin-bottom: -30px;
 }
 .about__div-three {
   display: flex;

@@ -1,3 +1,7 @@
+import effect1 from "../../../assets/effect1.png";
+import effect2 from "../../../assets/effect2.png";
+import effect3 from "../../../assets/effect3.png";
+
 const Project = () => {
   return (
     <section className="about__section">
@@ -12,7 +16,7 @@ const Project = () => {
 
         <article className="about__div-three">
           <article className="about__div">
-            <img src="" alt="effect1" />
+            <img src={effect1} alt="effect1" />
             <p>
               식품에 의한 탄소 배출량
               <br />
@@ -22,7 +26,7 @@ const Project = () => {
             </p>
           </article>
           <article className="about__div">
-            <img src="" alt="effect2" />
+            <img src={effect2} alt="effect2" />
             <p>
               식품 선택 및 구매 시<br />
               바나나 인덱스로 탄소 배출량을
@@ -33,7 +37,7 @@ const Project = () => {
             </p>
           </article>
           <article className="about__div">
-            <img src="" alt="effect2" />
+            <img src={effect3} alt="effect2" />
             <p>
               구매 내역을 기반으로
               <br />

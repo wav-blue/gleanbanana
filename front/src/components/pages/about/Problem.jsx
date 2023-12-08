@@ -9,7 +9,7 @@ const Problem = () => {
 
         <article className="about__div-left">
           <img src={customer1} alt="customer1" />
-          <article className="about__div-ssmall">
+          <article className="about__div-big">
             <h3>
               식품 소비 하나가 환경에 얼마나 영향을 주는지 판단하기 어려워요.
             </h3>
@@ -19,7 +19,7 @@ const Problem = () => {
           </article>
         </article>
         <article className="about__div-right">
-          <article className="about__div-ssmall">
+          <article className="about__div-big">
             <h3>
               친환경 식품 소비, 어떤 기준과 방법으로 실천해야 할지도 모르겠어요.
             </h3>

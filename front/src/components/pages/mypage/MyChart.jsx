@@ -8,7 +8,7 @@ const MyChart = () => {
 
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",
-    path: `/graph`,
+    path: `/myPage`,
     shouldInitFetch: false,
   });
 
@@ -24,11 +24,13 @@ const MyChart = () => {
 
   useEffect(() => {
     if (result?.data !== undefined) {
+      console.log(result?.data.max_value);
       setMax(result?.data.max_value);
       setMin(result?.data.min_value);
       setCount(result?.data.recent_count);
     }
   }, [result?.data]);
+  console.log(max, min, count);
 
   return (
     <div className="mychart__wrapper">

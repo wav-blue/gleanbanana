@@ -3,6 +3,7 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  PointElement,
   LineElement,
   Title,
   Tooltip,
@@ -14,6 +15,7 @@ import useApi from "../../../hooks/useApi";
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  PointElement,
   LineElement,
   Title,
   Tooltip,
@@ -57,27 +59,26 @@ const MonthlyChart = () => {
     },
   };
 
-  // useEffect(() => {
-  //   console.log("요기", chartData);
-  //   if (chartData !== null) {
-  //     setData({
-  //       labels: chartData.x,
-  //       datasets: [
-  //         {
-  //           label: "바나나 인덱스",
-  //           data: chartData.y,
-  //           backgroundColor: "#f6e173",
-  //           scale: 100,
-  //         },
-  //       ],
-  //     });
-  //   }
-  // }, [chartData]);
+  useEffect(() => {
+    console.log("요기", chartData);
+    if (chartData !== null) {
+      setData({
+        labels: chartData.x,
+        datasets: [
+          {
+            label: "바나나 인덱스 평균",
+            data: chartData.y,
+            backgroundColor: "#f6e173",
+          },
+        ],
+      });
+    }
+  }, [chartData]);
 
   return (
     <div className="monthlychart__wrapper">
       <div className="monthlychart__head">최근 구매내역</div>
-      {/* <Line options={options} data={data} /> */}
+      {chartData && data && <Line options={options} data={data} />}
     </div>
   );
 };
