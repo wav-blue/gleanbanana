@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { itemService } from "../services/itemService";
+
 const itemRouter = Router();
 
 // 전체조회 + 카테고리 + 검색 조회
@@ -16,8 +17,14 @@ itemRouter.get("/items", async function (req, res, next) {
       const items = await itemService.getItemsByCategory({ category });
       res.status(200).json(items);
     } else {
+      const pageNum = Number(req.query.pageNum) || 1; // NOTE: 쿼리스트링으로 받을 페이지 번호 값, 기본값은 1
+      const contentSize = Number(req.query.countPerPage) || 10; // NOTE: 페이지에서 보여줄 컨텐츠 수.
+      const skipSize = (pageNum - 1) * contentSize; // NOTE: 다음 페이지 갈 때 건너뛸 리스트 개수.
       // 검색어와 카테고리가 모두 제공되지 않은 경우 전체 상품 조회
-      const items = await itemService.getItems({});
+      const items = await itemService.getItems({
+        contentSize,
+        skipSize,
+      });
       res.status(200).json(items);
     }
   } catch (error) {
@@ -40,7 +47,6 @@ itemRouter.get("/autocomplete", async function (req, res, next) {
 itemRouter.get("/items/:itemId", async function (req, res, next) {
   const { itemId } = req.params;
   try {
-    console.log("1");
     const items = await itemService.getItem({
       itemId,
     });
@@ -53,10 +59,17 @@ itemRouter.get("/items/:itemId", async function (req, res, next) {
 // 추천 상품 조회
 itemRouter.get("/recommend", async function (req, res, next) {
   try {
-    console.log(" random !!");
     const items = await itemService.getRandomItem();
-    console.log("items : ", items);
+    res.status(200).json(items);
+  } catch (error) {
+    next(error);
+  }
+});
 
+// 그래프를 위한 조회
+itemRouter.get("/graph", async function (req, res, next) {
+  try {
+    const items = await itemService.graphItems();
     res.status(200).json(items);
   } catch (error) {
     next(error);
@@ -66,14 +79,13 @@ itemRouter.get("/recommend", async function (req, res, next) {
 // 추가
 itemRouter.post("/items", async function (req, res, next) {
   try {
-    console.log("2");
     const {
       item_id,
       item_name,
-      category,
       price,
       description,
       banana_index,
+      category_id,
       image_url,
     } = req.body;
 
@@ -81,10 +93,10 @@ itemRouter.post("/items", async function (req, res, next) {
     const newItems = await itemService.createItem({
       item_id,
       item_name,
-      category,
       price,
       description,
       banana_index,
+      category_id,
       image_url,
     });
 

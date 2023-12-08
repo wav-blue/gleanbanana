@@ -5,7 +5,8 @@ const orderRouter = Router();
 //현재 로그인중인 회원의 주문내역 전체조회
 orderRouter.get("/:userId/orders", async function (req, res, next) {
   const { userId } = req.params;
-  console.log("orderRouter 주문내역 조회 userid = ", userId);
+  //console.log("orderRouter 주문내역 조회 userid = ", userId);
+
   try {
     // DB에서 데이터 조회
     const orders = await orderService.getOrders({
@@ -40,12 +41,12 @@ orderRouter.post("/:userId/orders", async function (req, res, next) {
 });
 
 // 주문내역 상세조회
-orderRouter.get("/:userId/orders/:id", async (req, res, next) => {
+orderRouter.get("/:userId/orders/:orderId", async (req, res, next) => {
   try {
     const userId = req.params.userId;
     console.log("userId: ", userId);
 
-    const order_id = req.params.id;
+    const order_id = req.params.orderId;
     console.log("order_id: ", order_id);
     const getOrderDetail = await orderService.getOrderDetail(userId, order_id);
 
@@ -57,7 +58,7 @@ orderRouter.get("/:userId/orders/:id", async (req, res, next) => {
 
 // 주문내역 삭제
 orderRouter.delete(
-  "/:userId/orders/:id",
+  "/:userId/orders/:orderId",
   //   login_required,
   //   check_permission,
 
@@ -66,7 +67,7 @@ orderRouter.delete(
       const userId = req.params.userId;
       console.log("userId: ", userId);
 
-      const order_id = req.params.id;
+      const order_id = req.params.orderId;
       console.log("order_id: ", order_id);
       await orderService.deleteOrder(order_id);
       //const deletedOrder = await orderService.deleteOrder({ _id: id });
