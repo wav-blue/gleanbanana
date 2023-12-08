@@ -255,5 +255,42 @@ class Order {
       });
     });
   }
+  static async getUseDatas(order_id) {
+    return new Promise((resolve, reject) => {
+      const query = `SELECT SUM((t2.banana_index)*t1.quantity) AS sum_banana_idx,SUM(t1.quantity) AS sum_quantity FROM order_item t1 LEFT JOIN item t2 ON t1.item_id = t2.item_id WHERE t1.order_id = ? ;`;
+      db.query(query, order_id, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results[0]);
+        }
+      });
+    });
+  }
+  static async getRecentOrderCount({ lastMonth, user_id }) {
+    const query = `SELECT COUNT(order_id) AS count_one_month FROM orders WHERE order_date_createdAt > ? && user_id = ? ;`;
+    return new Promise((resolve, reject) => {
+      db.query(query, [lastMonth, user_id], function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
+  static async getOrderIds({ user_id, max_count }) {
+    return new Promise((resolve, reject) => {
+      const query = `SELECT orders.order_id, orders.order_date_createdAt FROM orders WHERE user_id = ? ORDER BY orders.order_date_createdAt LIMIT ${max_count};`;
+      db.query(query, user_id, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
 }
+
 export { Order };
