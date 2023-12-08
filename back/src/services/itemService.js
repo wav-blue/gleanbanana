@@ -107,10 +107,10 @@ class itemService {
   // 자동완성
   static async Autocomplete({ search }) {
     return new Promise((resolve, reject) => {
-      const query = `  SELECT item_name 
+    const query = `SELECT item_name , item_id
     FROM item 
-    WHERE item_name LIKE '%${search}%' COLLATE utf8mb4_unicode_ci 
-    ORDER BY item_name 
+    WHERE item_name LIKE '%${search}%'
+    ORDER BY banana_index 
     LIMIT 7`;
       db.query(query, function (error, results, fields) {
         if (error) {
