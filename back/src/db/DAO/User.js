@@ -19,7 +19,7 @@ class User {
   // return => 조회한 user 정보 전체
   static async findUser({ user_id }) {
     return new Promise((resolve, reject) => {
-      const sql = `SELECT * FROM user WHERE user_id = ? ;`;
+      const sql = `SELECT user_id, createdAt, email, username, address, phone_number FROM user WHERE user_id = ? ;`;
       db.query(sql, user_id, function (error, results, fields) {
         if (error) {
           reject(error);
@@ -29,12 +29,26 @@ class User {
       });
     });
   }
-  // Read
+
   // Email로 User 정보 확인 => user_id/email/password
   static async findUserByEmail({ email }) {
     const query = `SELECT user_id, email, password FROM user WHERE email = ?`;
     return new Promise((resolve, reject) => {
       db.query(query, email, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
+
+  //
+  static async findUserOrderInfo({ last_month, user_id }) {
+    const query = `SELECT COUNT(order_id) AS count_one_month FROM orders WHERE order_date_createdAt > ? && user_id = ? ;`;
+    return new Promise((resolve, reject) => {
+      db.query(query, [last_month, user_id], function (error, results, fields) {
         if (error) {
           reject(error);
         } else {
@@ -88,31 +102,6 @@ class User {
       const query = `UPDATE user SET deletedAt = ? WHERE user_id = ? ;`;
       const today = new Date();
       db.query(query, [today, user_id], function (error, results, fields) {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(results);
-        }
-      });
-    });
-  }
-  static async getUseDatas(order_id) {
-    return new Promise((resolve, reject) => {
-      const query = `SELECT SUM((t2.banana_index/100)*t1.quantity)/SUM(t1.quantity) AS average FROM order_item t1 LEFT JOIN item t2 ON t1.item_id = t2.item_id WHERE t1.order_id = ? ;`;
-      db.query(query, order_id, function (error, results, fields) {
-        if (error) {
-          reject(error);
-        } else {
-          console.log();
-          resolve(results[0]);
-        }
-      });
-    });
-  }
-  static async getOrderIds({ user_id }) {
-    return new Promise((resolve, reject) => {
-      const query = `SELECT orders.order_id, orders.order_date_createdAt FROM orders WHERE user_id = ? ORDER BY orders.order_date_createdAt LIMIT 5;`;
-      db.query(query, user_id, function (error, results, fields) {
         if (error) {
           reject(error);
         } else {

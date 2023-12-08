@@ -2,10 +2,7 @@ import db from "..";
 import { ulid } from "ulidx";
 import mysql from "mysql2";
 import moment from "moment";
-import {
-  BadRequestError,
-  NotFoundError,
-} from "../../../libraries/custom-error";
+import { BadRequestError } from "../../../libraries/custom-error";
 
 class Order {
   //주문내역 전체 조회
@@ -31,7 +28,6 @@ class Order {
             let max_delivery_days = 0;
             let final_results = []; //전체 조회에서 주문번호가 같은 중복된 row가 제거된 최종 결과 데이터 담는 변수
             let final_idx = 0;
-            let temp_idx = 0;
             for (var i = 0; i < results.length; i++) {
               // 배송비 2500 고정값
               results[i]["delivery_fee"] = 2500;
@@ -46,7 +42,6 @@ class Order {
 
                 final_results.push(results[i]);
                 final_idx++;
-                temp_idx = final_idx;
                 temp_order_id = results[i].order_id;
                 item_array_length = 1;
                 results[i].item_array_length = item_array_length;
@@ -82,7 +77,6 @@ class Order {
                   //배달이 가장 오래 걸리는 항목 찾는 로직
                   max_delivery_days = results[i].expected_delivery_days;
                 }
-                //console.log("max_delivery_days: ", max_delivery_days);
                 final_results[final_idx - 1].max_delivery_days =
                   max_delivery_days;
               }
@@ -115,23 +109,6 @@ class Order {
   // 주문내역 상세조회
   static async getOrderDetail(userId, order_id) {
     return new Promise((resolve, reject) => {
-      // select order_id 없는 주문아이디면 바로 에러 반환시켜라????????
-      // if => throw new NotFoundError
-      const selectquery = `SELECT orders.order_id from orders where order_id=?`;
-      console.log("selectquery : ", selectquery);
-      db.query(selectquery, order_id, function (error, results) {
-        if (error) {
-          reject(error);
-        } else {
-          if (results.length <= 0) {
-            console.log("BadRequestError : ", results.length);
-            // const err_result = BadRequestError();
-            // resolve(err_result.BadRequestError);
-            throw new BadRequestError();
-          }
-        }
-      });
-
       const query = `SELECT orders.order_id,orders.user_id,orders.order_date_createdAt,orders.pay_method,orders.delivery_fee,
       item.banana_index,item.item_name,item.price
       ,order_item.item_id,order_item.quantity
@@ -143,7 +120,6 @@ class Order {
         where orders.user_id = ?
         and orders.order_id = ?`;
 
-      console.log("query(innerjoin) : ", query);
       var params = [userId, order_id];
       db.query(query, params, function (error, results) {
         if (error) {
@@ -161,19 +137,14 @@ class Order {
               test_dic["item_name"] = results[i].item_name;
               test_dic["item_id"] = results[i].item_id;
               test_dic["quantity"] = results[i].quantity;
-              //console.log("test_dic : ", test_dic);
               test_dic["banana_index"] = results[i].banana_index;
               test_arr.push(test_dic);
             }
             results[0].delivery_fee = 2500;
             results[0].total_price = total_price;
-            //console.log(" total_price값 확인 == ", total_price);
-            console.log("results[0]값 확인 == ", results[0]);
             results[0]["items"] = test_arr;
             delete results[0]["order_id"];
             delete results[0]["user_id"];
-            const isdeleted = delete results[0]["order_date_createdAt"];
-            console.log("isdeleted : ", isdeleted);
             delete results[0]["order_date_updatedAt"];
             delete results[0]["order_date_deletedAt"];
             delete results[0]["item_id"];
@@ -183,11 +154,24 @@ class Order {
             delete results[0]["price"];
             const final_result = results[0];
 
-            console.log("getOrderDetail final_result값 확인 == ", final_result);
             resolve(final_result);
           } else {
-            reject(new Error(null));
+            reject();
           }
+        }
+      });
+    });
+  }
+
+  // 존재하는 order_id인지 체크
+  static async checkOrderId({ order_id }) {
+    const selectquery = `SELECT orders.order_id from orders where order_id = ?`;
+    return new Promise((resolve, reject) => {
+      db.query(selectquery, order_id, function (error, results) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
         }
       });
     });
@@ -198,7 +182,6 @@ class Order {
     var time = moment().format("YYYY-MM-DD HH:mm:ss");
 
     const order_id = ulid();
-    console.log("order_id: ", order_id);
 
     // Orders 테이블에 삽입할 객체
     const insertOrders = {
@@ -228,15 +211,11 @@ class Order {
       query_result += mysql.format(insertquery2, items[i]);
     }
 
-    console.log("실행되는 쿼리: ", query_result);
-
     return new Promise((resolve, reject) => {
       db.query(query_result, function (error, results) {
         if (error) {
-          console.log("error : ", error);
           reject(error);
         } else {
-          console.log("results : ", results);
           resolve("새로운 주문 항목이 추가되었습니다.");
         }
       });
@@ -247,15 +226,11 @@ class Order {
   static async deleteOrder(order_id) {
     return new Promise((resolve, reject) => {
       const selectquery = `SELECT orders.order_id from orders where order_id=?`;
-      console.log("selectquery : ", selectquery);
       db.query(selectquery, order_id, function (error, results) {
         if (error) {
           reject(error);
         } else {
           if (results.length <= 0) {
-            console.log("BadRequestError : ", results.length);
-            // const err_result = BadRequestError();
-            // resolve(err_result.BadRequestError);
             throw new BadRequestError();
           }
         }
@@ -266,24 +241,56 @@ class Order {
 
       db.query(deletequery2, order_id, function (error, results) {
         if (error) {
-          console.log("delete error deletequery2 : ", deletequery2);
           reject(error);
         } else {
-          console.log("delete success deletequery2 : ", deletequery2);
         }
       });
 
       db.query(deletequery1, order_id, function (error, results) {
         if (error) {
-          console.log("delete error deletequery1 : ", deletequery1);
-
           reject(error);
         } else {
-          console.log("delete success deletequery1 : ", deletequery1);
           resolve("해당 주문 내역이 삭제 되었습니다.");
         }
       });
     });
   }
+  static async getUseDatas(order_id) {
+    return new Promise((resolve, reject) => {
+      const query = `SELECT SUM((t2.banana_index)*t1.quantity) AS sum_banana_idx,SUM(t1.quantity) AS sum_quantity FROM order_item t1 LEFT JOIN item t2 ON t1.item_id = t2.item_id WHERE t1.order_id = ? ;`;
+      db.query(query, order_id, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results[0]);
+        }
+      });
+    });
+  }
+  static async getRecentOrderCount({ lastMonth, user_id }) {
+    const query = `SELECT COUNT(order_id) AS count_one_month FROM orders WHERE order_date_createdAt > ? && user_id = ? ;`;
+    return new Promise((resolve, reject) => {
+      db.query(query, [lastMonth, user_id], function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
+  static async getOrderIds({ user_id, max_count }) {
+    return new Promise((resolve, reject) => {
+      const query = `SELECT orders.order_id, orders.order_date_createdAt FROM orders WHERE user_id = ? ORDER BY orders.order_date_createdAt LIMIT ${max_count};`;
+      db.query(query, user_id, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
 }
+
 export { Order };

@@ -30,8 +30,12 @@ class itemService {
     return items;
   }
   // 카테고리별 상품 조회
-  static async getItemsByCategory({ category }) {
-    const items = await Item.readItemsByCategory({ category });
+  static async getItemsByCategory({ category, contentSize, skipSize }) {
+    const items = await Item.readItemsByCategory({
+      category,
+      contentSize,
+      skipSize,
+    });
     return items;
   }
 
@@ -97,6 +101,29 @@ class itemService {
   static async deleteItem({ item_id }) {
     const result = Item.deleteItem({ item_id });
     return result;
+  }
+
+  // 자동완성
+  static async Autocomplete({ search }) {
+    return new Promise((resolve, reject) => {
+    const query = `  SELECT item_name 
+    FROM item 
+    WHERE item_name LIKE '%${search}%' COLLATE utf8mb4_unicode_ci 
+    ORDER BY item_name 
+    LIMIT 7`;
+      db.query(query, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          if (results.length > 0) {
+            console.log("searchItems 결과:", results);
+            resolve(results);
+          } else {
+            reject(new Error("검색 결과가 없습니다."));
+          }
+        }
+      });
+    });
   }
 }
 export { itemService };

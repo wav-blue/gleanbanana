@@ -13,8 +13,15 @@ itemRouter.get("/items", async function (req, res, next) {
       const items = await itemService.searchItems({ search });
       res.status(200).json(items);
     } else if (category) {
+      const pageNum = Number(req.query.pageNum) || 1; // NOTE: 쿼리스트링으로 받을 페이지 번호 값, 기본값은 1
+      const contentSize = Number(req.query.countPerPage) || 10; // NOTE: 페이지에서 보여줄 컨텐츠 수.
+      const skipSize = (pageNum - 1) * contentSize; // NOTE: 다음 페이지 갈 때 건너뛸 리스트 개수.
       // 카테고리가 제공된 경우 카테고리별 조회
-      const items = await itemService.getItemsByCategory({ category });
+      const items = await itemService.getItemsByCategory({
+        category,
+        contentSize,
+        skipSize,
+      });
       res.status(200).json(items);
     } else {
       const pageNum = Number(req.query.pageNum) || 0; // NOTE: 쿼리스트링으로 받을 페이지 번호 값, 기본값은 1
@@ -27,6 +34,17 @@ itemRouter.get("/items", async function (req, res, next) {
       });
       res.status(200).json(items);
     }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 검색 자동완성
+itemRouter.get("/autocomplete", async function (req, res, next) {
+  const { search } = req.query;
+  try {
+    const items = await itemService.Autocomplete({ search });
+    res.status(200).json(items);
   } catch (error) {
     next(error);
   }
