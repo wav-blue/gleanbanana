@@ -53,10 +53,9 @@ const cartSlice = createSlice({
       // action.payload의 형태는 숫자만있는 리스트
       //해당 아이디를 모두 cartList에서 제거하는 로직
       const toRemoveIdList = action.payload;
-      const removedCartList = state.cartItems.filter((items) =>
-        toRemoveIdList.includes(items.item_id)
+      state.cartItems = state.cartItems.filter(
+        (items) => !toRemoveIdList.includes(items.item_id)
       );
-      state.cartItems = removedCartList;
     },
 
     //장바구니에서 체크박스 선택했을 때
