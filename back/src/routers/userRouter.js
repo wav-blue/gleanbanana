@@ -100,7 +100,7 @@ userRouter.post("/accessToken", async function (req, res, next) {
 
     // Refresh Token 만료 => 로그인부터 다시
     if (!isRefreshTokenValidate) {
-      throw new UnauthorizedError("Refresh Token 만료");
+      throw new TokenExpiredError("Refresh Token 만료");
     }
     const newAccessToken = await createAccessToken(user_data, secretKey);
     res.cookie("accessToken", newAccessToken, {
