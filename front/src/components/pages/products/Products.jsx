@@ -3,16 +3,16 @@ import Categories from "../home/Categories";
 import { useEffect, useState, useRef } from "react";
 import useApi from "../../../hooks/useApi";
 import SkeletonProductCard from "./SkeletonProductCard";
-import { useLocation, useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(0);
   const [load, setLoad] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
   const pageEnd = useRef();
 
-  const location = useLocation();
-  const category = new URLSearchParams(location.search).get("category");
+  const category = searchParams.get("category");
   console.log(category);
 
   // Skeleton UI
@@ -27,21 +27,20 @@ const Products = () => {
     shouldInitFetch: false,
   });
 
-  // &category=${category}
   const getMoreData = async (page) => {
-    // 조건 더 이쁘게 빼고 싶은데..
     setLoad(false);
+    console.log("page: ", page);
     if (category === null) {
-      console.log(category);
       const moreData = await trigger({
         method: "get",
         path: `/items?pageNum=${page}`,
         applyResult: false,
         isShowBoundary: true,
       });
-      setProducts((prev) => [...prev, ...moreData?.data]);
-
-      console.log("moreData: ", moreData);
+      if (moreData?.data !== null) {
+        setProducts((prev) => [...prev, ...moreData?.data]);
+        setLoad(true);
+      }
     } else {
       const moreData = await trigger({
         method: "get",
@@ -49,13 +48,23 @@ const Products = () => {
         applyResult: false,
         isShowBoundary: true,
       });
-      setProducts((prev) => [...prev, ...moreData?.data]);
-
-      console.log("moreData: ", moreData);
+      if (moreData?.data !== null) {
+        setProducts((prev) => [...prev, ...moreData?.data]);
+        setLoad(true);
+      }
     }
-
-    setLoad(true);
   };
+
+  // 카테고리 바뀌면 products, page 전부 초기화
+  // 첫번째 page만 불러와서 스크롤도 돌아가게
+  useEffect(() => {
+    if (category !== null) {
+      searchParams.set("category", category);
+      setProducts([]);
+      getMoreData(1);
+      setPage(1);
+    }
+  }, [category]);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -63,9 +72,9 @@ const Products = () => {
         const nextPage = page + 1;
         setPage(nextPage);
         getMoreData(nextPage);
-        console.log("products: ", products);
       }
     });
+    console.log("data? : ", products);
 
     observer.observe(pageEnd.current);
 
