@@ -100,7 +100,7 @@ userRouter.post("/accessToken", async function (req, res, next) {
 
     // Refresh Token 만료 => 로그인부터 다시
     if (!isRefreshTokenValidate) {
-      throw new UnauthorizedError("Refresh Token 만료");
+      throw new TokenExpiredError("Refresh Token 만료");
     }
     const newAccessToken = await createAccessToken(user_data, secretKey);
     res.cookie("accessToken", newAccessToken, {
@@ -150,21 +150,17 @@ userRouter.post(
 );
 
 // 로그아웃
-userRouter.get(
-  "/:userId/logout",
-  loginRequired,
-  async function (req, res, next) {
-    try {
-      // 토큰 파기
-      res.cookie("accessToken", null, {
-        maxAge: 0,
-      });
-      res.send("로그아웃 완료");
-    } catch (error) {
-      next(error);
-    }
+userRouter.get("/:userId/logout", async function (req, res, next) {
+  try {
+    // 토큰 파기
+    res.cookie("accessToken", null, {
+      maxAge: 0,
+    });
+    res.send("로그아웃 완료");
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 // 회원탈퇴
 userRouter.delete(
@@ -197,23 +193,3 @@ userRouter.get("/myPage", loginRequired, async function (req, res, next) {
 });
 
 export { userRouter };
-
-// // 유저 본인의 정보 조회
-// userRouter.get("/:userId", async function (req, res, next) {
-//   try {
-//     //const user_id = req.currentUserId;
-//     const { userId } = req.params;
-//     const findUser = await userService.getUser({ user_id: userId });
-//     if (findUser?.length === 0) {
-//       // id에 해당되는 유저가 없는 경우
-//       throw new NotFoundError("해당하는 유저를 찾을 수 없습니다.");
-//     }
-//     if (findUser[0]?.deletedAt) {
-//       // 탈퇴한 유저인 경우: 보안을 위해 같은 메시지 출력
-//       throw new NotFoundError("해당하는 유저를 찾을 수 없습니다(탈퇴한 유저).");
-//     }
-//     res.status(200).json(user);
-//   } catch (error) {
-//     next(error);
-//   }
-// });

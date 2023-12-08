@@ -2,13 +2,12 @@ import { useSelector } from "react-redux";
 import InputCommon from "../../UI/InputCommon";
 
 const DeliveryInfo = ({ disabled }) => {
-  const userInfo = useSelector((state) => state.user.userInfo);
-  const deliveryList = Object.entries(userInfo);
-  console.log(deliveryList);
+  const userInfo = useSelector((state) => state.user.userInfo.userInfo);
+  console.log(userInfo);
 
   return (
     <div className="title title__element">
-      {deliveryList.map(([name, value]) => (
+      {Object.entries(userInfo).map(([name, value]) => (
         <div className="flex flex__element-left">
           <div>{name}</div>
           <InputCommon

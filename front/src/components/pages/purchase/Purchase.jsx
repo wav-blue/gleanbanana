@@ -18,7 +18,7 @@ const Purchase = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
 
   useEffect(() => {
-    if (!userInfo.user_id) {
+    if (!userInfo?.user_id) {
       console.log("userId가 없어서 /home으로 보냄");
       return navigate("/");
     }

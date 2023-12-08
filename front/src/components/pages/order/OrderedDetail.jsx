@@ -14,7 +14,7 @@ const OrderedDetail = () => {
   const [itemList, setItemList] = useState([]);
   const [orderInfo, setOrderInfo] = useState({});
   const navigate = useNavigate();
-  const { trigger, result } = useApi({
+  const { trigger, result, reqIdentifier } = useApi({
     method: "get",
     path: `/${userId}/orders/${orderId}`,
     shouldInitFetch: false,
@@ -39,20 +39,21 @@ const OrderedDetail = () => {
   useEffect(() => {
     trigger({
       method: "get",
-      path: `/${userId}/orders/${orderId}`,
       applyResult: true,
       isShowBoundary: true,
     });
-  }, [orderId]);
+  }, []);
 
   useEffect(() => {
     console.log("data? ", result?.data);
-    if (result.data !== undefined) {
-      setOrderInfo(result.data);
+    if (reqIdentifier !== "getData") return;
+    if (result.data !== undefined && reqIdentifier === "getData") {
+      console.log(result?.data);
+      setOrderInfo(result?.data);
       setItemList(result?.data?.items);
       console.log(result.data);
     }
-  }, [result.data]);
+  }, [reqIdentifier, result.data]);
 
   return (
     <div className="ordered__wrapper">

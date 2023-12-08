@@ -13,12 +13,12 @@ const purchaseSlice = createSlice({
     //구매할 목록 덮어씌우기
     storeToPurchase(state, action) {
       state.toPurchaseList = [];
-      state.toPurchaseList = action.payload;
+      state.toPurchaseList.push(action.payload);
     },
     updateTotal(state) {
       console.log("update Total");
       if (state?.toPurchaseList) {
-        let updatedTotal = state?.toPurchaseList.reduce(
+        let updatedTotal = state?.toPurchaseList?.reduce(
           (acc, cur) => {
             console.log({
               banana_index: cur.banana_index,

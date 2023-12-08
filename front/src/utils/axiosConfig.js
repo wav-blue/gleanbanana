@@ -96,7 +96,10 @@ api.interceptors.response.use(
       }
     }
 
-    if (response && status === 404) {
+    if (response && status === 409) {
+      if (data === "이미 찜하기 된 상품입니다") {
+        window.location.replace("/login");
+      }
     }
 
     if (response && status === 419) {
@@ -135,6 +138,8 @@ api.interceptors.response.use(
             return;
           }
         }
+      } else {
+        window.location.replace("/");
       }
     }
 
