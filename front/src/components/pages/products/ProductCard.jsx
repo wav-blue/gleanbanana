@@ -20,7 +20,7 @@ const ProductCard = ({ product }) => {
             <div className="recommendation__description-index">
               <img src={banana} alt="bananaIndex" />
               <div className="recommendation__description-bananaIndex">
-                X x{(product.banana_index / 100).toFixed(2)}
+                X {(product.banana_index / 100).toFixed(2)}
               </div>
             </div>
           </div>

@@ -9,6 +9,7 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(0);
   const [load, setLoad] = useState(true);
+  const [hasMoreItems, setHasMoreItems] = useState(true);
   const pageEnd = useRef();
 
   const location = useLocation();
@@ -26,40 +27,40 @@ const Products = () => {
     shouldInitFetch: false,
   });
 
+  // &category=${category}
   const getMoreData = async (page) => {
+    // 조건 더 이쁘게 빼고 싶은데..
     setLoad(false);
+
     const moreData = await trigger({
       method: "get",
       path: `/items?pageNum=${page}`,
       applyResult: false,
       isShowBoundary: true,
     });
-    console.log(moreData);
-    setProducts((prev) => [...prev, ...moreData.data]);
+
+    setProducts((prev) => [...prev, ...moreData?.data]);
+
+    console.log("moreData: ", moreData);
     setLoad(true);
   };
 
   useEffect(() => {
-    // if (load) {
-    //로딩되었을 때만 실행
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        if (load) {
-          const nextPage = page + 1;
-          setPage(nextPage);
-          getMoreData(nextPage);
-        }
+      if (entries[0].isIntersecting && load && hasMoreItems) {
+        console.log("저기");
+        const nextPage = page + 1;
+        setPage(nextPage);
+        getMoreData(nextPage);
       }
     });
-    //옵져버 탐색 시작
+
     observer.observe(pageEnd.current);
-    // }
+
     return () => {
       observer.disconnect();
     };
-  }, [page, load]);
-
-  //경로가 ?category=dairy일떄 요청?
+  }, [page, category, load]);
 
   return (
     <div className="products__wrapper">
