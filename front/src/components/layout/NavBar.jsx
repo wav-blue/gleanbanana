@@ -37,7 +37,9 @@ const NavBar = () => {
         </>
       )}
       {loggedInUserId && (
-        <ButtonCommon onClick={onClickLogout}>로그아웃</ButtonCommon>
+        <ButtonCommon onClick={onClickLogout} design="logout">
+          로그아웃
+        </ButtonCommon>
       )}
     </div>
   );

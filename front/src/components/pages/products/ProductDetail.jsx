@@ -41,6 +41,7 @@ const ProductDetail = () => {
   }, [likeState, product.item_id]);
 
   useEffect(() => {
+    console.log(likeState);
     setIsLike(!!wasLike);
   }, [wasLike]);
 
@@ -119,6 +120,9 @@ const ProductDetail = () => {
 
   //trigger의 결과로 result가 변경이 되면
   useEffect(() => {
+    console.log(result?.data);
+    console.log("isLike: ", isLike);
+    console.log("wasLike: ", wasLike);
     if (reqIdentifier === "getData") {
       setProduct(result?.data[0]);
     }

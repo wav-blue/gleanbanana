@@ -1,98 +1,85 @@
-import { Link } from "react-router-dom";
-import chart from "../../../assets/dataset-cover.png";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
-import { useSelector } from "react-redux";
+import { Bar } from "react-chartjs-2";
+import { Link } from "react-router-dom";
+import useApi from "../../../hooks/useApi";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend
 );
 
 const Charts = () => {
-  // const [rootUrl, setRootUrl] = useSelector(
-  //   (state) => state.chart.randomBanana
-  // );
-  // const [chatData, setChatData] = useState([]);
+  const [chartData, setChartData] = useState(null);
+  const [data, setData] = useState(null);
 
-  //   useEffect(() => {
-  //       const fetchData = async () => {
-  //           try {
-  //               const response = await fetch(
-  //                   `${rootUrl}/admin/dashboard/lastweek`
-  //               );
-  //               const json = await response.json();
-  //               setChatData(json.data);
-  //           } catch (error) {
-  //               console.log("Error :", error);
-  //           }
-  //       };
-  //       fetchData();
-  //       console.log(chatData);
-  //   }, []);
+  const { trigger, result, reqIdentifier, loading, error } = useApi({
+    method: "get",
+    path: `/graph`,
+    shouldInitFetch: false,
+  });
 
-  //   const options = {
-  //       responsive: true,
-  //       plugins: {
-  //           legend: {
-  //               position: "top",
-  //           },
-  //           title: {
-  //               display: true,
-  //               text: "지난 7일 간 채팅 건수",
-  //           },
-  //       },
-  //   };
+  useEffect(() => {
+    const getData = async () => {
+      await trigger({
+        applyResult: true,
+        isShowBoundary: true,
+      });
+    };
+    getData();
+  }, []);
 
-  //   let labels = [];
-  //   if (chatData.length > 0) {
-  //       labels = chatData.map((data) => data.x);
-  //   }
+  useEffect(() => {
+    if (result?.data !== undefined) {
+      setChartData(result?.data);
+    }
+  }, [result?.data]);
 
-  //   const data = {
-  //       labels,
-  //       datasets: [
-  //           {
-  //               label: "채팅 건수",
-  //               data: chatData.map((data) => data.y),
-  //               borderColor: "rgb(255, 99, 132)",
-  //               backgroundColor: "rgba(255, 99, 132, 0.5)",
-  //           },
-  //       ],
-  //   };
-  //   return (
-  //       <div>
-  //           {chatData.length > 0 && <Line options={options} data={data} />}
-  //       </div>
-  //   );
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+        align: "end",
+      },
+    },
+  };
+
+  useEffect(() => {
+    console.log("요기", chartData);
+    if (chartData !== null) {
+      setData({
+        labels: chartData.x,
+        datasets: [
+          {
+            label: "바나나 인덱스",
+            data: chartData.y,
+            backgroundColor: "#f6e173",
+            scale: 100,
+          },
+        ],
+      });
+    }
+  }, [chartData]);
 
   return (
     <Link to="/about">
       <div className="chart">
-        <img
-          src={chart}
-          alt="chartBanana"
-          className="chart--img"
-          loading="lazy"
-        />
-      </div>
-      <div className="chart">
-        {/* {chatData.length > 0 && <Line options={options} data={data} />} */}
+        {chartData && data && (
+          <Bar options={options} data={data} style={{ width: "1020px" }} />
+        )}
       </div>
     </Link>
   );
