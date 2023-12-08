@@ -25,12 +25,7 @@ app.get("/", (req, res) => {
   res.send("기본 페이지");
 });
 
-app.get('/search', async (req, res) => {
-  //let result = await db.collection('post').find().toArray()
-  const searchTerm = req.query.search;
-  res.render('autocomplete.ejs', { searchTerm });
-})
-
+// 순서 그대로 유지
 app.use("/api", userRouter);
 app.use("/api", itemRouter);
 app.use("/api", cartRouter);
