@@ -37,6 +37,7 @@ function App() {
   });
   const location = useLocation();
 
+  //홈화면에서는 어떻게 해야?
   //로그아웃 버튼 클릭 => storeUserInfo발동 =>
   const fetchUserInfo = async () => {
     const fetchedUserInfo = await trigger({ isShowBoundary: false });

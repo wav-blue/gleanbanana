@@ -66,7 +66,7 @@ const Cart = ({ cart }) => {
       };
 
       setIsFirst(false);
-      setChangedQuantity(newValue);
+      !isFirst && setChangedQuantity(newValue);
       !isFirst && dispatch(cartActions.updateCartQuantity(updatedQuantityData));
     },
     [setChangedQuantity, setIsFirst, dispatch, isFirst]

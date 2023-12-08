@@ -14,7 +14,7 @@ const InputNumber = (props = InputBaseProps) => {
         <input
           type={type}
           id="numberInput"
-          value={inputNum}
+          value={props.value}
           className={`input ${className}`}
           onChange={(e) => {
             if (e.target.value < 1) return;

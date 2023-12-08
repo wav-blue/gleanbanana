@@ -99,7 +99,6 @@ input#numberInput::-webkit-outer-spin-button {
   cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
   font-size: 18px;
 }
@@ -114,7 +113,6 @@ input#numberInput::-webkit-outer-spin-button {
   cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
 }
 .upper svg {
@@ -134,7 +132,6 @@ input#numberInput::-webkit-outer-spin-button {
   cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
 }
 .down svg {
@@ -1164,18 +1161,6 @@ body {
   }
 }
 
-@-webkit-keyframes loading {
-  0% {
-    opacity: 20%;
-  }
-  50% {
-    opacity: 100%;
-  }
-  100% {
-    opacity: 20%;
-  }
-}
-
 @keyframes loading {
   0% {
     opacity: 20%;
@@ -1205,8 +1190,7 @@ body {
   width: 240px;
   height: 240px;
   background-color: #e2e2e2;
-  -webkit-animation: loading 2s infinite linear;
-          animation: loading 2s infinite linear;
+  animation: loading 2s infinite linear;
 }
 .skeletonCard__description {
   display: flex;
@@ -1234,8 +1218,7 @@ body {
   width: 60px;
   height: 45px;
   background-color: #e2e2e2;
-  -webkit-animation: loading 2s infinite linear;
-          animation: loading 2s infinite linear;
+  animation: loading 2s infinite linear;
 }
 .skeletonCard__name {
   width: 150px;
@@ -1249,8 +1232,7 @@ body {
   width: 150px;
   height: 20px;
   background-color: #e2e2e2;
-  -webkit-animation: loading 2s infinite linear;
-          animation: loading 2s infinite linear;
+  animation: loading 2s infinite linear;
 }
 .skeletonCard__price {
   width: 80px;
@@ -1264,8 +1246,7 @@ body {
   width: 80px;
   height: 15px;
   background-color: #e2e2e2;
-  -webkit-animation: loading 2s infinite linear;
-          animation: loading 2s infinite linear;
+  animation: loading 2s infinite linear;
 }
 
 .products {

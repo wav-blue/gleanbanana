@@ -51,12 +51,15 @@ api.interceptors.response.use(
     return res;
   },
   async (err) => {
-    const { response } = err;
-    const { status, data } = response;
+    const { status, data } = err.response;
     console.log({ status, data }, "에러!!!");
 
     //토큰 만료시 재발급 로직
-    if (response && status === 401 && data === "Access token이 존재하지 않음") {
+    if (
+      err.response &&
+      status === 401 &&
+      data === "Access token이 존재하지 않음"
+    ) {
       //엑세스 토큰 없을 때 (만료로 삭제 )
       console.log("에러응답. 상태는 401입니다.");
       console.log(data, "message");
@@ -96,13 +99,13 @@ api.interceptors.response.use(
       }
     }
 
-    if (response && status === 409) {
+    if (err.response && status === 409) {
       if (data === "이미 찜하기 된 상품입니다") {
         window.location.replace("/login");
       }
     }
 
-    if (response && status === 419) {
+    if (err.response && status === 419) {
       console.log(status, "419에러!");
       console.log(data);
       if (data === "Access Token 만료") {
