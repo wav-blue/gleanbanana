@@ -65,15 +65,21 @@ class Item {
   }
 
   // Read By Category
-  static async readItemsByCategory({ category }) {
+  static async readItemsByCategory({ category, contentSize, skipSize }) {
     return new Promise((resolve, reject) => {
-      const sql = `SELECT * FROM item WHERE category_id = (SELECT category_id FROM category WHERE category_name = ?);`;
+      const sql = `SELECT * FROM item WHERE category_id = (SELECT category_id FROM category WHERE category_name = ?) order by item_id desc LIMIT ${skipSize},${contentSize}`;
 
       db.query(sql, category, function (error, results, fields) {
         if (error) {
           reject(error);
         } else {
-          resolve(results);
+          if (results.length > 0) {
+            console.log("results(category) : ", results);
+            resolve(results);
+          } else {
+            resolve(null);
+            //reject(new Error("상품이 없습니다."));
+          }
         }
       });
     });
@@ -96,7 +102,8 @@ class Item {
 
   // Read For Graph : banana_index
   static async readItemsforGraph() {
-    const sql = `SELECT GROUP_CONCAT(banana_index) AS 'y' FROM item;`;
+    const sql = `SELECT item_name, banana_index FROM item WHERE banana_index < 100 ORDER BY RAND() LIMIT 3;
+    SELECT item_name, banana_index FROM item WHERE banana_index > 100 ORDER BY RAND() LIMIT 3;`;
 
     return new Promise((resolve, reject) => {
       db.query(sql, function (error, results) {

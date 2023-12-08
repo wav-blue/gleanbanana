@@ -10,6 +10,9 @@ import { wishRouter } from "./routers/wishRouter";
 import { userRouter } from "./routers/userRouter";
 import { orderRouter } from "./routers/orderRouter";
 import { cartRouter } from "./routers/cartRouter";
+import { permission_check } from "./middlewares/permission_check";
+import { loginRequired } from "./middlewares/loginRequired";
+import { userId_check } from "./middlewares/userId_check";
 
 const app = express();
 
@@ -27,8 +30,8 @@ app.get("/", (req, res) => {
 app.use("/api", itemRouter);
 app.use("/api", userRouter);
 app.use("/api", cartRouter);
-app.use("/api", orderRouter);
-app.use("/api", wishRouter);
+app.use("/api", loginRequired, userId_check, orderRouter);
+app.use("/api", loginRequired, userId_check, wishRouter);
 
 // 에러 핸들링
 app.use(errorMiddleware);

@@ -1,14 +1,18 @@
 import bcrypt from "bcrypt";
 import { ulid } from "ulidx";
-import { NotFoundError, ConflictError } from "../../libraries/custom-error";
+import {
+  NotFoundError,
+  ConflictError,
+  UnauthorizedError,
+} from "../../libraries/custom-error";
 import { User } from "../db/DAO/User";
 import { createAccessToken, createRefreshToken } from "../utils/createToken";
 import { bcryptPassword } from "../utils/bcryptPassword";
+import { parseDate, lastMonth } from "../utils/dateFunction";
 
 class userService {
   static async addUser({ email, password, ...userInfo }) {
     const user_id = ulid();
-    console.log(" addUser : ", userInfo);
     const today = new Date();
 
     // Email이 중복되는 경우
@@ -25,7 +29,6 @@ class userService {
       ...userInfo, // username, address, phone_number
       email,
       password: encryptPassword,
-      my_carbon: 0,
       createdAt: today,
       updatedAt: today,
       deletedAt: null,
@@ -51,7 +54,6 @@ class userService {
       password,
       correctPasswordHash
     );
-
     if (!isPasswordCorrect) {
       throw new UnauthorizedError("비밀번호가 일치하지 않습니다.");
     }
@@ -90,13 +92,23 @@ class userService {
       // id에 해당되는 유저가 없는 경우
       throw new NotFoundError("해당하는 유저를 찾을 수 없습니다.");
     }
+
     if (findUser[0]?.deletedAt) {
       // 탈퇴한 유저인 경우
       // 보안을 위해 같은 메시지 출력
       throw new NotFoundError("해당하는 유저를 찾을 수 없습니다.");
     }
-
-    return findUser;
+    const userData = {
+      user_id: findUser[0].user_id,
+      createdAt: findUser[0].createdAt,
+      userInfo: {
+        이메일: findUser[0].email,
+        닉네임: findUser[0].username,
+        주소: findUser[0].address,
+        휴대전화번호: findUser[0].phone_number,
+      },
+    };
+    return userData;
   }
 
   // 유저 정보 수정
@@ -119,5 +131,28 @@ class userService {
     const result = await User.updateDeletedAt({ user_id });
     return result;
   }
+  // 마이페이지 조회
+  static async getUseData({ user_id }) {
+    const max_count = 6;
+    const orderArr = await User.getOrderIds({ user_id, max_count });
+    //const orderArr = orderIds[0]["order_id"].split(",");
+    console.log("orderArr: ", orderArr);
+
+    const user_data = { x: [], y: [] };
+
+    for (let i = 0; i < orderArr.length; i++) {
+      const item = await User.getUseDatas(orderArr[i].order_id);
+
+      user_data["x"].push(parseDate(orderArr[i].order_date_createdAt));
+      user_data["y"].push(parseInt(item.sum_banana_idx / item.sum_quantity));
+
+      console.log("i: ", i, "  item: ", item);
+    }
+    // 한달 간 쇼핑몰 이용횟수 조회
+
+    console.log(user_data);
+    return user_data;
+  }
 }
+
 export { userService };

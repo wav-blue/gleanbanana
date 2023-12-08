@@ -30,8 +30,12 @@ class itemService {
     return items;
   }
   // 카테고리별 상품 조회
-  static async getItemsByCategory({ category }) {
-    const items = await Item.readItemsByCategory({ category });
+  static async getItemsByCategory({ category, contentSize, skipSize }) {
+    const items = await Item.readItemsByCategory({
+      category,
+      contentSize,
+      skipSize,
+    });
     return items;
   }
 
@@ -44,10 +48,18 @@ class itemService {
   // 그래프를 위한 데이터 조회
   static async graphItems() {
     const items = await Item.readItemsforGraph();
-    const y_data = items[0]["y"].split(",").map(Number);
-    const x_data = Array.from(Array(y_data.length)).map((e, i) => i + 1);
-
-    return { x: x_data, y: y_data };
+    const graph_data = { x: [], y: [] };
+    for (let i = 0; i < 3; i++) {
+      graph_data["x"].push(items[0][i].item_name);
+      graph_data["y"].push(items[0][i].banana_index);
+    }
+    graph_data["x"].push("바나나");
+    graph_data["y"].push(100);
+    for (let i = 0; i < 3; i++) {
+      graph_data["x"].push(items[1][i].item_name);
+      graph_data["y"].push(items[1][i].banana_index);
+    }
+    return graph_data;
   }
   // 추가
   static async createItem({
@@ -89,6 +101,29 @@ class itemService {
   static async deleteItem({ item_id }) {
     const result = Item.deleteItem({ item_id });
     return result;
+  }
+
+  // 자동완성
+  static async Autocomplete({ search }) {
+    return new Promise((resolve, reject) => {
+    const query = `  SELECT item_name 
+    FROM item 
+    WHERE item_name LIKE '%${search}%' COLLATE utf8mb4_unicode_ci 
+    ORDER BY item_name 
+    LIMIT 7`;
+      db.query(query, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          if (results.length > 0) {
+            console.log("searchItems 결과:", results);
+            resolve(results);
+          } else {
+            reject(new Error("검색 결과가 없습니다."));
+          }
+        }
+      });
+    });
   }
 }
 export { itemService };
