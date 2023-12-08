@@ -6,6 +6,7 @@ import {
   UnauthorizedError,
 } from "../../libraries/custom-error";
 import { User } from "../db/DAO/User";
+import { Order } from "../db/DAO/Order";
 import { createAccessToken, createRefreshToken } from "../utils/createToken";
 import { bcryptPassword } from "../utils/bcryptPassword";
 import { parseDate, lastMonth } from "../utils/dateFunction";
@@ -134,23 +135,29 @@ class userService {
   // 마이페이지 조회
   static async getUseData({ user_id }) {
     const max_count = 6;
-    const orderArr = await User.getOrderIds({ user_id, max_count });
-    //const orderArr = orderIds[0]["order_id"].split(",");
-    console.log("orderArr: ", orderArr);
+    const orderArr = await Order.getOrderIds({ user_id, max_count });
+    const last_month = lastMonth();
 
-    const user_data = { x: [], y: [] };
+    const user_data = {
+      // 그래프를 위한 데이터
+      x: [],
+      y: [],
+    };
 
     for (let i = 0; i < orderArr.length; i++) {
-      const item = await User.getUseDatas(orderArr[i].order_id);
+      const item = await Order.getUseDatas(orderArr[i].order_id);
 
       user_data["x"].push(parseDate(orderArr[i].order_date_createdAt));
       user_data["y"].push(parseInt(item.sum_banana_idx / item.sum_quantity));
-
-      console.log("i: ", i, "  item: ", item);
     }
-    // 한달 간 쇼핑몰 이용횟수 조회
 
-    console.log(user_data);
+    const recent = await Order.getRecentOrderCount({ last_month, user_id });
+
+    // 한달 간 구매 횟수
+    user_data["recent_count"] = recent[0]["count_one_month"];
+
+    user_data["max_value"] = Math.max(...user_data["y"]);
+    user_data["min_value"] = Math.min(...user_data["y"]);
     return user_data;
   }
 }
