@@ -36,6 +36,10 @@ const Carts = () => {
   }, [userId]);
 
   useEffect(() => {
+    console.log("cartItems가 변경 ??????????????", cartItems);
+  }, [cartItems]);
+
+  useEffect(() => {
     //addToCheckedList로인해 cartcheckedList가 변경되는것을 확인
     console.log("==========", cartCheckedList);
   }, [cartCheckedList]);
@@ -47,6 +51,7 @@ const Carts = () => {
     shouldInitFetch: false,
   });
   const checkedItemIdList = cartCheckedList.map((list) => list.item_id);
+  console.log(checkedItemIdList);
   //checkedItemList와 cartItems를 비교해서 cartItems에서 checked에 없는 item_id
   const unCheckedCartIdList = cartItems?.filter(
     (cart) => !checkedItemIdList.includes(cart.item_id)
@@ -74,6 +79,7 @@ const Carts = () => {
   //dispatch or result.data를 안하면 작동 안됨 ㅜ_ㅠ
   //result가 변경되기 전에 reqIdentifier가 한번 작동을해서 그다음엔 작동안해서그런듯
   useEffect(() => {
+    console.log(reqIdentifier);
     if (reqIdentifier === "getData") {
       console.log("1. data를 가져와서 dispatch합니다");
       dispatch(cartActions.storeToCart(result?.data));
@@ -83,7 +89,7 @@ const Carts = () => {
       console.log("delete성공하여 removeFromCart redux###@@@");
       dispatch(cartActions.removeFromCart(checkedItemIdList));
     }
-  }, [reqIdentifier, result.data]);
+  }, [reqIdentifier, result?.data, dispatch]);
 
   useEffect(() => {
     console.log(cartItems, "cartItems변경");

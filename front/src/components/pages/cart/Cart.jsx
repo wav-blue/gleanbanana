@@ -41,6 +41,10 @@ const Cart = ({ cart }) => {
     delay: 2000,
   });
 
+  useEffect(() => {
+    setChangedQuantity(quantity);
+  }, [quantity]);
+
   //============STATE CHANGED================
   //debounced state -> trigger
   useEffect(() => {

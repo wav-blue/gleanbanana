@@ -3,7 +3,7 @@ import Categories from "../home/Categories";
 import { useEffect, useState, useRef } from "react";
 import useApi from "../../../hooks/useApi";
 import SkeletonProductCard from "./SkeletonProductCard";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const Products = () => {
   const [products, setProducts] = useState([]);

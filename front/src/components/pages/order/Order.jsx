@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import Side from "../../layout/SideLayout";
 import OrderProducts from "./OrderProducts";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import useConfirm from "../../../hooks/useConfirm";
 
