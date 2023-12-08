@@ -32,6 +32,7 @@ const ProductDetail = () => {
   const likeState = useSelector((state) => state.like.likeLists);
   const [wasLike, setWasLike] = useState(null);
   const [isLike, setIsLike] = useState(!!wasLike);
+  console.log("isLike: ", isLike);
 
   useEffect(() => {
     const foundLike = likeState.find(
@@ -57,6 +58,7 @@ const ProductDetail = () => {
     };
 
     getProductDetail();
+    console.log("productInfo: ", result?.data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param.id]);
 

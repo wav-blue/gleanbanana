@@ -3,16 +3,17 @@ import Categories from "../home/Categories";
 import { useEffect, useState, useRef } from "react";
 import useApi from "../../../hooks/useApi";
 import SkeletonProductCard from "./SkeletonProductCard";
-import { useLocation, useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(0);
   const [load, setLoad] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
   const pageEnd = useRef();
 
-  const location = useLocation();
-  const category = new URLSearchParams(location.search).get("category");
+  const category = searchParams.get("category");
+  console.log(category);
 
   // Skeleton UI
   const imgRef = useRef(null);
@@ -28,38 +29,59 @@ const Products = () => {
 
   const getMoreData = async (page) => {
     setLoad(false);
-    const moreData = await trigger({
-      method: "get",
-      path: `/items?pageNum=${page}`,
-      applyResult: false,
-      isShowBoundary: true,
-    });
-    console.log(moreData);
-    setProducts((prev) => [...prev, ...moreData.data]);
-    setLoad(true);
+    console.log("page: ", page);
+    if (category === null) {
+      const moreData = await trigger({
+        method: "get",
+        path: `/items?pageNum=${page}`,
+        applyResult: false,
+        isShowBoundary: true,
+      });
+      if (moreData?.data !== null) {
+        setProducts((prev) => [...prev, ...moreData?.data]);
+        setLoad(true);
+      }
+    } else {
+      const moreData = await trigger({
+        method: "get",
+        path: `/items?pageNum=${page}&category=${category}`,
+        applyResult: false,
+        isShowBoundary: true,
+      });
+      if (moreData?.data !== null) {
+        setProducts((prev) => [...prev, ...moreData?.data]);
+        setLoad(true);
+      }
+    }
   };
 
+  // 카테고리 바뀌면 products, page 전부 초기화
+  // 첫번째 page만 불러와서 스크롤도 돌아가게
   useEffect(() => {
-    // if (load) {
-    //로딩되었을 때만 실행
+    if (category !== null) {
+      searchParams.set("category", category);
+      setProducts([]);
+      getMoreData(1);
+      setPage(1);
+    }
+  }, [category]);
+
+  useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        if (load) {
-          const nextPage = page + 1;
-          setPage(nextPage);
-          getMoreData(nextPage);
-        }
+      if (entries[0].isIntersecting && load) {
+        const nextPage = page + 1;
+        setPage(nextPage);
+        getMoreData(nextPage);
       }
     });
-    //옵져버 탐색 시작
+    console.log("data? : ", products);
+
     observer.observe(pageEnd.current);
-    // }
+
     return () => {
       observer.disconnect();
     };
-  }, [page, load]);
-
-  //경로가 ?category=dairy일떄 요청?
+  }, [page, category, load]);
 
   return (
     <div className="products__wrapper">

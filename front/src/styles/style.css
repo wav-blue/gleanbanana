@@ -802,8 +802,14 @@ body {
   width: 100%;
   margin: 15px 0 0 0;
 }
+.chart__head {
+  font-size: 18px;
+  margin-top: 30px;
+  margin-bottom: -15px;
+}
 .chart__wrapper {
   width: 80%;
+  flex: 1 auto;
 }
 .chart--img {
   width: 100%;
@@ -811,12 +817,6 @@ body {
      object-fit: contain;
 }
 
-@media (min-width: 1034px) and (max-width: 1033px) {
-  .chart {
-    width: 614px;
-    height: 372px;
-  }
-}
 .recommendation {
   display: flex;
   flex-direction: row;

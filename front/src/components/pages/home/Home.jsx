@@ -9,7 +9,10 @@ const Home = () => {
   return (
     <div className="home">
       <div className="home__wrapper">
-        <Charts />
+        <div className="chart">
+          <div className="chart__head">오늘의 바나나 인덱스 </div>
+          <Charts />
+        </div>
         <Categories showAllBtn="true" />
         <Recommendations />
       </div>

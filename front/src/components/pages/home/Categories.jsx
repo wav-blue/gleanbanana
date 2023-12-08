@@ -24,8 +24,8 @@ const imagesArray = [
   { photo: meat, name: "육류", category: "meat" },
   { photo: drink, name: "음료", category: "drink" },
   { photo: bread, name: "제과류", category: "bread" },
-  { photo: alchol, name: "주류", category: "alchol" },
-  { photo: vegetable, name: "채소", category: "vegetable" },
+  { photo: alchol, name: "주류", category: "alcohol" },
+  { photo: vegetable, name: "채소", category: "vegetables" },
   { photo: fish, name: "해산물", category: "fish" },
   { photo: etc, name: "기타", category: "etc" },
 ];
