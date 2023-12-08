@@ -65,6 +65,12 @@ const LikeProduct = ({ like }) => {
       applyResult: true,
       isShowBoundary: true,
     });
+    await trigger({
+      method: "delete",
+      path: `/${userId}/wishlist/${like.item_id}`,
+      applyResult: true,
+      isShowBoundary: true,
+    });
     navigate("/cart");
   }, [userId]);
 

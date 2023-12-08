@@ -9,11 +9,11 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(0);
   const [load, setLoad] = useState(true);
-  const [hasMoreItems, setHasMoreItems] = useState(true);
   const pageEnd = useRef();
 
   const location = useLocation();
   const category = new URLSearchParams(location.search).get("category");
+  console.log(category);
 
   // Skeleton UI
   const imgRef = useRef(null);
@@ -31,27 +31,39 @@ const Products = () => {
   const getMoreData = async (page) => {
     // 조건 더 이쁘게 빼고 싶은데..
     setLoad(false);
+    if (category === null) {
+      console.log(category);
+      const moreData = await trigger({
+        method: "get",
+        path: `/items?pageNum=${page}`,
+        applyResult: false,
+        isShowBoundary: true,
+      });
+      setProducts((prev) => [...prev, ...moreData?.data]);
 
-    const moreData = await trigger({
-      method: "get",
-      path: `/items?pageNum=${page}`,
-      applyResult: false,
-      isShowBoundary: true,
-    });
+      console.log("moreData: ", moreData);
+    } else {
+      const moreData = await trigger({
+        method: "get",
+        path: `/items?pageNum=${page}&category=${category}`,
+        applyResult: false,
+        isShowBoundary: true,
+      });
+      setProducts((prev) => [...prev, ...moreData?.data]);
 
-    setProducts((prev) => [...prev, ...moreData?.data]);
+      console.log("moreData: ", moreData);
+    }
 
-    console.log("moreData: ", moreData);
     setLoad(true);
   };
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && load && hasMoreItems) {
-        console.log("저기");
+      if (entries[0].isIntersecting && load) {
         const nextPage = page + 1;
         setPage(nextPage);
         getMoreData(nextPage);
+        console.log("products: ", products);
       }
     });
 

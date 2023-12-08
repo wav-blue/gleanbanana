@@ -25,10 +25,10 @@ ChartJS.register(
 );
 
 const Charts = () => {
-  const [rootUrl, setRootUrl] = useSelector(
-    (state) => state.chart.randomBanana
-  );
-  const [chatData, setChatData] = useState([]);
+  // const [rootUrl, setRootUrl] = useSelector(
+  //   (state) => state.chart.randomBanana
+  // );
+  // const [chatData, setChatData] = useState([]);
 
   //   useEffect(() => {
   //       const fetchData = async () => {
