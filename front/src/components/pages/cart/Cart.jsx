@@ -48,7 +48,6 @@ const Cart = ({ cart }) => {
   }, [debouncedQuantity, debouncedCheck, isFirst]);
 
   useEffect(() => {
-    console.log("quantity가 변경되어 updateTotal");
     dispatch(cartActions.updateTotal());
   }, [changedQuantity, isChecked, dispatch]);
 
@@ -64,9 +63,6 @@ const Cart = ({ cart }) => {
 
       setIsFirst(false);
       setChangedQuantity(newValue);
-      console.log("number 변경!!!");
-      console.log(newValue);
-      console.log("is First?", isFirst);
       !isFirst && dispatch(cartActions.updateCartQuantity(updatedQuantityData));
     },
     [setChangedQuantity, setIsFirst, dispatch, isFirst]

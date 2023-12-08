@@ -6,6 +6,7 @@ import List from "../../UI/List";
 import { likeActions } from "../../../store/like";
 import useApi from "../../../hooks/useApi";
 import { useCallback, useEffect } from "react";
+import useConfirm from "../../../hooks/useConfirm";
 
 const LikeProduct = ({ like }) => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const LikeProduct = ({ like }) => {
   }, [reqIdentifier]);
 
   const removeHandler = useCallback(() => {
+    if (!userId) return;
     trigger({
       method: "delete",
       path: `/${userId}/wishlist/${like.item_id}`,
@@ -38,7 +40,20 @@ const LikeProduct = ({ like }) => {
     });
   }, [userId, like.item_id]);
 
+  const toLogin = () => {
+    navigate("/login");
+  };
+  const toHome = () => {
+    navigate("/home");
+  };
+  const onConfirm = useConfirm(
+    "로그인된 유저만 사용가능합니다!",
+    toLogin,
+    toHome
+  );
+
   const addToCartHandler = useCallback(async () => {
+    if (!userId) return onConfirm();
     await trigger({
       method: "post",
       path: `/${userId}/carts`,

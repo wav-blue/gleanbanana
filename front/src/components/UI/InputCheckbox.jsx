@@ -12,16 +12,14 @@ const InputCheckbox = ({
 
   return (
     <>
-      <>
-        <input
-          type={type}
-          id={`check_btn${uniqueId}`}
-          className={`input ${className}`}
-          checked={checked}
-          onChange={onChangeCheckhandler}
-        />
-        <label htmlFor={`check_btn${uniqueId}`}></label>
-      </>
+      <input
+        type={type}
+        id={`check_btn${uniqueId}`}
+        className={`input ${className}`}
+        checked={checked}
+        onChange={(e) => onChangeCheckhandler(e)}
+      />
+      <label htmlFor={`check_btn${uniqueId}`}></label>
     </>
   );
 };

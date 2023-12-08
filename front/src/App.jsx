@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "../src/styles/style.css";
 import NotFound from "./components/pages/error/NotFound";
@@ -24,23 +24,37 @@ const Carts = lazy(() => import("./components/pages/cart/Carts"));
 const Purchase = lazy(() => import("./components/pages/purchase/Purchase"));
 const About = lazy(() => import("./components/pages/about/About"));
 
+const publicPathList = ["/join"];
+
 function App() {
+  //새로고침할 때마다 호출이 됨
+  //페이지 이동할 때도 호출이 되어야함
+
   const { trigger, result } = useApi({
     method: "get",
     path: "/current",
     shouldInitFetch: false,
   });
-  const dispatch = useDispatch();
+  const location = useLocation();
+
+  const fetchUserInfo = async () => {
+    const fetchedUserInfo = await trigger({ isShowBoundary: false });
+    if (!fetchedUserInfo) console.log("비로그인 유저!!!!");
+    if (fetchedUserInfo) {
+      dispatch(userLoginActions.storeUserInfo(fetchedUserInfo?.data[0]));
+      dispatch(userLoginActions.loginUser(fetchedUserInfo?.data[0].user_id));
+    }
+  };
+
   useEffect(() => {
-    trigger({ isShowBoundary: false });
-  }, []);
+    if (!publicPathList.includes(location.pathname)) {
+      fetchUserInfo();
+    }
+  }, [location.pathname]);
+
+  const dispatch = useDispatch();
 
   //shouldInitFetch 404에러 처리
-
-  useEffect(() => {
-    dispatch(userLoginActions.storeUserInfo(result.data));
-    dispatch(userLoginActions.loginUser(result.data?.user_id));
-  }, [result]);
 
   return (
     <div className="app">

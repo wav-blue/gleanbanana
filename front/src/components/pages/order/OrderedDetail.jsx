@@ -3,15 +3,37 @@ import DeliveryInfo from "../purchase/DeliveryInfo";
 import OrderedProduct from "../order/OrderedProduct";
 import OrderedInfo from "../order/OrderedInfo";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useApi from "../../../hooks/useApi";
+import useConfirm from "../../../hooks/useConfirm";
 
 const OrderedDetail = () => {
   const userId = useSelector((state) => state.user.userId);
   const { orderId } = useParams();
   const [itemList, setItemList] = useState([]);
+<<<<<<< HEAD
   const [orderInfo, setOrderInfo] = useState([]);
+=======
+  const [orderInfo, setOrderInfo] = useState({});
+  const navigate = useNavigate();
+  const toLogin = () => {
+    navigate("/login");
+  };
+  const toHome = () => {
+    navigate("/home");
+  };
+  const onConfirm = useConfirm(
+    "로그인된 유저만 사용가능합니다!",
+    toLogin,
+    toHome
+  );
+  useEffect(() => {
+    if (!userId) {
+      onConfirm();
+    }
+  }, [userId]);
+>>>>>>> feature/signup
 
   const { trigger, result } = useApi({
     method: "get",
