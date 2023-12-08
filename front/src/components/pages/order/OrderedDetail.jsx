@@ -12,10 +12,7 @@ const OrderedDetail = () => {
   const userId = useSelector((state) => state.user.userId);
   const { orderId } = useParams();
   const [itemList, setItemList] = useState([]);
-<<<<<<< HEAD
   const [orderInfo, setOrderInfo] = useState([]);
-=======
-  const [orderInfo, setOrderInfo] = useState({});
   const navigate = useNavigate();
   const toLogin = () => {
     navigate("/login");
@@ -33,7 +30,6 @@ const OrderedDetail = () => {
       onConfirm();
     }
   }, [userId]);
->>>>>>> feature/signup
 
   const { trigger, result } = useApi({
     method: "get",
