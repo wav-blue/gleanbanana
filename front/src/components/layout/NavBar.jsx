@@ -6,7 +6,7 @@ import useApi from "../../hooks/useApi";
 import { useEffect } from "react";
 
 const NavBar = () => {
-  const loggedInUserId = useSelector((state) => state.user.userId);
+  const loggedInUserId = useSelector((state) => state.user.userInfo.user_id);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { trigger } = useApi({
@@ -17,8 +17,7 @@ const NavBar = () => {
   });
 
   useEffect(() => {
-    console.log(loggedInUserId);
-    console.log(!loggedInUserId);
+    console.log({ loggedInUserId });
   }, [loggedInUserId]);
 
   //    path: `/${loggedInUserId}/logout`로 변경 예정!!!

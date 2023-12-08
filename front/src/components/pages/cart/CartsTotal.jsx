@@ -6,11 +6,9 @@ const CartsTotal = () => {
   //cartCheckedList에서만 계산된 결괏값
 
   const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
-  console.log(cartCheckedList, "====2");
   const { totalPrice, totalDeliveryFee, totalBananaIndex } =
     cartCheckedList.reduce(
       (acc, cur) => {
-        console.log("quantity", cur.quantity, "price", cur.price);
         return {
           totalPrice: acc.totalPrice + cur.price * cur.quantity,
           totalDeliveryFee: acc.totalDeliveryFee + 2500,

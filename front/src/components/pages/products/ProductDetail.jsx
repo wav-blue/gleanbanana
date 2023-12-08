@@ -1,9 +1,7 @@
 import ButtonCommon from "../../UI/ButtonCommon";
-import InputCommon from "../../UI/InputCommon";
 import banana from "../../../assets/banana.png";
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { likeActions } from "../../../store/like";
 import Likes from "../../icons/Likes";
 import LikesFilled from "../../icons/LikesFilled";
 import { useNavigate, useParams } from "react-router-dom";
@@ -34,7 +32,7 @@ const ProductDetail = () => {
   const [isLike, setIsLike] = useState(!!wasLike);
 
   useEffect(() => {
-    const foundLike = likeState.find(
+    const foundLike = likeState?.find(
       (like) => like.item_id === product.item_id
     );
     setWasLike(foundLike);
@@ -47,8 +45,8 @@ const ProductDetail = () => {
   //ProductDetail GET
   useEffect(() => {
     //detail정보 가져오기
-    const getProductDetail = async () => {
-      await trigger({
+    const getProductDetail = () => {
+      trigger({
         method: "get",
         path: `/items/${param.id}`,
         applyResult: true,

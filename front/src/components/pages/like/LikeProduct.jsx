@@ -21,6 +21,7 @@ const LikeProduct = ({ like }) => {
   });
 
   useEffect(() => {
+    if (!reqIdentifier) return;
     if (reqIdentifier === "deleteData") {
       console.log("delete성공하여 removeFromLike");
       dispatch(likeActions.removeFromLike(like));
