@@ -41,8 +41,8 @@ function App() {
     const fetchedUserInfo = await trigger({ isShowBoundary: false });
     if (!fetchedUserInfo) console.log("비로그인 유저!!!!");
     if (fetchedUserInfo) {
-      dispatch(userLoginActions.storeUserInfo(fetchedUserInfo?.data[0]));
-      dispatch(userLoginActions.loginUser(fetchedUserInfo?.data[0].user_id));
+      dispatch(userLoginActions.storeUserInfo(fetchedUserInfo?.data));
+      dispatch(userLoginActions.loginUser(fetchedUserInfo?.data.user_id));
     }
   };
 
