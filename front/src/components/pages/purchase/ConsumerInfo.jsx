@@ -1,15 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useApi from "../../../hooks/useApi";
 import { useSelector } from "react-redux";
-
-const consumerInfo = [
-  { name: "이름", value: "김유저" },
-  { name: "이메일", value: "user@banana.com" },
-  { name: "연락처", value: "010-1111-2222" },
-];
-
-//올 데이터.... 이렇게 될지?
-// const tableName = ["이름", "이메일", "연락처"];
 
 const ConsumerInfo = () => {
   const [consumerInfo, setConsumerInfo] = useState([
@@ -23,14 +14,14 @@ const ConsumerInfo = () => {
 
   const { trigger, result } = useApi({
     method: "get",
-    path: `/${userId}`,
+    path: `/current`,
     shouldInitFetch: false,
   });
 
   useEffect(() => {
     trigger({
       method: "get",
-      path: `/${userId}`,
+      path: `/current`,
       applyResult: true,
       isShowBoundary: true,
     });
@@ -47,11 +38,14 @@ const ConsumerInfo = () => {
     console.log("consumerInfo: ", consumerInfo);
   }, [consumerInfo]);
 
-  const keyList = [
-    { name: "이름", search: "username" },
-    { name: "이메일", search: "email" },
-    { name: "연락처", search: "phone_number" },
-  ];
+  const keyList = useMemo(
+    () => [
+      { name: "이름", search: "username" },
+      { name: "이메일", search: "email" },
+      { name: "연락처", search: "phone_number" },
+    ],
+    []
+  );
 
   return (
     <div className="title title__element">

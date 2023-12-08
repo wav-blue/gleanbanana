@@ -3,30 +3,38 @@ import DeliveryInfo from "../purchase/DeliveryInfo";
 import OrderedProduct from "../order/OrderedProduct";
 import OrderedInfo from "../order/OrderedInfo";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useApi from "../../../hooks/useApi";
+import useConfirm from "../../../hooks/useConfirm";
 
 const OrderedDetail = () => {
   const userId = useSelector((state) => state.user.userId);
   const { orderId } = useParams();
   const [itemList, setItemList] = useState([]);
-  const [orderInfo, setOrderInfo] = useState([]);
-
+  const [orderInfo, setOrderInfo] = useState({});
+  const navigate = useNavigate();
   const { trigger, result } = useApi({
     method: "get",
     path: `/${userId}/orders/${orderId}`,
     shouldInitFetch: false,
   });
-
-  // const getOrderInfo = async () => {
-  //   await trigger({
-  //   method: "get",
-  //   path: `/${userId}/orders/${orderId}`,
-  //   applyResult: true,
-  //   isShowBoundary: true,
-  // });
-  // };
+  const toLogin = () => {
+    navigate("/login");
+  };
+  const toHome = () => {
+    navigate("/home");
+  };
+  const onConfirm = useConfirm(
+    "로그인된 유저만 사용가능합니다!",
+    toLogin,
+    toHome
+  );
+  useEffect(() => {
+    if (!userId) {
+      onConfirm();
+    }
+  }, [userId]);
 
   useEffect(() => {
     trigger({
@@ -35,13 +43,14 @@ const OrderedDetail = () => {
       applyResult: true,
       isShowBoundary: true,
     });
-  }, [userId, orderId]);
+  }, [orderId]);
 
   useEffect(() => {
     console.log("data? ", result?.data);
     if (result.data !== undefined) {
-      setItemList(result.data.items);
       setOrderInfo(result.data);
+      setItemList(result?.data?.items);
+      console.log(result.data);
     }
   }, [result.data]);
 
@@ -58,7 +67,9 @@ const OrderedDetail = () => {
         <div className="line line__in" />
         <DeliveryInfo disabled={true} />
         <div className="line line__out" />
-        <div className="title title__element">배송 물품 내역 (3)</div>
+        <div className="title title__element">
+          배송 물품 내역 ({itemList.length})
+        </div>
         <div className="line line__in" />
         <OrderedProduct itemList={itemList} />
         <div className="line line__out" />

@@ -12,7 +12,7 @@ const PurchaseButtons = () => {
   const userId = useSelector((state) => state.user.userId);
   const toPurchaseList = useSelector((state) => state.purchase.toPurchaseList);
 
-  const { trigger, result } = useApi({
+  const { trigger } = useApi({
     method: "post",
     path: `/${userId}/orders`,
     shouldInitFetch: false,
@@ -22,21 +22,38 @@ const PurchaseButtons = () => {
     navigate("/home");
   };
 
+  //idList : []
   const onClickPurchase = async () => {
     //order요청 보내기
     console.log(toPurchaseList);
-    const purchaseListData = toPurchaseList.reduce((acc, cur) => {
-      acc.push({
-        item_id: cur.item_id,
-        quantity: cur.quantity,
-      });
-      console.log(acc);
-      return acc;
-    }, []);
+    const purchaseListData = toPurchaseList.reduce(
+      ({ toPurchaseData, deleteCheckIdList }, { item_id, quantity }) => {
+        toPurchaseData.push({
+          item_id,
+          quantity,
+        });
+        deleteCheckIdList.push(item_id);
+        return { toPurchaseData, deleteCheckIdList };
+      },
+      { toPurchaseData: [], deleteCheckIdList: [] }
+    );
     console.log(purchaseListData);
     await trigger({
-      data: { items: purchaseListData, pay_method: "creditcard" },
+      data: {
+        items: purchaseListData.toPurchaseData,
+        pay_method: "creditcard",
+      },
       applyResult: true,
+      isShowBoundary: true,
+    });
+    //장바구니 목록 비우기
+    //지우는 요청!!!!
+    //purchaseList
+    await trigger({
+      method: "delete",
+      path: `/${userId}/cart`,
+      data: { itemIdList: purchaseListData.deleteCheckIdList },
+      applyResult: false,
       isShowBoundary: true,
     });
     navigate("/order");

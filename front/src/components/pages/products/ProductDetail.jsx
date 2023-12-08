@@ -127,6 +127,7 @@ const ProductDetail = () => {
 
   const onClickPurchase = async () => {
     dispatch(purchaseActions.storeToPurchase({ ...product, quantity }));
+    dispatch(purchaseActions.updateTotal());
     navigate(`/purchase`);
   };
 

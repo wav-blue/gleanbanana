@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import ButtonCommon from "../UI/ButtonCommon";
 import { userLoginActions } from "../../store/userLogin";
@@ -8,9 +8,10 @@ import { useEffect } from "react";
 const NavBar = () => {
   const loggedInUserId = useSelector((state) => state.user.userId);
   const dispatch = useDispatch();
-  const { trigger, result, reqIdentifier, loading, error } = useApi({
-    method: "post",
-    path: `/users/logout`,
+  const navigate = useNavigate();
+  const { trigger } = useApi({
+    method: "get",
+    path: `/${loggedInUserId}/logout`,
     data: {},
     shouldInitFetch: false,
   });
@@ -23,7 +24,9 @@ const NavBar = () => {
   //    path: `/${loggedInUserId}/logout`로 변경 예정!!!
   const onClickLogout = () => {
     dispatch(userLoginActions.logoutUser());
-    // trigger({});
+    localStorage.removeItem("refreshToken");
+    trigger({});
+    navigate("/");
   };
   return (
     <div className="navBar">

@@ -10,21 +10,21 @@ const purchaseSlice = createSlice({
   name: "purchase",
   initialState: initialState,
   reducers: {
-    //구매할 목록
+    //구매할 목록 덮어씌우기
     storeToPurchase(state, action) {
-      const existedPurchaseItem = state.toPurchaseList.findIndex(
-        (list) => list.item_id === action.payload.item_id
-      );
-      if (existedPurchaseItem !== -1) return;
-      state.toPurchaseList.push(action.payload);
-      state.toPurchaseListLength += 1;
+      state.toPurchaseList = [];
+      state.toPurchaseList = action.payload;
     },
     updateTotal(state) {
       console.log("update Total");
-
       if (state?.toPurchaseList) {
         let updatedTotal = state?.toPurchaseList.reduce(
           (acc, cur) => {
+            console.log({
+              banana_index: cur.banana_index,
+              price: cur.price,
+              quantity: cur.quantity,
+            });
             return {
               totalPrice: acc.totalPrice + cur.price * cur.quantity,
               totalDeliveryFee: acc.totalDeliveryFee + 2500,
