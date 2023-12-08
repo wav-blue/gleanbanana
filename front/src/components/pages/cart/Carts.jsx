@@ -2,7 +2,7 @@ import Cart from "./Cart";
 import CartsHeader from "./CartsHeader";
 import CartsButton from "./CartsButton";
 import CartsTotal from "./CartsTotal";
-import { useCallback, useEffect } from "react";
+import { Suspense, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useApi from "../../../hooks/useApi";
 import { cartActions } from "../../../store/cart";
@@ -35,15 +35,6 @@ const Carts = () => {
     }
   }, [userId]);
 
-  useEffect(() => {
-    console.log("cartItems가 변경 ??????????????", cartItems);
-  }, [cartItems]);
-
-  useEffect(() => {
-    //addToCheckedList로인해 cartcheckedList가 변경되는것을 확인
-    console.log("==========", cartCheckedList);
-  }, [cartCheckedList]);
-
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",
     path: `/${userId}/carts`,
@@ -52,40 +43,39 @@ const Carts = () => {
   });
   const checkedItemIdList = cartCheckedList.map((list) => list.item_id);
   console.log(checkedItemIdList);
-  //checkedItemList와 cartItems를 비교해서 cartItems에서 checked에 없는 item_id
-  const unCheckedCartIdList = cartItems?.filter(
-    (cart) => !checkedItemIdList.includes(cart.item_id)
-  );
+  let fetchedData;
 
-  useEffect(() => {
-    console.log("unCheckedCartIdList", unCheckedCartIdList);
-  }, [unCheckedCartIdList]);
-
-  useEffect(() => {
-    console.log("checkedItemIdList가 변경", checkedItemIdList);
-  }, [checkedItemIdList]);
-
-  // GET요청
-  useEffect(() => {
-    trigger({
+  const getData = async () => {
+    fetchedData = await trigger({
       applyResult: true,
       isShowBoundary: true,
     });
+  };
+
+  // GET요청
+  useEffect(() => {
+    getData();
   }, []);
 
+  useEffect(() => {
+    if (reqIdentifier !== " getData") return;
+    if (reqIdentifier === "getData" && fetchedData && !loading) {
+      console.log("delete성공하여 storeToCart redux###@@@");
+      dispatch(cartActions.storeToCart(fetchedData));
+    }
+  }, [dispatch, fetchedData, reqIdentifier, loading]);
   //result가 변하면 cart에 dispatch
   //store에 저장되어있는 것으로 cart화면 그려줌
   //result.data가 deps에 필요?
   //dispatch or result.data를 안하면 작동 안됨 ㅜ_ㅠ
   //result가 변경되기 전에 reqIdentifier가 한번 작동을해서 그다음엔 작동안해서그런듯
   useEffect(() => {
-    console.log(reqIdentifier);
-    if (reqIdentifier === "getData") {
-      console.log("1. data를 가져와서 dispatch합니다");
+    if (reqIdentifier === "getData" && result.data) {
+      console.log("delete성공하여 storeToCart redux###@@@");
       dispatch(cartActions.storeToCart(result?.data));
     }
 
-    if (reqIdentifier === "deleteData") {
+    if (reqIdentifier === "deleteData" && result.data) {
       console.log("delete성공하여 removeFromCart redux###@@@");
       dispatch(cartActions.removeFromCart(checkedItemIdList));
     }
@@ -102,7 +92,7 @@ const Carts = () => {
       method: "delete",
       path: `/${userId}/cart`,
       data: { itemIdList: checkedItemIdList },
-      applyResult: true,
+      applyResult: false,
       isShowBoundary: true,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

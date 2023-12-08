@@ -235,13 +235,9 @@ input#numberInput::-webkit-outer-spin-button {
     background-color: $gray-lev1;
   }
   &--logout {
-    width: 70px;
-    height: 10px;
     font-size: 11px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    background-color: #f6e173;
+    background-color: $yellow-color;
+    margin-bottom: -3px;
   }
 }
 

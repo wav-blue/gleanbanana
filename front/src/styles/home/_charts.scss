@@ -7,16 +7,10 @@
   }
   &__wrapper {
     width: 80%;
+    flex: 1 auto;
   }
   &--img {
     width: 100%;
     object-fit: contain;
-  }
-}
-
-@include desktop {
-  .chart {
-    width: 614px;
-    height: 372px;
   }
 }

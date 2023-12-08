@@ -255,13 +255,9 @@ input#numberInput::-webkit-outer-spin-button {
   background-color: #d9d9d9;
 }
 .button--logout {
-  width: 70px;
-  height: 10px;
   font-size: 11px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
   background-color: #f6e173;
+  margin-bottom: -3px;
 }
 
 .card {
@@ -845,6 +841,7 @@ body {
 }
 .chart__wrapper {
   width: 80%;
+  flex: 1 auto;
 }
 .chart--img {
   width: 100%;
@@ -852,12 +849,6 @@ body {
      object-fit: contain;
 }
 
-@media (min-width: 1034px) and (max-width: 1033px) {
-  .chart {
-    width: 614px;
-    height: 372px;
-  }
-}
 .recommendation {
   display: flex;
   flex-direction: row;
@@ -1693,10 +1684,28 @@ body {
 
 .mychart__head {
   font-size: 18px;
+  margin-bottom: 20px;
 }
 .mychart__description {
-  margin-top: 8px;
-  font-size: 16px;
+  display: flex;
+  gap: 30px;
+}
+.mychart__card {
+  font-size: 30px;
+}
+.mychart__card__wrapper {
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 300px;
+  height: 40px;
+  display: flex;
+  border-radius: 5px;
+  border: 2px solid #f6e173;
+  padding: 20px 25px 20px 20px;
+}
+.mychart__card__head {
+  font-size: 15px;
+  align-self: flex-start;
 }
 @media (min-width: 820px) and (max-width: 1033px) {
   .mychart__head {
@@ -1752,7 +1761,7 @@ body {
   display: flex;
   flex-direction: column;
   width: 800px;
-  gap: 45px;
+  gap: 30px;
 }
 @media (min-width: 820px) and (max-width: 1033px) {
   .mypage {

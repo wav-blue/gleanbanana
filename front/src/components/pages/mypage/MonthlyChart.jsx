@@ -39,13 +39,13 @@ const MonthlyChart = () => {
     };
     getData();
   }, []);
-  console.log(result);
+  console.log("data: ", result);
 
-  // useEffect(() => {
-  //   if (result?.data !== undefined) {
-  //     setChartData(result?.data);
-  //   }
-  // }, [result?.data]);
+  useEffect(() => {
+    if (result?.data !== undefined) {
+      setChartData(result?.data);
+    }
+  }, [result?.data]);
 
   const options = {
     responsive: true,
