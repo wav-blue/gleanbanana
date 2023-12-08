@@ -1,6 +1,6 @@
 import { ForbiddenError } from "../../libraries/custom-error";
 
-function checkPermission(req, res, next) {
+function permission_check(req, res, next) {
   try {
     console.log(" req: ", req.params.userId);
     console.log(" currentUserId: ", req.currentUserId);
@@ -13,4 +13,4 @@ function checkPermission(req, res, next) {
   }
 }
 
-export { checkPermission };
+export { permission_check };

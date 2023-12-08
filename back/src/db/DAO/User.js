@@ -96,5 +96,30 @@ class User {
       });
     });
   }
+  static async getUseDatas(order_id) {
+    return new Promise((resolve, reject) => {
+      const query = `SELECT SUM((t2.banana_index/100)*t1.quantity)/SUM(t1.quantity) AS average FROM order_item t1 LEFT JOIN item t2 ON t1.item_id = t2.item_id WHERE t1.order_id = ? ;`;
+      db.query(query, order_id, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          console.log();
+          resolve(results[0]);
+        }
+      });
+    });
+  }
+  static async getOrderIds({ user_id }) {
+    return new Promise((resolve, reject) => {
+      const query = `SELECT orders.order_id, orders.order_date_createdAt FROM orders WHERE user_id = ? ORDER BY orders.order_date_createdAt LIMIT 5;`;
+      db.query(query, user_id, function (error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
 }
 export { User };

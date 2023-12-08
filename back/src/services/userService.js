@@ -1,6 +1,10 @@
 import bcrypt from "bcrypt";
 import { ulid } from "ulidx";
-import { NotFoundError, ConflictError } from "../../libraries/custom-error";
+import {
+  NotFoundError,
+  ConflictError,
+  UnauthorizedError,
+} from "../../libraries/custom-error";
 import { User } from "../db/DAO/User";
 import { createAccessToken, createRefreshToken } from "../utils/createToken";
 import { bcryptPassword } from "../utils/bcryptPassword";
@@ -8,7 +12,6 @@ import { bcryptPassword } from "../utils/bcryptPassword";
 class userService {
   static async addUser({ email, password, ...userInfo }) {
     const user_id = ulid();
-    console.log(" addUser : ", userInfo);
     const today = new Date();
 
     // Email이 중복되는 경우
@@ -25,7 +28,6 @@ class userService {
       ...userInfo, // username, address, phone_number
       email,
       password: encryptPassword,
-      my_carbon: 0,
       createdAt: today,
       updatedAt: today,
       deletedAt: null,
@@ -51,7 +53,7 @@ class userService {
       password,
       correctPasswordHash
     );
-
+    console.log(findUser);
     if (!isPasswordCorrect) {
       throw new UnauthorizedError("비밀번호가 일치하지 않습니다.");
     }
@@ -90,6 +92,7 @@ class userService {
       // id에 해당되는 유저가 없는 경우
       throw new NotFoundError("해당하는 유저를 찾을 수 없습니다.");
     }
+    console.log("findUser: ", findUser);
     if (findUser[0]?.deletedAt) {
       // 탈퇴한 유저인 경우
       // 보안을 위해 같은 메시지 출력
@@ -119,5 +122,27 @@ class userService {
     const result = await User.updateDeletedAt({ user_id });
     return result;
   }
+  // 마이페이지 조회
+  static async getUseData({ user_id }) {
+    const orderArr = await User.getOrderIds({ user_id });
+    //const orderArr = orderIds[0]["order_id"].split(",");
+    console.log("orderArr: ", orderArr);
+    const results = {};
+    let sum = 0;
+    for (let i = 0; i < orderArr.length; i++) {
+      const item = await User.getUseDatas(orderArr[i].order_id);
+      results[orderArr[i].order_date_createdAt.toString] = parseInt(
+        item.average
+      );
+      sum += parseInt(item.average);
+    }
+
+    const user_data = {
+      averages: results,
+      total_average: (sum / 5).toFixed(2),
+    };
+    return user_data;
+  }
 }
+
 export { userService };

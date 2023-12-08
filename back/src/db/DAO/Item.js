@@ -96,7 +96,8 @@ class Item {
 
   // Read For Graph : banana_index
   static async readItemsforGraph() {
-    const sql = `SELECT GROUP_CONCAT(banana_index) AS 'y' FROM item;`;
+    const sql = `SELECT item_name, banana_index FROM item WHERE banana_index < 100 ORDER BY RAND() LIMIT 3;
+    SELECT item_name, banana_index FROM item WHERE banana_index > 100 ORDER BY RAND() LIMIT 3;`;
 
     return new Promise((resolve, reject) => {
       db.query(sql, function (error, results) {
