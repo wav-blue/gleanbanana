@@ -137,7 +137,6 @@ class userService {
     const max_count = 6;
     const orderArr = await Order.getOrderIds({ user_id, max_count });
     const last_month = lastMonth();
-
     const user_data = {
       // 그래프를 위한 데이터
       x: [],
@@ -146,9 +145,11 @@ class userService {
 
     for (let i = 0; i < orderArr.length; i++) {
       const item = await Order.getUseDatas(orderArr[i].order_id);
-
-      user_data["x"].push(parseDate(orderArr[i].order_date_createdAt));
-      user_data["y"].push(parseInt(item.sum_banana_idx / item.sum_quantity));
+      const data = parseInt(item.sum_banana_idx / item.sum_quantity);
+      if (data) {
+        user_data["x"].push(parseDate(orderArr[i].order_date_createdAt));
+        user_data["y"].push(data);
+      }
     }
 
     const recent = await Order.getRecentOrderCount({ last_month, user_id });
