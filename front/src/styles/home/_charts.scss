@@ -1,0 +1,16 @@
+.chart {
+  width: 100%;
+  margin: 30px 0 0 0;
+  &__head {
+    font-size: 18px;
+    margin-bottom: -30px;
+  }
+  &__wrapper {
+    width: 80%;
+    flex: 1 auto;
+  }
+  &--img {
+    width: 100%;
+    object-fit: contain;
+  }
+}

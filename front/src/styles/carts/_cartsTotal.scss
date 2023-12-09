@@ -1,0 +1,91 @@
+.cartsTotal {
+  &__wrapper {
+    width: 1020px;
+    height: 90px;
+    border: 2px solid $gray-lev1;
+    margin-bottom: 41px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 35px;
+  gap: 50px;
+
+  &__description {
+    display: flex;
+    flex-direction: row;
+    gap: 35px;
+    justify-content: center;
+    align-items: center;
+    svg {
+      width: 20px;
+    }
+  }
+  &__price {
+    display: flex;
+    gap: 35px;
+  }
+  &__delivery {
+    display: flex;
+    gap: 35px;
+  }
+  &__totalPrice {
+    display: flex;
+    gap: 35px;
+  }
+  @include tablet {
+    gap: 37px;
+    justify-content: center;
+    margin-right: 28px;
+    &__wrapper {
+      width: 95%;
+      height: 80px;
+      margin-bottom: 18px;
+    }
+    &__price {
+      gap: 25px;
+    }
+    &__delivery {
+      gap: 25px;
+    }
+    &__totalPrice {
+      gap: 25px;
+    }
+  }
+  @include mobile-l {
+    gap: 12px;
+    justify-content: center;
+    margin-right: 5px;
+    &__wrapper {
+      width: 90%;
+      height: 80px;
+      margin-bottom: 18px;
+    }
+    &__description {
+      font-size: 12px;
+      gap: 15px;
+    }
+    &__price {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+    &__delivery {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+    &__totalPrice {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+  }
+}
