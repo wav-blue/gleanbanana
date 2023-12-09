@@ -65,7 +65,7 @@ const Charts = () => {
         datasets: [
           {
             label: "바나나 인덱스",
-            data: chartData.y,
+            data: chartData.y.map((data) => (data / 100).toFixed(2)),
             backgroundColor: "#f6e173",
             scale: 100,
           },

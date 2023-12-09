@@ -24,7 +24,7 @@ const Products = () => {
     method: "get",
     path: "/items",
     data: {},
-    shouldInitFetch: false,
+    shouldInitFetch: true,
   });
 
   const getMoreData = async (page) => {

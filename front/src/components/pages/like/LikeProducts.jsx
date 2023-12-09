@@ -24,7 +24,7 @@ const LikeProducts = () => {
       applyResult: true,
       isShowBoundary: true,
     });
-  }, []);
+  }, [result.data]);
 
   useEffect(() => {
     console.log("data를 가져와서 dispatch합니다");
