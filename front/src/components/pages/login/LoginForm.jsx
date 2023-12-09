@@ -38,12 +38,9 @@ const LoginForm = () => {
 
   //result.status 성공시 201? 확인
   useEffect(() => {
-    console.log(result);
     if (reqIdentifier === "postData" && result.status === 200) {
       dispatch(userLoginActions.loginUser(result.data.user_id));
       const newAccessToken = result.data.Authorization.split(" ")[1];
-      console.log(result.data.Authorization);
-      console.log(newAccessToken, "newAccessTokens");
       //refreshToken 만료시간에 동일한 localStorage 만료시간
       localStorage.setItem("refreshToken", newAccessToken);
     }

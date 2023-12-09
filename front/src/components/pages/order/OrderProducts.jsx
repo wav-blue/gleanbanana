@@ -16,9 +16,9 @@ const OrderProducts = () => {
     shouldInitFetch: false,
   });
 
-  dispatch(purchaseActions.clearPurchaseList());
-
   useEffect(() => {
+    dispatch(purchaseActions.clearPurchaseList());
+
     trigger({ applyResult: true, isShowBoundary: true });
   }, []);
 

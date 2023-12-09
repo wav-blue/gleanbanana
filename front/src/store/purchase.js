@@ -33,8 +33,8 @@ const purchaseSlice = createSlice({
     //     let updatedTotal =
     // },
     clearPurchaseList(state) {
-      state.toPurchaseList = initialState.toPurchaseList;
-      state.purchaseTotal = initialState.purchaseTotal;
+      console.log("클리어");
+      state = initialState;
     },
   },
 });

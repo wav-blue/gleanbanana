@@ -54,6 +54,10 @@ const Cart = ({ cart }) => {
     dispatch(cartActions.updateTotal());
   }, [changedQuantity, isChecked, dispatch]);
 
+  useEffect(() => {
+    dispatch(cartActions.updateTotal());
+  }, []);
+
   //==========Change NUMBER ============
   //quantity변경시 id와 quantity
 
