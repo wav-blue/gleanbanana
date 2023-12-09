@@ -189,7 +189,7 @@ class Order {
       user_id: userId,
       order_date_createdAt: time,
       order_date_updatedAt: time,
-      order_date_deletedAt: time,
+      order_date_deletedAt: null,
       pay_method: pay_method,
       delivery_fee: null,
     };

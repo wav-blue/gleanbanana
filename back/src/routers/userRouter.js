@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   BadRequestError,
   NotFoundError,
-  UnauthorizedError,
+  TokenExpiredError,
 } from "../../libraries/custom-error";
 import jwt from "jsonwebtoken";
 import { userService } from "../services/userService";
@@ -84,14 +84,12 @@ userRouter.post("/accessToken", async function (req, res, next) {
 
     const accessToken = req.signedCookies.accessToken?.split(" ")[1] ?? null;
     const refreshToken = req.body.Authorization?.split(" ")[1] ?? null;
-    console.log("/access token 재요청");
-    console.log("Access: ", accessToken, "refresh: ", refreshToken);
 
     // cookie가 만료된 경우 => 로그인부터 다시
     if (!accessToken || !refreshToken) {
       throw new NotFoundError("필요한 Token이 존재하지 않음");
     }
-
+    //response.status === 404 || response.status === 401
     // token 유효기간 검증
     const isRefreshTokenValidate = validateRefreshToken(refreshToken);
 

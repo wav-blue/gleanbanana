@@ -4,19 +4,23 @@ class Item {
   // Full view
   static async getItems({ contentSize, skipSize }) {
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM item ORDER BY item_id DESC LIMIT ${skipSize},${contentSize}`;
-      db.query(query, function (error, results, fields) {
-        if (error) {
-          reject(error);
-        } else {
-          if (results.length > 0) {
-            resolve(results);
+      const query = `SELECT * FROM item ORDER BY item_id DESC LIMIT ?, ?`;
+      db.query(
+        query,
+        [skipSize, contentSize],
+        function (error, results, fields) {
+          if (error) {
+            reject(error);
           } else {
-            resolve(null);
-            //reject(new Error("상품이 없습니다."));
+            if (results.length > 0) {
+              resolve(results);
+            } else {
+              resolve(null);
+              //reject(new Error("상품이 없습니다."));
+            }
           }
         }
-      });
+      );
     });
   }
 
@@ -35,7 +39,6 @@ class Item {
           reject(error);
         } else {
           if (results.length > 0) {
-            console.log("searchItems 결과:", results);
             resolve(results);
           } else {
             reject(new Error("검색 결과가 없습니다."));
@@ -78,9 +81,9 @@ class Item {
 
   // Read Item Detail
   static async readItemDetail({ itemId }) {
-    const query = `SELECT * FROM item WHERE item_id = ${itemId}`;
+    const query = `SELECT * FROM item WHERE item_id = ? ;`;
     return new Promise((resolve, reject) => {
-      db.query(query, function (error, results, fields) {
+      db.query(query, itemId, function (error, results, fields) {
         if (error) {
           reject(error);
         } else {
@@ -111,21 +114,24 @@ class Item {
   // Read By Category
   static async readItemsByCategory({ category, contentSize, skipSize }) {
     return new Promise((resolve, reject) => {
-      const sql = `SELECT * FROM item WHERE category_id = (SELECT category_id FROM category WHERE category_name = ?) order by item_id desc LIMIT ${skipSize},${contentSize}`;
+      const sql = `SELECT * FROM item WHERE category_id = (SELECT category_id FROM category WHERE category_name = ?) order by item_id desc LIMIT ? , ? ;`;
 
-      db.query(sql, category, function (error, results, fields) {
-        if (error) {
-          reject(error);
-        } else {
-          if (results.length > 0) {
-            console.log("results(category) : ", results);
-            resolve(results);
+      db.query(
+        sql,
+        [category, skipSize, contentSize],
+        function (error, results, fields) {
+          if (error) {
+            reject(error);
           } else {
-            resolve(null);
-            //reject(new Error("상품이 없습니다."));
+            if (results.length > 0) {
+              resolve(results);
+            } else {
+              resolve(null);
+              //reject(new Error("상품이 없습니다."));
+            }
           }
         }
-      });
+      );
     });
   }
 
