@@ -36,8 +36,8 @@ const Carts = () => {
   }, [userId]);
 
   useEffect(() => {
-    //addToCheckedList로인해 cartcheckedList가 변경되는것을 확인
-  }, [cartCheckedList]);
+    dispatch(cartActions.removeAllFromCheckedList());
+  }, []);
 
   const { trigger, result, reqIdentifier } = useApi({
     method: "get",

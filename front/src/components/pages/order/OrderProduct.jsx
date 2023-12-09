@@ -48,7 +48,7 @@ const OrderProduct = ({ order }) => {
         </div>
         <div className="order__description-index">
           <img src={bananaImg} alt="bananaIndex" />
-          <div>X {order.total_banana_index}</div>
+          <div>X {order.total_banana_index / 100}</div>
         </div>
       </Link>
       <div className="order__button__wrapper">

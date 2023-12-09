@@ -13,7 +13,7 @@ const purchaseSlice = createSlice({
     //구매할 목록 덮어씌우기
     storeToPurchase(state, action) {
       state.toPurchaseList = [];
-      state.toPurchaseList = state.toPurchaseList.concat(action.payload);
+      state.toPurchaseList = action.payload;
       state.purchaseTotal = action.payload.reduce(
         (acc, cur) => {
           return {

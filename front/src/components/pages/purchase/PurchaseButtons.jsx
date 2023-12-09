@@ -3,6 +3,7 @@ import ButtonCommon from "../../UI/ButtonCommon";
 import { useDispatch, useSelector } from "react-redux";
 import { purchaseActions } from "../../../store/purchase";
 import useApi from "../../../hooks/useApi";
+import { cartActions } from "../../../store/cart";
 
 const PurchaseButtons = () => {
   //결제취소 버튼 눌렀을 때 구매내역에 있는 물품들 cart에서 삭제 요청
@@ -47,7 +48,7 @@ const PurchaseButtons = () => {
       isShowBoundary: true,
     });
     //성공시 해당 아이템들 장바구니 목록 비우기 요청!!!!
-    //purchaseList
+    dispatch(purchaseActions.clearPurchaseList());
     await trigger({
       method: "delete",
       path: `/${userId}/cart`,
@@ -55,6 +56,7 @@ const PurchaseButtons = () => {
       applyResult: false,
       isShowBoundary: true,
     });
+    dispatch(cartActions.removeAllFromCheckedList());
     navigate("/order");
   };
   return (
