@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import banana from "../../../assets/banana.png";
-import InputCommon from "../../UI/InputCommon";
 import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../../store/cart";
 import InputCheckbox from "../../UI/InputCheckbox";

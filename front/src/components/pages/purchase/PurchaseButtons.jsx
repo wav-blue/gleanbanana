@@ -21,23 +21,23 @@ const PurchaseButtons = () => {
     dispatch(purchaseActions.clearPurchaseList());
     navigate("/home");
   };
+  const purchaseListData = toPurchaseList.reduce(
+    (acc, { item_id, quantity }) => {
+      acc.toPurchaseData.push({
+        item_id,
+        quantity,
+      });
+      acc.deleteCheckIdList.push(item_id);
+
+      return acc;
+    },
+    { toPurchaseData: [], deleteCheckIdList: [] }
+  );
+  console.log("Purchase list data:", purchaseListData);
 
   //idList : []
   const onClickPurchase = async () => {
     //order요청 보내기
-    console.log(toPurchaseList);
-    const purchaseListData = toPurchaseList.reduce(
-      ({ toPurchaseData, deleteCheckIdList }, { item_id, quantity }) => {
-        toPurchaseData.push({
-          item_id,
-          quantity,
-        });
-        deleteCheckIdList.push(item_id);
-        return { toPurchaseData, deleteCheckIdList };
-      },
-      { toPurchaseData: [], deleteCheckIdList: [] }
-    );
-    console.log(purchaseListData);
     await trigger({
       data: {
         items: purchaseListData.toPurchaseData,
@@ -46,8 +46,7 @@ const PurchaseButtons = () => {
       applyResult: true,
       isShowBoundary: true,
     });
-    //장바구니 목록 비우기
-    //지우는 요청!!!!
+    //성공시 해당 아이템들 장바구니 목록 비우기 요청!!!!
     //purchaseList
     await trigger({
       method: "delete",

@@ -4,7 +4,7 @@ import Down from "../icons/Down";
 import InputBaseProps from "./InputBaseProps";
 
 const InputNumber = (props = InputBaseProps) => {
-  const [inputNum, setInputNum] = useState(1);
+  const [inputNum, setInputNum] = useState(props.value);
   const uniqueId = useId();
   const { type = "number", className = "gray-square", onValueChange } = props;
 

@@ -23,6 +23,8 @@ const Product = lazy(() => import("./components/pages/products/Product"));
 const Carts = lazy(() => import("./components/pages/cart/Carts"));
 const Purchase = lazy(() => import("./components/pages/purchase/Purchase"));
 const About = lazy(() => import("./components/pages/about/About"));
+const User = lazy(() => import("./components/pages/mypage/User"));
+const Inquiry = lazy(() => import("./components/pages/mypage/Inquiry"));
 
 const publicPathList = ["/join"];
 
@@ -80,6 +82,9 @@ function App() {
               <Route path="/order/:orderId" element={<OrderedDetail />} />
               <Route path="/purchase" element={<Purchase />} />
               <Route path="/about" element={<About />} />
+              <Route path="/user" element={<User />} />
+              <Route path="/inquiry" element={<Inquiry />} />
+
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

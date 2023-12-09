@@ -30,7 +30,6 @@ const ProductDetail = () => {
   const likeState = useSelector((state) => state.like.likeLists);
   const [wasLike, setWasLike] = useState(null);
   const [isLike, setIsLike] = useState(!!wasLike);
-  console.log("isLike: ", isLike);
 
   useEffect(() => {
     const foundLike = likeState?.find(
@@ -40,7 +39,6 @@ const ProductDetail = () => {
   }, [likeState, product.item_id]);
 
   useEffect(() => {
-    console.log(likeState);
     setIsLike(!!wasLike);
   }, [wasLike]);
 
@@ -57,7 +55,6 @@ const ProductDetail = () => {
     };
 
     getProductDetail();
-    console.log("productInfo: ", result?.data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param.id]);
 
@@ -70,7 +67,6 @@ const ProductDetail = () => {
       banana_index: bananaIndexes,
       quantity: quantity,
     };
-    console.log(addCartData);
     await trigger({
       method: "post",
       path: `/${userId}/carts`,
@@ -120,9 +116,6 @@ const ProductDetail = () => {
 
   //trigger의 결과로 result가 변경이 되면
   useEffect(() => {
-    console.log(result?.data);
-    console.log("isLike: ", isLike);
-    console.log("wasLike: ", wasLike);
     if (reqIdentifier === "getData") {
       setProduct(result?.data[0]);
     }
@@ -130,8 +123,8 @@ const ProductDetail = () => {
   }, [result.data]);
 
   const onClickPurchase = async () => {
-    dispatch(purchaseActions.storeToPurchase({ ...product, quantity }));
-    dispatch(purchaseActions.updateTotal());
+    console.log({ ...product, quantity });
+    dispatch(purchaseActions.storeToPurchase([{ ...product, quantity }]));
     navigate(`/purchase`);
   };
 
@@ -148,7 +141,7 @@ const ProductDetail = () => {
             <img src={banana} alt="bananaIndex" />
           </section>
           <section className="product__section2">
-            <InputNumber onValueChange={onChangeNumHandler} />
+            <InputNumber onValueChange={onChangeNumHandler} value={quantity} />
             <div className="product__section2--totalVal">
               <div className="product__section2--total">총 상품 금액</div>
               <div className="product__section2--val">

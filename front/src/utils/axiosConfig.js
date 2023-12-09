@@ -99,6 +99,12 @@ api.interceptors.response.use(
       }
     }
 
+    if (err.response && status === 404) {
+      if (data === "해당하는 주문 내역이 없습니다.") {
+        window.location.href = "/";
+      }
+    }
+
     if (err.response && status === 409) {
       if (data === "이미 찜하기 된 상품입니다") {
         window.location.replace("/login");
@@ -143,6 +149,12 @@ api.interceptors.response.use(
         }
       } else {
         window.location.replace("/");
+      }
+
+      if (err.response && status === 500) {
+        if (data === "해당 상품이 장바구니에 없습니다.") {
+          window.location.replace("/cart");
+        }
       }
     }
 

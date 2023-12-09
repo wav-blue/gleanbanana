@@ -16,11 +16,6 @@ const NavBar = () => {
     shouldInitFetch: false,
   });
 
-  useEffect(() => {
-    console.log({ loggedInUserId });
-  }, [loggedInUserId]);
-
-  //    path: `/${loggedInUserId}/logout`로 변경 예정!!!
   const onClickLogout = () => {
     dispatch(userLoginActions.logoutUser());
     localStorage.removeItem("refreshToken");

@@ -7,7 +7,6 @@ const userLoginSlice = createSlice({
   initialState: initialState,
   reducers: {
     loginUser(state, action) {
-      console.log("userInfo 저장", action.payload);
       state.userId = action.payload;
     },
     logoutUser(state) {

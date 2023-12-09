@@ -3,12 +3,14 @@ import ButtonCommon from "../../UI/ButtonCommon";
 import List from "../../UI/List";
 import bananaImg from "../../../assets/banana.png";
 import useApi from "../../../hooks/useApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { orderActions } from "../../../store/order";
 
 const OrderProduct = ({ order }) => {
   const userId = useSelector((state) => state.user.userId);
   const orderId = order.order_id;
-  const { trigger, result } = useApi({
+  const dispatch = useDispatch();
+  const { trigger } = useApi({
     method: "delete",
     path: `/${userId}/orders/${orderId}`,
     shouldInitFetch: false,
@@ -21,6 +23,7 @@ const OrderProduct = ({ order }) => {
       applyResult: true,
       isShowBoundary: true,
     });
+    dispatch(orderActions.removeFromOrdered(orderId));
   };
 
   return (
@@ -30,7 +33,10 @@ const OrderProduct = ({ order }) => {
         <div className="order__description">
           <div className="order__description__delivery">
             <div className="order__description__status">
-              {order.item_name} 외 {order.item_array_length}
+              {order.item_name}
+              {order.item_array_length === 1
+                ? ""
+                : `외 ${order.item_array_length - 1}`}
             </div>
             <div className="order__description__date">
               {order.expected_delivery}예정

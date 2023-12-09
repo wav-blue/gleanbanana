@@ -1,8 +1,7 @@
 const OrderedInfo = ({ orderInfo }) => {
-  console.log(orderInfo);
   return (
     <>
-      {Array.isArray(orderInfo) && orderInfo && (
+      {Array.isArray(orderInfo) && (
         <div className="title title__element">
           <div className="flex flex__element-left">
             <div>총 상품 가격</div>
@@ -14,7 +13,12 @@ const OrderedInfo = ({ orderInfo }) => {
           </div>
           <div className="flex flex__element-left">
             <div>총 결제 금액</div>
-            <div>{orderInfo?.total_price.toLocaleString()} 원</div>
+            <div>
+              {(
+                orderInfo?.total_price + orderInfo?.delivery_fee
+              ).toLocaleString()}
+              원
+            </div>
           </div>
           <div className="flex flex__element-up">
             <div>결제 방법</div>

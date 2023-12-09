@@ -14,7 +14,6 @@ const cartSlice = createSlice({
   reducers: {
     //cart api에서 가져와서 store에 저장하는 리듀서
     storeToCart(state, action) {
-      console.log("store to cart!");
       state.cartItems = action.payload;
     },
 
@@ -22,8 +21,6 @@ const cartSlice = createSlice({
     //전제조건은 cartItems에 있다는것!
     //필요한것 item_id와 quantity만. quantity만 업뎃하면 됨.
     updateCartQuantity(state, action) {
-      console.log("updateCartQuantity", action.payload);
-      console.log("newItemId", action.payload.item_id);
       const newItemId = action.payload.item_id;
       const existedCartItemIndex = state.cartItems.findIndex(
         (cart) => cart.item_id === newItemId
@@ -33,9 +30,6 @@ const cartSlice = createSlice({
       const existedCheckedItemIndex = state.cartCheckedList.findIndex(
         (cart) => cart.item_id === newItemId
       );
-
-      console.log("existedCartItemIndex", existedCartItemIndex);
-
       //카트 quantity가 변경이 안되는듯!
       if (existedCartItemIndex >= 0) {
         //있다면 수량변경
@@ -86,13 +80,9 @@ const cartSlice = createSlice({
 
     //cartCheckedList에서 price와 deleveryFee,bananaindex를 줘야함!
     updateTotal(state) {
-      console.log("update Total");
-      console.log(state.cartCheckedList);
-
       if (state?.cartCheckedList) {
         let updatedTotal = state?.cartCheckedList.reduce(
           (acc, cur) => {
-            console.log("quantity", cur.quantity, "price", cur.price);
             return {
               totalPrice: acc.totalPrice + cur.price * cur.quantity,
               totalDeliveryFee: acc.totalDeliveryFee + 2500,
@@ -102,7 +92,6 @@ const cartSlice = createSlice({
           },
           { totalPrice: 0, totalDeliveryFee: 0, totalBananaIndex: 0 }
         );
-        console.log(updatedTotal);
         state.cartTotal = updatedTotal;
       }
     },

@@ -74,8 +74,6 @@ const Products = () => {
         getMoreData(nextPage);
       }
     });
-    console.log("data? : ", products);
-
     observer.observe(pageEnd.current);
 
     return () => {

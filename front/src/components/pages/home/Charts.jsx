@@ -28,7 +28,7 @@ const Charts = () => {
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",
     path: `/graph`,
-    shouldInitFetch: false,
+    shouldInitFetch: true,
   });
 
   useEffect(() => {

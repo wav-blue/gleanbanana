@@ -45,13 +45,10 @@ const OrderedDetail = () => {
   }, []);
 
   useEffect(() => {
-    console.log("data? ", result?.data);
     if (reqIdentifier !== "getData") return;
     if (result.data !== undefined && reqIdentifier === "getData") {
-      console.log(result?.data);
       setOrderInfo(result?.data);
       setItemList(result?.data?.items);
-      console.log(result.data);
     }
   }, [reqIdentifier, result.data]);
 

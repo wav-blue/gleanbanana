@@ -14,7 +14,6 @@ const Purchase = () => {
   const toPurchaseList = useSelector((state) => state.purchase.toPurchaseList);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
 
   useEffect(() => {
@@ -24,11 +23,6 @@ const Purchase = () => {
     }
   }, [userInfo]);
 
-  useEffect(() => {
-    dispatch(purchaseActions.updateTotal());
-
-    console.log(toPurchaseList);
-  }, []);
   return (
     <div className="purchase__wrapper">
       <div className="purchase__info">
@@ -46,9 +40,7 @@ const Purchase = () => {
           {`배송 물품 내역 (${toPurchaseList.length})`}
         </div>
         <div className="line line__in" />
-        {toPurchaseList.map((list) => (
-          <PurchasedProduct list={list} />
-        ))}
+        <PurchasedProduct list={toPurchaseList} />
         <div className="line line__out" />
         <div className="title title__element">결제정보</div>
         <div className="line line__in" />{" "}

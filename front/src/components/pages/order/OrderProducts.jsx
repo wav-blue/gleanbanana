@@ -3,6 +3,7 @@ import useApi from "../../../hooks/useApi";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { orderActions } from "../../../store/order";
+import { purchaseActions } from "../../../store/purchase";
 
 const OrderProducts = () => {
   const userId = useSelector((state) => state.user.userId);
@@ -15,20 +16,17 @@ const OrderProducts = () => {
     shouldInitFetch: false,
   });
 
+  dispatch(purchaseActions.clearPurchaseList());
+
   useEffect(() => {
     trigger({ applyResult: true, isShowBoundary: true });
   }, []);
 
   useEffect(() => {
     if (reqIdentifier === "getData" && result.data !== undefined) {
-      console.log("orderProductList를 세팅", result?.data);
       dispatch(orderActions.storeToOrdered(result?.data));
     }
   }, [reqIdentifier, result.data, dispatch]);
-
-  useEffect(() => {
-    console.log(orderProductList);
-  }, [orderProductList]);
 
   return (
     <div className="order__wrapper">
