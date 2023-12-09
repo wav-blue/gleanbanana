@@ -5,13 +5,14 @@ import banana from "../../../assets/banana.png";
 import List from "../../UI/List";
 import { likeActions } from "../../../store/like";
 import useApi from "../../../hooks/useApi";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useConfirm from "../../../hooks/useConfirm";
 
 const LikeProduct = ({ like }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user.userId);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "delete",
@@ -19,6 +20,17 @@ const LikeProduct = ({ like }) => {
     data: {},
     shouldInitFetch: false,
   });
+
+  const removeHandler = useCallback(() => {
+    if (!userId) return;
+    trigger({
+      method: "delete",
+      path: `/${userId}/wishlist/${like.item_id}`,
+      applyResult: true,
+      isShowBoundary: true,
+    });
+    setIsDeleted((prev) => !prev);
+  }, [userId, like.item_id]);
 
   useEffect(() => {
     if (!reqIdentifier) return;
@@ -29,17 +41,7 @@ const LikeProduct = ({ like }) => {
     if (reqIdentifier === "postData") {
       console.log("delete성공하여 addToCart");
     }
-  }, [reqIdentifier]);
-
-  const removeHandler = useCallback(() => {
-    if (!userId) return;
-    trigger({
-      method: "delete",
-      path: `/${userId}/wishlist/${like.item_id}`,
-      applyResult: true,
-      isShowBoundary: true,
-    });
-  }, [userId, like.item_id]);
+  }, [isDeleted]);
 
   const toLogin = () => {
     navigate("/login");
@@ -101,5 +103,4 @@ const LikeProduct = ({ like }) => {
     </List>
   );
 };
-
 export default LikeProduct;

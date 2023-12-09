@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useApi from "../../../hooks/useApi";
 import { purchaseActions } from "../../../store/purchase";
 import InputNumber from "../../UI/InputNumber";
+import { likeActions } from "../../../store/like";
 
 //장바구니에 추가하면 바로 장바구니 페이지로 가게 함
 const ProductDetail = () => {
@@ -118,6 +119,9 @@ const ProductDetail = () => {
   useEffect(() => {
     if (reqIdentifier === "getData") {
       setProduct(result?.data[0]);
+    }
+    if (reqIdentifier === "postData" && isLike) {
+      dispatch(likeActions.addToLike(product));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
