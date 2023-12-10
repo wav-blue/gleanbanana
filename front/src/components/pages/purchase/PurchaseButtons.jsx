@@ -48,7 +48,7 @@ const PurchaseButtons = () => {
       isShowBoundary: true,
     });
     //성공시 해당 아이템들 장바구니 목록 비우기 요청!!!!
-    dispatch(purchaseActions.clearPurchaseList());
+    dispatch(purchaseActions.initializePurchaseList());
     await trigger({
       method: "delete",
       path: `/${userId}/cart`,
