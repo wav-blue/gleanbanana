@@ -19,7 +19,6 @@ const JoinEmail = ({ email, setEmail }) => {
 
   //email변경될 때마다 validateEmail을 실행해서 계산된 값을 리턴
   //email중복되었을때도 email이 변경되면 다시 null로 변경
-  //
   useEffect(() => {
     setIsEmailValid(validateEmail(email));
     setIsEmailDuplicated(null);

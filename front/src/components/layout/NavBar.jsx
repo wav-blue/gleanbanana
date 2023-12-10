@@ -21,12 +21,8 @@ const NavBar = () => {
     shouldInitFetch: false,
   });
 
-  // user: userLoginReducer,
-  // cart: cartReducer,
-  // like: likeReducer,
-  // purchase: purchaseReducer,
-  // order: orderReducer,
-
+  //logout 버튼 클릭 안되는 문제 !
+  //logout
   const removeLoginData = async () => {
     loggedInUserId && (await trigger({}));
     localStorage.removeItem("refreshToken");
@@ -41,7 +37,6 @@ const NavBar = () => {
     }
   }, [user]);
 
-  //purchase //ordered //like //purchaseTotal //cartTotal //cartCheckedList
   const onClickLogout = () => {
     console.log("logout ====================");
     dispatch(userLoginActions.logoutUser());
