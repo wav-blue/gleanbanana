@@ -33,6 +33,9 @@ const likeSlice = createSlice({
         (like) => like.item_id !== action.payload.item_id
       );
     },
+    initializeLikeState(state) {
+      state = initialState;
+    },
   },
 });
 

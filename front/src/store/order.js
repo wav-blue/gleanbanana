@@ -20,6 +20,9 @@ const orderSlice = createSlice({
         (items) => !toRemoveIdList.includes(items.item_id)
       );
     },
+    initializeOrdered(state) {
+      state = initialState;
+    },
   },
 });
 export const orderActions = orderSlice.actions;

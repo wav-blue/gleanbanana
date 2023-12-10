@@ -10,8 +10,7 @@ const userLoginSlice = createSlice({
       state.userId = action.payload;
     },
     logoutUser(state) {
-      state.userInfo = {};
-      state.userId = "";
+      state = initialState;
     },
     storeUserInfo(state, action) {
       state.userInfo = action.payload;

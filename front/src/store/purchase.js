@@ -32,7 +32,7 @@ const purchaseSlice = createSlice({
     //   if (state?.toPurchaseList) {
     //     let updatedTotal =
     // },
-    clearPurchaseList(state) {
+    initializePurchaseList(state) {
       console.log("클리어");
       state = initialState;
     },

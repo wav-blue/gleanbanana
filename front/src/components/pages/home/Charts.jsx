@@ -42,6 +42,10 @@ const Charts = () => {
   }, []);
 
   useEffect(() => {
+    console.log("charts 렌더링!");
+  }, []);
+
+  useEffect(() => {
     if (result?.data !== undefined) {
       setChartData(result?.data);
     }
