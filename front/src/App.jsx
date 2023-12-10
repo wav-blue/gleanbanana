@@ -51,6 +51,10 @@ function App() {
   };
 
   useEffect(() => {
+    console.log(window.history);
+  }, []);
+
+  useEffect(() => {
     if (!publicPathList.includes(location.pathname)) {
       fetchUserInfo();
     }

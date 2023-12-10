@@ -30,7 +30,8 @@ const NavBar = () => {
   const removeLoginData = async () => {
     loggedInUserId && (await trigger({}));
     localStorage.removeItem("refreshToken");
-    navigate("/");
+    // navigate("/"); //이게 문제!!!!
+    //회원가입 클릭시 바로 가지 않고 홈화면이 리렌더링 되는데 다시클릭시 잘 갔던 현상
   };
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const NavBar = () => {
   }, [user]);
 
   //purchase //ordered //like //purchaseTotal //cartTotal //cartCheckedList
-  const onClickLogout = async () => {
+  const onClickLogout = () => {
     console.log("logout ====================");
     dispatch(userLoginActions.logoutUser());
     dispatch(cartActions.removeAllFromCheckedList());

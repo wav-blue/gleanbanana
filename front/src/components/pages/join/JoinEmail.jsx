@@ -8,18 +8,36 @@ import useApi from "../../../hooks/useApi";
 const JoinEmail = ({ email, setEmail }) => {
   //블러처리 되었을때 true,
   const [isFocusEmail, setIsFocusEmail] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false);
   const [isEmailDuplicated, setIsEmailDuplicated] = useState(null);
+  const [alertMessage, setAlertMessage] = useState("");
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "get",
     path: `/users/email`,
     shouldInitFetch: false,
   });
 
-  const isEmailValid = useMemo(() => validateEmail(email), [email]);
+  //email변경될 떄마다 validateEmail을 실행해서 계산된 값을 리턴
+  //email중복되었을때도 email이 변경되면 다시 null로 변경
+  //
+  useEffect(() => {
+    setIsEmailValid(validateEmail(email));
+    setIsEmailDuplicated(null);
+    setIsFocusEmail(false);
+    console.log(email);
+  }, [email]);
+
+  useEffect(() => {
+    console.log("isEmailValid", isEmailValid);
+  }, [isEmailValid]);
+
   const handleClick = async () => {
     if (!email) return;
-    const result = await trigger({ applyResult: true, data: { email: email } });
-    console.log(result);
+    const resultEmail = await trigger({
+      applyResult: true,
+      data: { email: email },
+    });
+    console.log(resultEmail);
   };
 
   useEffect(() => {
