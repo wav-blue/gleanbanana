@@ -34,7 +34,7 @@ const purchaseSlice = createSlice({
     // },
     initializePurchaseList(state) {
       console.log("클리어");
-      state = initialState;
+      Object.assign(state, initialState);
     },
   },
 });

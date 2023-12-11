@@ -34,7 +34,7 @@ const likeSlice = createSlice({
       );
     },
     initializeLikeState(state) {
-      state = initialState;
+      Object.assign(state, initialState);
     },
   },
 });

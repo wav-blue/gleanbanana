@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ButtonCommon from "../UI/ButtonCommon";
 import { userLoginActions } from "../../store/userLogin";
 import useApi from "../../hooks/useApi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { cartActions } from "../../store/cart";
 import { orderActions } from "../../store/order";
 import { purchaseActions } from "../../store/purchase";
@@ -11,6 +11,7 @@ import { likeActions } from "../../store/like";
 
 const NavBar = () => {
   const loggedInUserId = useSelector((state) => state.user.userInfo?.user_id);
+  const [isClickedLogout, setIsClickedLogout] = useState(false);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,28 +24,28 @@ const NavBar = () => {
 
   //logout 버튼 클릭 안되는 문제 !
   //logout
-  const removeLoginData = async () => {
-    loggedInUserId && (await trigger({}));
-    localStorage.removeItem("refreshToken");
-    // navigate("/"); //이게 문제!!!!
-    //회원가입 클릭시 바로 가지 않고 홈화면이 리렌더링 되는데 다시클릭시 잘 갔던 현상
-  };
 
-  useEffect(() => {
-    console.log(user);
-    if (!loggedInUserId) {
-      removeLoginData();
-    }
-  }, [user]);
+  // // 비로그인유저가 로그인이나 회원가입 버튼을 클릭시 홈화면으로 다시 가게 되는 원인.....
+  // useEffect(() => {
+  //   console.log({ isClickedLogout, user });
+  //   if (isClickedLogout && !user) {
+  //     console.log("home으로 갑시다");
+  //     navigate("/");
+  //   }
+  // }, [isClickedLogout, user, navigate]);
 
-  const onClickLogout = () => {
+  const onClickLogout = async () => {
     console.log("logout ====================");
+    setIsClickedLogout(true);
     dispatch(userLoginActions.logoutUser());
     dispatch(cartActions.removeAllFromCheckedList());
     dispatch(orderActions.initializeOrdered());
     dispatch(purchaseActions.initializePurchaseList());
     dispatch(cartActions.initializeCart());
     dispatch(likeActions.initializeLikeState());
+    await trigger({});
+    localStorage.removeItem("refreshToken");
+    setIsClickedLogout(true);
   };
   return (
     <div className="navBar">

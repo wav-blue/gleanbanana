@@ -10,7 +10,7 @@ const userLoginSlice = createSlice({
       state.userId = action.payload;
     },
     logoutUser(state) {
-      state = initialState;
+      Object.assign(state, initialState);
     },
     storeUserInfo(state, action) {
       state.userInfo = action.payload;

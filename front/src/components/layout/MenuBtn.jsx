@@ -12,7 +12,7 @@ const MenuBtn = () => {
   const isLoggedIn = useSelector((state) => state.user?.userInfo?.user_id);
   const MenuArray = [
     { icon: <Likes />, link: "/like", name: "찜하기", visable: isLoggedIn },
-    { icon: <Carts />, link: "/cart", name: "장바구니", visable: isLoggedIn },
+    { icon: <Carts />, link: "/cart", name: "장바구니", visable: true },
     {
       icon: <Users />,
       link: "/myPage",

@@ -97,7 +97,7 @@ const cartSlice = createSlice({
     },
 
     initializeCart(state) {
-      state = initialState;
+      Object.assign(state, initialState);
     },
   },
 });

@@ -21,7 +21,7 @@ const orderSlice = createSlice({
       );
     },
     initializeOrdered(state) {
-      state = initialState;
+      Object.assign(state, initialState);
     },
   },
 });

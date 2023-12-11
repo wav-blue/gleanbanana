@@ -26,10 +26,6 @@ const JoinEmail = ({ email, setEmail }) => {
     console.log(email);
   }, [email]);
 
-  useEffect(() => {
-    console.log("isEmailValid", isEmailValid);
-  }, [isEmailValid]);
-
   const handleClick = async () => {
     if (!email) return;
     setIsDataChanged(true);
