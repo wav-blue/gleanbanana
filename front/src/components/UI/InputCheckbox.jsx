@@ -10,7 +10,7 @@ const InputCheckbox = ({
   checkAll = false,
 }) => {
   const uniqueId = useId();
-  const inputValue = value !== undefined ? value : undefined;
+  const inputValue = value !== undefined ? value : "";
 
   return (
     <>
