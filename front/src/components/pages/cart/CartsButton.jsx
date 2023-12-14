@@ -12,7 +12,6 @@ const CartsButton = () => {
   //구매하기 버튼 눌렀을 때 link를 Purchase로
   const onClickPurchase = async () => {
     if (checkedList.length === 0) return alert("선택된 제품이 없습니다.");
-
     dispatch(purchaseActions.storeToPurchase(checkedList));
     console.log(checkedList);
     navigate("/purchase");

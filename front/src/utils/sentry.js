@@ -1,15 +1,6 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import { ErrorBoundary } from "react-error-boundary";
-import Error from "./components/pages/error/Error";
-import store from "./store";
 import * as Sentry from "@sentry/react";
 
-Sentry.init({
+export default Sentry.init({
   dsn: "https://9d62e9554976d2b648931463ce757cf0@o4506394787184640.ingest.sentry.io/4506394789281792",
   integrations: [
     new Sentry.BrowserTracing({
@@ -24,14 +15,3 @@ Sentry.init({
   replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
   replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
 });
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <ErrorBoundary FallbackComponent={Error}>
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>
-  </ErrorBoundary>
-);

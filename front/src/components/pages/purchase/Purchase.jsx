@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { purchaseActions } from "../../../store/purchase";
+import useConfirm from "../../../hooks/useConfirm";
 
 //구매하기 전 페이지
 const Purchase = () => {
@@ -16,10 +17,21 @@ const Purchase = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.user.userInfo);
 
+  const toLogin = () => {
+    navigate("/login");
+  };
+  const toHome = () => {
+    navigate("/home");
+  };
+  const onConfirm = useConfirm(
+    "로그인된 유저만 사용가능합니다! 로그인 하시겠습니까?",
+    toLogin,
+    toHome
+  );
+
   useEffect(() => {
     if (!userInfo?.user_id) {
-      console.log("userId가 없어서 /home으로 보냄");
-      return navigate("/");
+      return onConfirm();
     }
   }, [userInfo]);
 
