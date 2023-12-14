@@ -26,7 +26,7 @@ const About = lazy(() => import("./components/pages/about/About"));
 const User = lazy(() => import("./components/pages/mypage/User"));
 const Inquiry = lazy(() => import("./components/pages/mypage/Inquiry"));
 
-const publicPathList = ["/join"];
+const publicPathList = ["/join", "/cart"];
 
 function App() {
   //새로고침할 때마다 호출이 됨

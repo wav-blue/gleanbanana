@@ -10,7 +10,6 @@ const CartsButton = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   //구매하기 버튼 눌렀을 때 link를 Purchase로
-  //api 요청 YES
   const onClickPurchase = async () => {
     if (checkedList.length === 0) return alert("선택된 제품이 없습니다.");
 

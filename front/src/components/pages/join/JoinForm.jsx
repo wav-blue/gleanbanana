@@ -19,7 +19,6 @@ const JoinForm = () => {
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "post",
     path: `/users/register`,
-    data: {},
     shouldInitFetch: false,
   });
 
@@ -29,6 +28,7 @@ const JoinForm = () => {
         label: "이름",
         placeholder: "이름을 입력해주세요",
         className: "join",
+        value: username,
         onChange: (e) => {
           setUsername(e.target.value);
         },
@@ -40,12 +40,13 @@ const JoinForm = () => {
         className: "join",
         type: "tel",
         id: "phone_number",
+        value: phone_number,
         onChange: (e) => {
           setPhone_number(e.target.value);
         },
       },
     ],
-    []
+    [username, phone_number]
   );
 
   const joinData = useMemo(() => {

@@ -1,23 +1,27 @@
 import { useSelector } from "react-redux";
 import banana from "../../../assets/banana.png";
 import Plus from "../../icons/Plus";
+import { useMemo } from "react";
 
 const CartsTotal = () => {
   //cartCheckedList에서만 계산된 결괏값
 
   const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
-  const { totalPrice, totalDeliveryFee, totalBananaIndex } =
-    cartCheckedList.reduce(
-      (acc, cur) => {
-        return {
-          totalPrice: acc.totalPrice + cur.price * cur.quantity,
-          totalDeliveryFee: acc.totalDeliveryFee + 2500,
-          totalBananaIndex:
-            acc.totalBananaIndex + cur.banana_index * cur.quantity,
-        };
-      },
-      { totalPrice: 0, totalDeliveryFee: 0, totalBananaIndex: 0 }
-    );
+  const { totalPrice, totalDeliveryFee, totalBananaIndex } = useMemo(
+    () =>
+      cartCheckedList.reduce(
+        (acc, cur) => {
+          return {
+            totalPrice: acc.totalPrice + cur.price * cur.quantity,
+            totalDeliveryFee: acc.totalDeliveryFee + 2500,
+            totalBananaIndex:
+              acc.totalBananaIndex + cur.banana_index * cur.quantity,
+          };
+        },
+        { totalPrice: 0, totalDeliveryFee: 0, totalBananaIndex: 0 }
+      ),
+    [cartCheckedList]
+  );
   const totalPurchase = totalDeliveryFee + totalPrice;
 
   return (
