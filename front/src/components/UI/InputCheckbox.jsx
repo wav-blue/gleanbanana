@@ -6,9 +6,11 @@ const InputCheckbox = ({
   disabled = false,
   checked,
   onChangeCheckhandler,
+  value,
   checkAll = false,
 }) => {
   const uniqueId = useId();
+  const inputValue = value !== undefined ? value : undefined;
 
   return (
     <>
@@ -17,6 +19,7 @@ const InputCheckbox = ({
         id={`check_btn${uniqueId}`}
         className={`input ${className}`}
         checked={checked}
+        value={inputValue}
         onChange={(e) => onChangeCheckhandler(e)}
       />
       <label htmlFor={`check_btn${uniqueId}`}></label>

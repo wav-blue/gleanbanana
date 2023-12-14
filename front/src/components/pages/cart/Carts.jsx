@@ -17,24 +17,6 @@ const Carts = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const cartCheckedList = useSelector((state) => state.cart.cartCheckedList);
 
-  // const toLogin = () => {
-  //   navigate("/login");
-  // };
-  // const toHome = () => {
-  //   navigate("/home");
-  // };
-  // const onConfirm = useConfirm(
-  //   "로그인된 유저만 사용가능합니다!",
-  //   toLogin,
-  //   toHome
-  // );
-
-  // useEffect(() => {
-  //   if (!userId) {
-  //     onConfirm();
-  //   }
-  // }, [userId]);
-
   useEffect(() => {
     dispatch(cartActions.removeAllFromCheckedList());
   }, []);
@@ -56,11 +38,22 @@ const Carts = () => {
       });
   }, [userId]);
 
+  //비로그인 유저의 cartItems가져오기
+  useEffect(() => {
+    if (!userId) {
+      //localStorage에서 가져와서 storeToCart하기
+      const localCartItems = localStorage.getItem("cartItems");
+      dispatch(cartActions.storeToCart(JSON.parse(localCartItems)));
+      console.log(localCartItems);
+      return;
+    }
+  }, [userId, dispatch]);
+
   //result가 변하면 cart에 dispatch
   //store에 저장되어있는 것으로 cart화면 그려줌
   //result.data가 deps에 필요?
+
   useEffect(() => {
-    if (!userId) return;
     if (reqIdentifier === "getData") {
       dispatch(cartActions.storeToCart(result?.data));
     }
@@ -68,11 +61,12 @@ const Carts = () => {
     if (reqIdentifier === "deleteData") {
       dispatch(cartActions.removeFromCart(checkedItemIdList));
     }
-  }, [reqIdentifier, result?.data, dispatch]);
+  }, [reqIdentifier, result?.data, dispatch, userId]);
 
   //itemIdList중 삭제할 id들만 넣어줘야함
   //삭제 요청 뒤, result가 변경되면 UI를 변경해줘야함
   const onClickDelete = useCallback(() => {
+    //비로그인 유저일 경우 localStorage를 삭제후 다시 저장
     userId &&
       trigger({
         method: "delete",
