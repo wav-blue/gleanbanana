@@ -45,6 +45,7 @@ const NavBar = () => {
     dispatch(likeActions.initializeLikeState());
     await trigger({});
     localStorage.removeItem("refreshToken");
+    alert(`로그아웃 성공!`);
     setIsClickedLogout(true);
   };
   return (

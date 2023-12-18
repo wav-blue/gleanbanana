@@ -25,7 +25,7 @@ const Cart = ({ cart }) => {
   const [changedQuantity, setChangedQuantity] = useState(quantity);
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "post",
-    path: `/${userId}/carts`,
+    path: `/carts`,
     data: {},
     shouldInitFetch: false,
   });
@@ -121,7 +121,7 @@ const Cart = ({ cart }) => {
       setIsChanged(false);
       trigger({
         method: "put",
-        path: `/${userId}/carts`,
+        path: `/carts`,
         data: postCartData,
         applyResult: true,
         isShowBoundary: true,

@@ -16,7 +16,7 @@ const LikeProduct = ({ like }) => {
 
   const { trigger, result, reqIdentifier, loading, error } = useApi({
     method: "delete",
-    path: `/${userId}/wishlist/${like.item_id}`,
+    path: `/wishlist/${like.item_id}`,
     data: {},
     shouldInitFetch: false,
   });
@@ -25,7 +25,7 @@ const LikeProduct = ({ like }) => {
     if (!userId) return;
     trigger({
       method: "delete",
-      path: `/${userId}/wishlist/${like.item_id}`,
+      path: `/wishlist/${like.item_id}`,
       applyResult: true,
       isShowBoundary: true,
     });
@@ -70,7 +70,7 @@ const LikeProduct = ({ like }) => {
     });
     await trigger({
       method: "delete",
-      path: `/${userId}/wishlist/${like.item_id}`,
+      path: `/wishlist/${like.item_id}`,
       applyResult: true,
       isShowBoundary: true,
     });

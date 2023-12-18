@@ -10,12 +10,11 @@ const PurchaseButtons = () => {
   //결제하기 버튼 눌렀을 때???
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.user.userId);
   const toPurchaseList = useSelector((state) => state.purchase.toPurchaseList);
 
   const { trigger } = useApi({
     method: "post",
-    path: `/${userId}/orders`,
+    path: `/orders`,
     shouldInitFetch: false,
   });
   const onClickCancel = () => {
@@ -51,7 +50,7 @@ const PurchaseButtons = () => {
     dispatch(purchaseActions.initializePurchaseList());
     await trigger({
       method: "delete",
-      path: `/${userId}/cart`,
+      path: `/cart`,
       data: { itemIdList: purchaseListData.deleteCheckIdList },
       applyResult: false,
       isShowBoundary: true,

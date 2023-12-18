@@ -29,9 +29,9 @@ app.get("/", (req, res) => {
 // 순서 그대로 유지
 app.use("/api", itemRouter);
 app.use("/api", userRouter);
-app.use("/api", cartRouter);
-app.use("/api", loginRequired, userId_check, orderRouter);
-app.use("/api", loginRequired, userId_check, wishRouter);
+app.use("/api", loginRequired, cartRouter);
+app.use("/api", loginRequired, orderRouter);
+app.use("/api", loginRequired, wishRouter);
 
 // 에러 핸들링
 app.use(errorMiddleware);

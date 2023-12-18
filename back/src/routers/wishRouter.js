@@ -4,7 +4,7 @@ import { wishService } from "../services/wishService";
 const wishRouter = Router();
 
 // 찜한 목록 조회
-wishRouter.get("/:userId/wishlist", async function (req, res, next) {
+wishRouter.get("/wishlist", async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     const wishlists = await wishService.getWishlist({ user_id: userId });
@@ -15,7 +15,7 @@ wishRouter.get("/:userId/wishlist", async function (req, res, next) {
 });
 
 // 찜한 목록 조회 : 상품 아이디만
-wishRouter.get("/:userId/wishlist/id", async function (req, res, next) {
+wishRouter.get("/wishlist/id", async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     const wish_id_list = await wishService.getWishlistId({ user_id: userId });
@@ -26,7 +26,7 @@ wishRouter.get("/:userId/wishlist/id", async function (req, res, next) {
 });
 
 // 찜하기 버튼 클릭
-wishRouter.post("/:userId/wishlist", async function (req, res, next) {
+wishRouter.post("/wishlist", async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     const { item_id } = req.body;
@@ -41,7 +41,7 @@ wishRouter.post("/:userId/wishlist", async function (req, res, next) {
 });
 
 //찜한 특정 아이템 삭제
-wishRouter.delete("/:userId/wishlist/:itemId", async function (req, res, next) {
+wishRouter.delete("/wishlist/:itemId", async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     const { _, itemId } = req.params;
@@ -56,7 +56,7 @@ wishRouter.delete("/:userId/wishlist/:itemId", async function (req, res, next) {
 });
 
 //찜한 목록 전체 삭제
-wishRouter.delete("/:userId/wishlist", async function (req, res, next) {
+wishRouter.delete("/wishlist", async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     await wishService.deleteAllWishlist({ user_id: userId });

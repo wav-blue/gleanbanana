@@ -6,13 +6,12 @@ import { orderActions } from "../../../store/order";
 import { purchaseActions } from "../../../store/purchase";
 
 const OrderProducts = () => {
-  const userId = useSelector((state) => state.user.userId);
   const orderProductList = useSelector((state) => state.order.orderedItems);
   const dispatch = useDispatch();
 
   const { trigger, result, reqIdentifier } = useApi({
     method: "get",
-    path: `/${userId}/orders`,
+    path: `/orders`,
     shouldInitFetch: false,
   });
 

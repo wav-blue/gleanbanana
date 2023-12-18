@@ -23,7 +23,7 @@ const Carts = () => {
 
   const { trigger, result, reqIdentifier } = useApi({
     method: "get",
-    path: `/${userId}/carts`,
+    path: `/carts`,
     data: {},
     shouldInitFetch: false,
   });
@@ -70,7 +70,7 @@ const Carts = () => {
     userId &&
       trigger({
         method: "delete",
-        path: `/${userId}/cart`,
+        path: `/cart`,
         data: { itemIdList: checkedItemIdList },
         applyResult: true,
         isShowBoundary: true,

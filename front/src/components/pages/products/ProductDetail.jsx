@@ -74,7 +74,7 @@ const ProductDetail = () => {
     userId &&
       (await trigger({
         method: "post",
-        path: `/${userId}/carts`,
+        path: `/carts`,
         data: addCartData,
         applyResult: true,
         isShowBoundary: true,
@@ -90,7 +90,7 @@ const ProductDetail = () => {
     if (!isLike) {
       await trigger({
         method: "post",
-        path: `/${userId}/wishlist`,
+        path: `/wishlist`,
         data: product,
         applyResult: true,
         isShowBoundary: true,
@@ -100,7 +100,7 @@ const ProductDetail = () => {
     } else {
       trigger({
         method: "delete",
-        path: `/${userId}/wishlist/${product.item_id}`,
+        path: `/wishlist/${product.item_id}`,
         applyResult: true,
         isShowBoundary: true,
       });

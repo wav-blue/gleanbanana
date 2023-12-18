@@ -16,7 +16,7 @@ const OrderedDetail = () => {
   const navigate = useNavigate();
   const { trigger, result, reqIdentifier } = useApi({
     method: "get",
-    path: `/${userId}/orders/${orderId}`,
+    path: `/orders/${orderId}`,
     shouldInitFetch: false,
   });
   const toLogin = () => {

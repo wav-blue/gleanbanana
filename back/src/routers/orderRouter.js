@@ -3,7 +3,7 @@ import { orderService } from "../services/orderService";
 const orderRouter = Router();
 
 //현재 로그인중인 회원의 주문내역 전체조회
-orderRouter.get("/:userId/orders", async function (req, res, next) {
+orderRouter.get("/orders", async function (req, res, next) {
   const userId = req.currentUserId;
 
   try {
@@ -19,7 +19,7 @@ orderRouter.get("/:userId/orders", async function (req, res, next) {
 });
 
 // 주문내역 추가
-orderRouter.post("/:userId/orders", async function (req, res, next) {
+orderRouter.post("/orders", async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     const { pay_method, items } = req.body;
@@ -40,7 +40,7 @@ orderRouter.post("/:userId/orders", async function (req, res, next) {
 });
 
 // 주문내역 상세조회
-orderRouter.get("/:userId/orders/:orderId", async (req, res, next) => {
+orderRouter.get("/orders/:orderId", async (req, res, next) => {
   try {
     const userId = req.currentUserId;
     const order_id = req.params.orderId;
@@ -53,7 +53,7 @@ orderRouter.get("/:userId/orders/:orderId", async (req, res, next) => {
 });
 
 // 주문내역 삭제
-orderRouter.delete("/:userId/orders/:orderId", async (req, res, next) => {
+orderRouter.delete("/orders/:orderId", async (req, res, next) => {
   try {
     const order_id = req.params.orderId;
     await orderService.deleteOrder(order_id);
