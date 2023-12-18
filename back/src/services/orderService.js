@@ -10,7 +10,7 @@ class orderService {
   static async getOrderDetail(userId, order_id) {
     // 존재하는 order_id인지 확인
     const results = await Order.checkOrderId({ order_id });
-    if (results.length <= 0) {
+    if (results.length == 0) {
       throw new NotFoundError("해당하는 주문 내역이 없습니다.");
     }
     return Order.getOrderDetail(userId, order_id);
@@ -25,7 +25,7 @@ class orderService {
   static async deleteOrder(order_id) {
     // 존재하는 order_id인지 확인
     const results = await Order.checkOrderId({ order_id });
-    if (results.length <= 0) {
+    if (results.length == 0) {
       throw new NotFoundError("해당하는 주문 내역이 없습니다.");
     }
     return Order.deleteOrder(order_id);

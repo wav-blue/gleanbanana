@@ -7,10 +7,10 @@ function parseDate(full) {
 }
 
 function lastMonth() {
-  const today = new Date();
-  const monthOfYear = today.getMonth() - 1;
-  today.setMonth(monthOfYear);
-  return today;
+  const day = new Date();
+  const monthOfYear = day.getMonth() - 1;
+  day.setMonth(monthOfYear);
+  return day;
 }
 
 export { parseDate, lastMonth };

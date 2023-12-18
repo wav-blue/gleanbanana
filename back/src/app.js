@@ -10,9 +10,7 @@ import { wishRouter } from "./routers/wishRouter";
 import { userRouter } from "./routers/userRouter";
 import { orderRouter } from "./routers/orderRouter";
 import { cartRouter } from "./routers/cartRouter";
-import { permission_check } from "./middlewares/permission_check";
 import { loginRequired } from "./middlewares/loginRequired";
-import { userId_check } from "./middlewares/userId_check";
 
 const app = express();
 
