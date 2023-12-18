@@ -5,7 +5,7 @@ const db = mysql.createConnection({
   user: process.env.RDS_USERNAME,
   password: process.env.RDS_PASSWORD,
   port: process.env.RDS_PORT,
-  database: "banana",
+  database: process.env.DATABASE_NAME,
   // 다중 쿼리를 사용하기 위한 설정
   multipleStatements: true,
   enableKeepAlive: true,

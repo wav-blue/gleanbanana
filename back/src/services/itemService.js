@@ -1,14 +1,13 @@
 import { Item } from "../db/DAO/Item";
-import db from "../db";
 
 class itemService {
   // 전체 조회
   static async getItems({ contentSize, skipSize }) {
-      return await Item.getItems({ contentSize, skipSize });
+    return await Item.getItems({ contentSize, skipSize });
   }
   // 자동완성
   static async autocomplete({ search }) {
-      return await Item.autocomplete({ search });
+    return await Item.autocomplete({ search });
   }
   // 개별 조회
   static async getItem({ itemId }) {
