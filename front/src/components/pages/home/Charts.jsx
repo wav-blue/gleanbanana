@@ -31,14 +31,19 @@ const Charts = () => {
     shouldInitFetch: true,
   });
 
+  const getData = async () => {
+    await trigger({
+      applyResult: true,
+      isShowBoundary: true,
+    });
+  };
+
   useEffect(() => {
-    const getData = async () => {
-      await trigger({
-        applyResult: true,
-        isShowBoundary: true,
-      });
-    };
     getData();
+  }, []);
+
+  useEffect(() => {
+    console.log("charts 렌더링!");
   }, []);
 
   useEffect(() => {

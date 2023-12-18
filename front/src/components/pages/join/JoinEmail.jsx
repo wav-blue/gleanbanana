@@ -8,29 +8,41 @@ import useApi from "../../../hooks/useApi";
 const JoinEmail = ({ email, setEmail }) => {
   //블러처리 되었을때 true,
   const [isFocusEmail, setIsFocusEmail] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false);
   const [isEmailDuplicated, setIsEmailDuplicated] = useState(null);
-  const { trigger, result, reqIdentifier, loading, error } = useApi({
+  const [isDataChanged, setIsDataChanged] = useState(false);
+  const { trigger, result, loading } = useApi({
     method: "get",
     path: `/users/email`,
     shouldInitFetch: false,
   });
 
-  const isEmailValid = useMemo(() => validateEmail(email), [email]);
+  //email변경될 때마다 validateEmail을 실행해서 계산된 값을 리턴
+  //email중복되었을때도 email이 변경되면 다시 null로 변경
+  useEffect(() => {
+    setIsEmailValid(validateEmail(email));
+    setIsEmailDuplicated(null);
+    setIsFocusEmail(false);
+    console.log(email);
+  }, [email]);
+
   const handleClick = async () => {
     if (!email) return;
-    const result = await trigger({ applyResult: true, data: { email: email } });
-    console.log(result);
+    setIsDataChanged(true);
+    const resultEmail = await trigger({
+      applyResult: true,
+      data: { email: email },
+    });
+    console.log(resultEmail);
   };
 
   useEffect(() => {
-    if (isFocusEmail && result?.data?.isDuplicated === true) {
-      //응답이 1이면 중복
-      setIsEmailDuplicated(true);
-    } else if (isFocusEmail && result?.data?.isDuplicated === false) {
-      //응답이 0이면 중복안됨
-      setIsEmailDuplicated(false);
+    //데이터가 변경되어 로딩중이 아닐때 isDuplicated가 새로운값으로 뒤집어 써야 함
+    if (!loading && isDataChanged) {
+      setIsEmailDuplicated(result?.data?.isDuplicated);
+      setIsDataChanged(false);
     }
-  }, [result, isFocusEmail]);
+  }, [result, isFocusEmail, loading, isDataChanged]);
 
   return (
     <div className="join__input--button">

@@ -95,6 +95,10 @@ const cartSlice = createSlice({
         state.cartTotal = updatedTotal;
       }
     },
+
+    initializeCart(state) {
+      Object.assign(state, initialState);
+    },
   },
 });
 export const cartActions = cartSlice.actions;

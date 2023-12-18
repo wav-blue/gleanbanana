@@ -9,6 +9,7 @@ import useApi from "../../../hooks/useApi";
 import { purchaseActions } from "../../../store/purchase";
 import InputNumber from "../../UI/InputNumber";
 import { likeActions } from "../../../store/like";
+import useConfirm from "../../../hooks/useConfirm";
 
 //장바구니에 추가하면 바로 장바구니 페이지로 가게 함
 const ProductDetail = () => {
@@ -32,32 +33,24 @@ const ProductDetail = () => {
   const [wasLike, setWasLike] = useState(null);
   const [isLike, setIsLike] = useState(!!wasLike);
 
-  useEffect(() => {
-    const foundLike = likeState?.find(
-      (like) => like.item_id === product.item_id
-    );
-    setWasLike(foundLike);
-  }, [likeState, product.item_id]);
+  //=============GET===============
 
-  useEffect(() => {
-    setIsLike(!!wasLike);
-  }, [wasLike]);
+  const getProductDetail = () => {
+    trigger({
+      method: "get",
+      path: `/items/${param.id}`,
+      applyResult: true,
+      isShowBoundary: true,
+    });
+  };
 
   //ProductDetail GET
   useEffect(() => {
-    //detail정보 가져오기
-    const getProductDetail = () => {
-      trigger({
-        method: "get",
-        path: `/items/${param.id}`,
-        applyResult: true,
-        isShowBoundary: true,
-      });
-    };
-
     getProductDetail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param.id]);
+
+  //=============POST==============
 
   //Cart POST
   const addToCartHandler = useCallback(async () => {
@@ -68,19 +61,32 @@ const ProductDetail = () => {
       banana_index: bananaIndexes,
       quantity: quantity,
     };
-    await trigger({
-      method: "post",
-      path: `/${userId}/carts`,
-      data: addCartData,
-      applyResult: true,
-      isShowBoundary: true,
-    });
+    //비로그인 유저
+    if (!userId) {
+      const existedCart = localStorage.getItem("cartItems");
+      const cart = existedCart ? [...JSON.parse(existedCart)] : [];
+      cart.push(addCartData);
+      localStorage.setItem("cartItems", JSON.stringify(cart));
+      return navigate("/cart");
+    }
+
+    //로그인 된 유저
+    userId &&
+      (await trigger({
+        method: "post",
+        path: `/${userId}/carts`,
+        data: addCartData,
+        applyResult: true,
+        isShowBoundary: true,
+      }));
+    // ===========================================thunk 구현필==============================
     navigate("/cart");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [product, quantity]);
+  }, [product, quantity, itemPrice]);
 
   //POST like
   const addToLikeHandler = useCallback(async () => {
+    if (!userId) return alert("로그인 후 이용해주세요!");
     if (!isLike) {
       await trigger({
         method: "post",
@@ -104,6 +110,20 @@ const ProductDetail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product, isLike]);
 
+  //==========상태변경================
+  //찜목록 상태 변경
+  useEffect(() => {
+    const foundLike = likeState?.find(
+      (like) => like.item_id === product.item_id
+    );
+    setWasLike(foundLike);
+  }, [likeState, product.item_id]);
+
+  //찜목록 변경
+  useEffect(() => {
+    setIsLike(!!wasLike);
+  }, [wasLike]);
+
   //quantity변경
   const onChangeNumHandler = (newValue) => {
     setQuantity(newValue);
@@ -117,6 +137,7 @@ const ProductDetail = () => {
 
   //trigger의 결과로 result가 변경이 되면
   useEffect(() => {
+    //이부분이 필요있을까?
     if (reqIdentifier === "getData") {
       setProduct(result?.data[0]);
     }
@@ -126,9 +147,24 @@ const ProductDetail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data]);
 
+  const toLogin = () => {
+    navigate("/login");
+  };
+  const toHome = () => {
+    return;
+  };
+  const onConfirm = useConfirm(
+    "로그인된 유저만 사용가능합니다!",
+    toLogin,
+    toHome
+  );
   const onClickPurchase = async () => {
     console.log({ ...product, quantity });
+    if (!userId) {
+      return onConfirm();
+    }
     dispatch(purchaseActions.storeToPurchase([{ ...product, quantity }]));
+    // ===========================================thunk 구현필==================================
     navigate(`/purchase`);
   };
 

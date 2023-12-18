@@ -115,7 +115,8 @@ const Cart = ({ cart }) => {
   }, [debouncedQuantity, debouncedCheck, item_id]);
 
   useEffect(() => {
-    if (isChanged && !isFirst) {
+    if (!userId) return;
+    if (userId && isChanged && !isFirst) {
       console.log("cart수량 및 checked상태 변경 요청!");
       setIsChanged(false);
       trigger({

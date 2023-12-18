@@ -47,7 +47,7 @@ api.interceptors.response.use(
     return res;
   },
   async (err) => {
-    const { status, data } = err.response;
+    const { status, data } = err?.response;
     //토큰 만료시 재발급 로직
     if (
       err.response &&

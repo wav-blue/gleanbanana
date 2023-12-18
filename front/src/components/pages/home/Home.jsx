@@ -24,6 +24,7 @@ const Home = () => {
   };
   useEffect(() => {
     getRecommends();
+    console.log("홈화면 렌더링");
   }, []);
 
   useEffect(() => {
