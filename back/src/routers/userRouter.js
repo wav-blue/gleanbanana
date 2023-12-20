@@ -3,6 +3,7 @@ import {
   BadRequestError,
   NotFoundError,
   TokenExpiredError,
+  ConflictError,
 } from "../../libraries/custom-error";
 import jwt from "jsonwebtoken";
 import { userService } from "../services/userService";
@@ -11,6 +12,8 @@ import { permission_check } from "../middlewares/permission_check";
 import { createAccessToken } from "../utils/createToken";
 import { validateRefreshToken } from "../utils/validateToken";
 import { userId_check } from "../middlewares/userId_check";
+import { createUserDto } from "../db/DTO/createUserDto";
+import { User } from "../db/DAO/User";
 
 const userRouter = Router();
 
@@ -21,14 +24,25 @@ userRouter.post("/users/register", async function (req, res, next) {
     if (!email || !password || !username || !address || !phone_number) {
       throw new BadRequestError("필수 정보가 입력되지 않았습니다");
     }
+    // Email이 중복되는 경우
+    const conflict = await User.checkEmail({ email });
+    if (conflict["COUNT(email)"]) {
+      throw new ConflictError("이미 가입된 이메일입니다.");
+    }
+
+    const newUser = new createUserDto(
+      {
+        email,
+        password,
+        username,
+        address,
+        phone_number,
+      },
+      new Date()
+    );
+
     // db에 데이터 추가
-    await userService.addUser({
-      email,
-      password,
-      username,
-      address,
-      phone_number,
-    });
+    await userService.addUser({ newUser });
     res.status(201).json("회원가입 완료");
   } catch (error) {
     next(error);

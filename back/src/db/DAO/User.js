@@ -66,7 +66,7 @@ class User {
         if (error) {
           reject();
         } else {
-          resolve(results);
+          resolve(results[0]);
         }
       });
     });

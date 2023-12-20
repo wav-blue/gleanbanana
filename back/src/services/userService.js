@@ -8,32 +8,12 @@ import {
 import { User } from "../db/DAO/User";
 import { Order } from "../db/DAO/Order";
 import { createAccessToken, createRefreshToken } from "../utils/createToken";
-import { bcryptPassword } from "../utils/bcryptPassword";
 import { parseDate, lastMonth } from "../utils/dateFunction";
 
 class userService {
-  static async addUser({ email, password, ...userInfo }) {
-    const user_id = ulid();
-    const today = new Date();
-
-    // Email이 중복되는 경우
-    const conflict = await User.checkEmail({ email });
-    if (conflict[0]["COUNT(email)"]) {
-      throw new ConflictError("이미 가입된 이메일입니다.");
-    }
-
+  static async addUser({ newUser }) {
     // password 암호화
-    const encryptPassword = await bcryptPassword(password, 10);
-
-    const newUser = {
-      user_id,
-      ...userInfo, // username, address, phone_number
-      email,
-      password: encryptPassword,
-      createdAt: today,
-      updatedAt: today,
-      deletedAt: null,
-    };
+    await newUser.passwordEncrypt();
 
     const results = await User.createUser({ newUser });
 
