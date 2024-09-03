@@ -18,6 +18,8 @@
 
 <br/>
 
+프로젝트 기간 : 2023-11-20 ~ 2023-12/09
+
 ---
 
 #### 데이터셋
@@ -31,19 +33,19 @@
 ### 기술 스택
 
 1.  **프론트엔드**  
-    <img src="https://img.shields.io/badge/react-61DAFB?logo=react&logoColor=white]"/> <img src="https://img.shields.io/badge/scss-CC6699?logo=sass&logoColor=white]"/>
+    <img src="https://img.shields.io/badge/react-61DAFB?logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/scss-CC6699?logo=sass&logoColor=white"/>
 
     <br/>
 
 2.  **백엔드**  
-     <img src="https://img.shields.io/badge/node.js-339933?style=flat&logo=node.js&logoColor=white"/> <img src="https://img.shields.io/badge/Express-000000?logo=Express&logoColor=white]"/>
+     <img src="https://img.shields.io/badge/node.js-339933?style=flat&logo=node.js&logoColor=white"/> <img src="https://img.shields.io/badge/Express-000000?logo=Express&logoColor=white"/>
     <br/>
     DB<br/>
-    <img src="https://img.shields.io/badge/MySQL-5294E2?logo=MySQL&logoColor=white]"/> <img src="https://img.shields.io/badge/RDS-75AADB?logo=amazonRDS&logoColor=white]"/> <img src="https://img.shields.io/badge/S3-68BC71?logo=amazonS3&logoColor=white]"/>
+    <img src="https://img.shields.io/badge/MySQL-5294E2?logo=MySQL&logoColor=white"/> <img src="https://img.shields.io/badge/RDS-75AADB?logo=amazonRDS&logoColor=white"/> <img src="https://img.shields.io/badge/S3-68BC71?logo=amazonS3&logoColor=white"/>
 
 <br/>
 
-3.  **데이터 분석**<br/><img src="https://img.shields.io/badge/pandas-150458?logo=pandas&logoColor=white]"/>
+3.  **데이터 분석**<br/><img src="https://img.shields.io/badge/pandas-150458?logo=pandas&logoColor=white"/>
 
 ### 주요 기능 소개
 
