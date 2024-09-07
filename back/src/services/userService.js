@@ -20,7 +20,6 @@ class userService {
     return results;
   }
 
-  // 비밀번호 추가 작성 필요
   // 유저 로그인
   static async loginUser({ email, password }) {
     // 이메일로 유저 정보 조회
@@ -83,10 +82,10 @@ class userService {
       user_id: findUser[0].user_id,
       createdAt: findUser[0].createdAt,
       userInfo: {
-        이메일: findUser[0].email,
-        닉네임: findUser[0].username,
-        주소: findUser[0].address,
-        휴대전화번호: findUser[0].phone_number,
+        email: findUser[0].email,
+        name: findUser[0].username,
+        address: findUser[0].address,
+        phone: findUser[0].phone_number,
       },
     };
     return userData;
@@ -102,7 +101,7 @@ class userService {
     const result = await User.updateUserInfo({ user_id, newData });
     return result;
   }
-  // 이미 회원탈퇴한 유저 확인하는 작업 필요
+
   // 회원 탈퇴
   static async deleteUser({ user_id }) {
     const checked = await User.checkDeletedAt({ user_id });
@@ -112,6 +111,7 @@ class userService {
     const result = await User.updateDeletedAt({ user_id });
     return result;
   }
+
   // 마이페이지 조회
   static async getUseData({ user_id }) {
     const max_count = 6;

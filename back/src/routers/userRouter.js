@@ -55,8 +55,9 @@ userRouter.get("/users/email", async function (req, res, next) {
     const { email } = req.query;
     const findEmail = await userService.getEmail({ email });
 
-    const result = findEmail[0]["COUNT(email)"] ? true : false;
-    const result_text = findEmail[0]["COUNT(email)"]
+    console.log(findEmail);
+    const result = findEmail["COUNT(email)"] ? true : false;
+    const result_text = findEmail["COUNT(email)"]
       ? "중복 된 이메일 주소"
       : "중복되지 않은 이메일 주소";
 
